@@ -1311,3 +1311,54 @@ void PaintAtlantisArea (int x0 = 0, int z0 = 0, int x1 = 0, int z1 = 0, int fill
 	//fill
 	trPaintTerrain(x1-1, z1-1, x0+1, z0+1, fill1, fill2, false);
 }
+
+void EvilLaugh(){
+	int lol = 0;
+	lol = iModulo(15, trTime()+1);
+	if(lol == 1){
+		playSound("\dialog\es\skul062.mp3");
+	}
+	if(lol == 2){
+		playSound("\dialog\en\skul062.mp3");
+	}
+	if(lol == 3){
+		playSound("\dialog\fr\skul062.mp3");
+	}
+	if(lol == 4){
+		playSound("\dialog\ko\skul062.mp3");
+	}
+	if(lol == 5){
+		playSound("\dialog\jp\skul062.mp3");
+	}
+	if(lol == 6){
+		playSound("\dialog\de\skul062.mp3");
+	}
+	if(lol == 7){
+		playSound("\dialog\it\skul062.mp3");
+	}
+	if(lol == 8){
+		playSound("\dialog\cn\skul062.mp3");
+	}
+	
+	if(lol == 9){
+		playSound("\xpack\xdialog\es\xkri075.mp3");
+	}
+	if(lol == 10){
+		playSound("\xpack\xdialog\en\xkri075.mp3");
+	}
+	if(lol == 11){
+		playSound("\xpack\xdialog\fr\xkri075.mp3");
+	}
+	if(lol == 12){
+		playSound("\xpack\xdialog\ko\xkri075.mp3");
+	}
+	if(lol == 13){
+		playSound("\xpack\xdialog\jp\xkri075.mp3");
+	}
+	if(lol == 14){
+		playSound("\xpack\xdialog\de\xkri075.mp3");
+	}
+	if(lol == 15){
+		playSound("\xpack\xdialog\it\xkri075.mp3");
+	}
+}

@@ -112,17 +112,21 @@ inactive
 			}
 			case 1:
 			{
-				trTechGodPower(p, "Vision", 1);
+				AllowHunterChoice = false;
+				trMessageSetText("The host is now choosing hunter settings", 1);
+				trCounterAbort("cdchoice");
+				xsDisableRule("HuntersTimeout");
+				PregameTimeout = 999999;
+				xsEnableRule("ChooseHuntersRandom");
 			}
 			case 2:
 			{
-				trTechGodPower(p, "Serpents", 1);
-			}
-			case 3:
-			{
-				trQuestVarSet("SkipVotes", 1*trQuestVarGet("SkipVotes")+1);
-				trClearCounterDisplay();
-				trSetCounterDisplay("<color={PlayerColor(0)}>Votes to skip: " + 1*trQuestVarGet("SkipVotes"));
+				AllowHunterChoice = true;
+				trMessageSetText("The host is now choosing hunter settings", 1);
+				trCounterAbort("cdchoice");
+				xsDisableRule("HuntersTimeout");
+				PregameTimeout = 999999;
+				xsEnableRule("BeginChooseHunters");
 			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);

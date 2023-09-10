@@ -11,6 +11,11 @@ int spyScale = 3;
 int spyActive = 4;
 int spyAnim = 5;
 
+int xPlayerUnitID = 0;
+int xPlayerAlive = 0;
+int xPlayerRunner = 0;
+int xRoleDefined = 0;
+
 /*DB HELP
 dPlayerData = xInitDatabase("playerData");
 xDrillPower = xInitAddInt(dPlayerData, "drillpower", 10);
@@ -59,21 +64,10 @@ active
 highFrequency
 {
 	dPlayerData = xInitDatabase("playerData");
-	/*xSpyID = xInitAddInt(dPlayerData, "Spy id", 0);
-	xOldAnim = xInitAddInt(dPlayerData, "Anim id", 0);
-	xTarget = xInitAddInt(dPlayerData, "target id", 0);
-	xPlayerProjSpawner = xInitAddInt(dPlayerData, "unit spawn", 0);
-	xPlayerDeflector = xInitAddInt(dPlayerData, "deflector id", 0);
-	xUnitName = xInitAddInt(dPlayerData, "lol", 0);
-	xUnitOwner = xInitAddInt(dPlayerData, "lol", 0);
-	xProjPrev = xInitAddVector(dPlayerData, "lol", vector(0,0,0));
-	xProjDir = xInitAddVector(dPlayerData, "lol", vector(0,0,0));
-	xPlayerThrowPos = xInitAddVector(dPlayerData, "lol", vector(0,0,0));
 	xPlayerUnitID = xInitAddInt(dPlayerData, "lol", 0);
-	xPlayerUnitName = xInitAddInt(dPlayerData, "lol", 0);
 	xPlayerAlive = xInitAddBool(dPlayerData, "alive", true);
-	xPlayerProto = xInitAddString(dPlayerData, "proto", "Militia");
-	xPlayerPos = xInitAddVector(dPlayerData, "player pos", vector(0,0,0));*/
+	xPlayerRunner = xInitAddBool(dPlayerData, "runner", true);
+	xRoleDefined = xInitAddBool(dPlayerData, "role chosen", false);
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);

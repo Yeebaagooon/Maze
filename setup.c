@@ -82,9 +82,9 @@ highFrequency
 	xsEnableRule("load1");
 	xsDisableSelf();
 	//HOTKEYS
-	map("q", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,26);");
+	/*map("q", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,26);");
 	map("w", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,27);");
-	map("e", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,28);");
+	map("e", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,28);");*/
 }
 
 rule load1
@@ -103,10 +103,9 @@ highFrequency
 		trQuestVarSet("PlayerID2", trQuestVarGet("PlayerID2")+1);}
 	trQuestVarSet("PlayerID", trQuestVarGet("PlayerID")+1);}
 	
-	for(p=1 ; < cNumberNonGaiaPlayers){
+	for(p=1 ; <= cNumberNonGaiaPlayers){
 		trPlayerSetDiplomacy(0, p, "Enemy");
-		trPlayerSetDiplomacy(cNumberNonGaiaPlayers, p, "Enemy");
-		trPlayerSetDiplomacy(p, cNumberNonGaiaPlayers, "Enemy");
+		trPlayerSetDiplomacy(p, 0, "Enemy");
 	}
 	trTechSetStatus(0, 304, 4);
 }
@@ -166,14 +165,13 @@ highFrequency
 		gadgetReal("ShowImageBox-BordersRightBottom");
 		gadgetReal("ShowImageBox-BordersRightTop");
 		gadgetReal("ShowImageBox-CloseButton");
-		//startNPCDialog(1);
-		xsEnableRule("PaintTerrain");
+		xsEnableRule("PregameBegin");
+		//xsEnableRule("PaintTerrain");
 		//xsEnableRule("CustomContentChat");
 	}
 }
 
 void CustomContent(int p = 0){
-	//xsSetContextPlayer(0);
 	xsDisableSelf();
 	trQuestVarSet("CustomContent", 1);
 }

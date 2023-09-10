@@ -31,7 +31,7 @@ FILENAME = 'AMazeTest.xs'
 rmsFunc = ''
 rmsMain = 'main.c'
 files = ['zshared.c', 'voids.c', 'globals.c', 'intsstrings.c', 'databases.c', 'text.c',  'choice.c', 
-'setup.c', 'techstat.c', 'tutorial.c']
+'setup.c', 'techstat.c', 'maze.c', 'Pregame.c']
 
 #########################################
 ####### CODE BELOW (DO NOT TOUCH) #######
