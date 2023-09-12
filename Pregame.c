@@ -32,7 +32,7 @@ inactive
 highFrequency
 {
 	xsDisableSelf();
-	
+	DestroyAbove = trGetNextUnitScenarioNameNumber();
 	PaintAtlantisArea(15,15,35,35,getTerrainType("IceA"),getTerrainSubType("IceA"));
 	PaintAtlantisArea(15,23,19,27,getTerrainType("IceB"),getTerrainSubType("IceB"));
 	PaintAtlantisArea(31,23,35,27,getTerrainType("IceB"),getTerrainSubType("IceB"));
@@ -47,6 +47,9 @@ highFrequency
 	UnitCreate(0, "Villager Atlantean Hero", 34,50,90);
 	UnitCreate(0, "Tartarian Gate Spawn", 66,50,270);
 	trMessageSetText("Move your old man to your desired team", 6000);
+	ChoiceTimeout = trTime()+25;
+	trCounterAddTime("cdchoicehunt", 25,0, "Players randomised", -1);
+	xsEnableRule("AssignRemaining");
 	int PlayersA = 0;
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		if(playerIsPlaying(p)){
@@ -145,18 +148,146 @@ highFrequency
 	if(HunterCount == HunterNumber){
 		//end
 		xsDisableSelf();
+		trCounterAbort("cdchoicehunt");
+		xsEnableRule("AssignEveryoneRunner");
+		xsDisableRule("AssignRemaining");
+		ChoiceTimeout = 999999;
 	}
 	if(RunnerCount == (cNumberNonGaiaPlayers-HunterNumber)){
 		xsDisableSelf();
+		trCounterAbort("cdchoicehunt");
+		xsEnableRule("AssignEveryoneHunter");
+		xsDisableRule("AssignRemaining");
+		ChoiceTimeout = 999999;
+	}
+}
+
+rule AssignEveryoneRunner
+inactive
+highFrequency
+{
+	xsDisableSelf();
+	xsEnableRule("AssignmentCommonEnd");
+	
+	for(p = 1; <= cNumberNonGaiaPlayers){
+		if(playerIsPlaying(p)){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xRoleDefined) == false){
+				xSetBool(dPlayerData, xRoleDefined, true);
+				xSetBool(dPlayerData, xPlayerRunner, true);
+			}
+		}
+	}
+}
+
+rule AssignEveryoneHunter
+inactive
+highFrequency
+{
+	xsDisableSelf();
+	xsEnableRule("AssignmentCommonEnd");
+	for(p = 1; <= cNumberNonGaiaPlayers){
+		if(playerIsPlaying(p)){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xRoleDefined) == false){
+				xSetBool(dPlayerData, xRoleDefined, true);
+				xSetBool(dPlayerData, xPlayerRunner, false);
+			}
+		}
+	}
+}
+
+
+rule AssignRemaining
+inactive
+highFrequency
+{
+	int a = 0;
+	if((trTime()) >= ChoiceTimeout){
+		xsDisableSelf();
+		xsEnableRule("AssignmentCommonEnd");
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			if(playerIsPlaying(p)){
+				xSetPointer(dPlayerData, p);
+				if(xGetBool(dPlayerData, xRoleDefined) == false){
+					if(HunterCount == HunterNumber){
+						xSetBool(dPlayerData, xRoleDefined, true);
+						xSetBool(dPlayerData, xPlayerRunner, true);
+					}
+					else if(RunnerCount == (cNumberNonGaiaPlayers-HunterNumber)){
+						xSetBool(dPlayerData, xRoleDefined, true);
+						xSetBool(dPlayerData, xPlayerRunner, false);
+					}
+					else{
+						trQuestVarSetFromRand("temp", 1, 3);
+						xSetBool(dPlayerData, xRoleDefined, true);
+						if(1*trQuestVarGet("temp") == 1){
+							xSetBool(dPlayerData, xPlayerRunner, false);
+							HunterCount = HunterCount+1;
+						}
+						else{
+							xSetBool(dPlayerData, xPlayerRunner, true);
+							RunnerCount = RunnerCount+1;
+						}
+						//randomise
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+rule AssignmentCommonEnd
+inactive
+highFrequency
+{
+	xsDisableSelf();
+	xsEnableRule("Removepregamestuff");
+	xsEnableRule("SetGameDiplomacy");
+	trLetterBox(true);
+	trUIFadeToColor(0,0,0,750,100,true);
+	for(p = 1; <= cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		xSetBool(dPlayerData, xRoleDefined, true);
+		if(xGetBool(dPlayerData, xPlayerRunner) == false){
+			if(trCurrentPlayer() == p){
+				OverlayTextPlayerColor(p);
+				trOverlayText("You are a Hunter", 8.0, 534, 300, 1000);
+			}
+		}
+		else{
+			if(trCurrentPlayer() == p){
+				OverlayTextPlayerColor(p);
+				trOverlayText("You are a Runner", 8.0, 534, 300, 1000);
+			}
+		}
 	}
 }
 
 //Rule name everyone hunter/runner/random allocate whoever left
 
+rule Removepregamestuff
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 1){
+		xsDisableSelf();
+		for(a = DestroyAbove; < trGetNextUnitScenarioNameNumber()){
+			trUnitSelectClear();
+			trUnitSelect(""+a);
+			trUnitDestroy();
+		}
+	}
+}
+
 rule ChooseHuntersRandom
 inactive
 highFrequency
 {
+	trLetterBox(true);
+	trUIFadeToColor(0,0,0,1,1,true);
 	int Safety = 0;
 	int PlayersA = 0;
 	for(p = 1; <= cNumberNonGaiaPlayers){
@@ -177,7 +308,7 @@ highFrequency
 		HunterNumber = 4;
 	}
 	int CurrentHunters = 0;
-	trChatSend(0, "Select " + HunterNumber + " hunters");
+	//trChatSend(0, "Select " + HunterNumber + " hunters");
 	
 	int a = 0;
 	while(CurrentHunters < HunterNumber){
@@ -212,7 +343,6 @@ highFrequency
 		}
 	}
 	xsDisableSelf();
-	Pregame = false;
 	playSound("\cinematics\15_in\gong.wav");
 	xsEnableRule("SetGameDiplomacy");
 }
@@ -222,6 +352,7 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 1){
+		Pregame = false;
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
@@ -252,12 +383,12 @@ highFrequency
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
 				if(HunterNumber > 1){
 					if(trCurrentPlayer() == p){
-						characterDialog("Create units at the temple and kill all runner citizens to win", "Fellow hunters are x", "icons\improvement monsterous rage icon 64");
+						characterDialog("Create units at the temple and kill all runner citizens to win", "You have " + 1*(HunterNumber-1) + " fellow hunters", "icons\improvement monsterous rage icon 64");
 					}
 				}
 				else{
 					if(trCurrentPlayer() == p){
-						characterDialog("Create units at the temple and kill all runner citizens to win", "You are hunting on your own", "icons\improvement monsterous rage icon 64");
+						characterDialog("Create units at the temples and kill all runner citizens to win", "You are hunting on your own", "icons\improvement monsterous rage icon 64");
 					}
 				}
 			}
@@ -267,7 +398,10 @@ highFrequency
 				}
 			}
 		}
+		trPlayerResetBlackMapForAllPlayers();
+		trSetFogAndBlackmap(true, true);
 		xsDisableSelf();
+		xsEnableRule("START_GAME");
 	}
 }
 
@@ -275,7 +409,10 @@ rule START_GAME
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 1){
+	if((trTime()-cActivationTime) >= 3){
 		xsDisableSelf();
+		trLetterBox(false);
+		trUIFadeToColor(0,0,0,500,100,false);
+		UnitCreate(1, "Villager Atlantean Hero",5,5);
 	}
 }

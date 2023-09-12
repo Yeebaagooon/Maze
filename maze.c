@@ -250,7 +250,7 @@ void ConnectingMaze(int maxnumberx = 0, int maxnumberz = 0, int cellsize = 6, in
 	}
 	
 	//HunterBase
-	trPaintTerrain(CurrentCell(maxnumberx/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberz/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberx/2, cellsize, cellpadding)+cellpadding+1,CurrentCell(maxnumberz/2, cellsize, cellpadding)+cellpadding+1,RoadType, RoadSubType);
+	trPaintTerrain(CurrentCell(maxnumberx/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberz/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberx/2, cellsize, cellpadding)+cellpadding+1,CurrentCell(maxnumberz/2, cellsize, cellpadding)+cellpadding+1,getTerrainType("HadesBuildable1"), getTerrainSubType("HadesBuildable1"));
 	trChangeTerrainHeight(CurrentCell(maxnumberx/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberz/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberx/2, cellsize, cellpadding)+cellpadding+2,CurrentCell(maxnumberz/2, cellsize, cellpadding)+cellpadding+2,heightofroad,false);
 }
 
@@ -352,8 +352,6 @@ inactive
 	//BasicMaze(0,0,24,24,4,1,"CliffEgyptianA");
 	ConnectingMaze(18,18,11,3, "CliffGreekA", "OlympusTile");
 	refreshPassability();
-	UnitCreate(1, "Villager Atlantean Hero",5,5);
-	
 	/*
 	Set start tile
 	All valid adjacent tiles are coloured, these are fronteir

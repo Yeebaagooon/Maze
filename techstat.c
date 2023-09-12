@@ -7,7 +7,7 @@ highFrequency
 		trTechSetStatus(p, 2, 4);
 		trTechSetStatus(p, 116, 4);
 		trTechSetStatus(p, 29, 4);
-		trTechSetStatus(p, 353, 0);
+		trTechSetStatus(p, 353, 4);
 		trTechSetStatus(p, 394, 0);
 		trTechSetStatus(p, 510, 0);
 		trTechSetStatus(p, 145, 0);
@@ -59,6 +59,7 @@ highFrequency
 	trModifyProtounit("Dwarf", 0, 55, 4);
 	SetBuildPoints(10);
 	for(p = 1; <= cNumberNonGaiaPlayers){
+		modifyProtounitAbsolute("Old Man", p, 1, 10);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);

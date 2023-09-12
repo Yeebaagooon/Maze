@@ -16,8 +16,10 @@ int CyclePlayers = 0;
 bool Pregame = false;
 bool AllowHunterChoice = false;
 int PregameTimeout = 20;
+int ChoiceTimeout = 120;
 int HunterNumber = 0;
 int RunnerCount = 0;
 int HunterCount = 0;
+int DestroyAbove = 1;
 
 const int EVENT_REMOVE_CAM_TRACKS = 26;
