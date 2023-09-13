@@ -28,7 +28,7 @@ import sys
 ####### CUSTOMIZE THESE #######
 ###############################
 FILENAME = 'AMazeTest.xs'
-rmsFunc = ''
+rmsFunc = 'rmsfunc.c'
 rmsMain = 'main.c'
 files = ['zshared.c', 'voids.c', 'globals.c', 'intsstrings.c', 'databases.c', 'text.c',  'choice.c', 
 'setup.c', 'techstat.c', 'maze.c', 'Pregame.c']

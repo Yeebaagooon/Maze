@@ -184,7 +184,7 @@ void ConnectingMaze(int maxnumberx = 0, int maxnumberz = 0, int cellsize = 6, in
 	
 	int CellX = 0;
 	int CellZ = 0;
-	for(a = 0 ; < maxnumberx+maxnumberz*2){
+	for(a = 0 ; < maxnumberx+maxnumberz*2*MapFactor()){
 		trQuestVarSetFromRand("CellX", 0, (maxnumberx-1));
 		trQuestVarSetFromRand("CellZ", 0, (maxnumberz-1));
 		trQuestVarSetFromRand("dir", 1, 4);
@@ -350,7 +350,10 @@ inactive
 {
 	xsDisableSelf();
 	//BasicMaze(0,0,24,24,4,1,"CliffEgyptianA");
-	ConnectingMaze(18,18,11,3, "CliffGreekA", "OlympusTile");
+	//Small, 18
+	//Medium 24 = 578
+	//GIant 30
+	ConnectingMaze((MapSize-2)/22,(MapSize-2)/22,11,3, "CliffGreekA", "OlympusTile");
 	refreshPassability();
 	/*
 	Set start tile

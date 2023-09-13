@@ -687,6 +687,16 @@ void ColouredTimer(int c = 0, string text = "", int time = 0, string name = "cou
 	trCounterAddTime(name, time, 0, colourString + text, eventID);
 }
 
+void RedTimer(string text = "", int time = 0, string name = "countdown", int eventID = -1){
+	string colourString = "<color={PlayerColor(2)}>";
+	trCounterAddTime(name, time, 0, colourString + text, eventID);
+}
+
+void GreenTimer(string text = "", int time = 0, string name = "countdown", int eventID = -1){
+	string colourString = "<color={PlayerColor(3)}>";
+	trCounterAddTime(name, time, 0, colourString + text, eventID);
+}
+
 void ColouredIconTimer(int c = 0, string icon ="", string text = "", int time = 0, string name = "countdown", int eventID = -1){
 	string colourString = "<color={PlayerColor("+c+")}>";
 	string iconString = "<icon=(20)("+icon+")>";

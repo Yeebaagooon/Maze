@@ -33,6 +33,7 @@ highFrequency
 {
 	xsDisableSelf();
 	DestroyAbove = trGetNextUnitScenarioNameNumber();
+	//trPaintTerrain(CurrentCell(maxnumberx/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberz/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberx/2, cellsize, cellpadding)+cellpadding+1,CurrentCell(maxnumberz/2, cellsize, cellpadding)+cellpadding+1,getTerrainType("HadesBuildable1"), getTerrainSubType("HadesBuildable1"));
 	PaintAtlantisArea(15,15,35,35,getTerrainType("IceA"),getTerrainSubType("IceA"));
 	PaintAtlantisArea(15,23,19,27,getTerrainType("IceB"),getTerrainSubType("IceB"));
 	PaintAtlantisArea(31,23,35,27,getTerrainType("IceB"),getTerrainSubType("IceB"));
@@ -355,6 +356,15 @@ highFrequency
 		Pregame = false;
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
+			//Do the QVs
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trQuestVarModify("Hunters", "+", 1);
+				trQuestVarSet("Hunter"+1*trQuestVarGet("Hunters"), p);
+			}
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				trQuestVarModify("Runners", "+", 1);
+				trQuestVarSet("Runner"+1*trQuestVarGet("Runners"), p);
+			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
 				//I am a hunter, set everyone else to enemy
 				for(q = 1; <= cNumberNonGaiaPlayers){
@@ -410,9 +420,53 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 3){
+		Pregame = false;
 		xsDisableSelf();
 		trLetterBox(false);
 		trUIFadeToColor(0,0,0,500,100,false);
-		UnitCreate(1, "Villager Atlantean Hero",5,5);
+		//Hunter Temples
+		if(HunterNumber == 1){
+			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
+		}
+		if(HunterNumber == 2){
+			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
+			UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
+			UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
+		}
+		if(HunterNumber == 3){
+			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
+			UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+			UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
+		}
+		if(HunterNumber == 4){
+			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
+			UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+			UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
+			UnitCreate(1*trQuestVarGet("Hunter4"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
+		}
+		
+		//Runners
+		for(a = 1; <= 1*trQuestVarGet("Runners")){
+			UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",5+a,5);
+		}
+		
+		//Timer
+		gGameEndTime = trTime()+1500;
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			xSetBool(dPlayerData, xRoleDefined, true);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				if(trCurrentPlayer() == p){
+					RedTimer("Runners win", 1500, "cdgametimer", -1);
+				}
+			}
+			else{
+				if(trCurrentPlayer() == p){
+					GreenTimer("Runners win", 1500, "cdgametimer", -1);
+				}
+			}
+		}
 	}
 }
