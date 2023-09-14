@@ -20,6 +20,12 @@ highFrequency
 		trTechSetStatus(p, 30, 4);
 		trTechSetStatus(p, 350, 4);
 		trTechSetStatus(p, 27, 4);
+		trTechSetStatus(p, 126, 0);
+		trTechSetStatus(p, 140, 0);
+		trTechSetStatus(p, 127, 0); // stone wall
+		trTechSetStatus(p, 411, 0); // bronze wall
+		trTechSetStatus(p, 412, 0); // iron wall
+		trTechSetStatus(p, 413, 0); // orimakalous wall
 		for(n=930; >0) {
 			trForbidProtounit(p,kbGetProtoUnitName(n));
 		}
@@ -70,14 +76,18 @@ highFrequency
 	SetBuildPoints(10);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		modifyProtounitAbsolute("Old Man", p, 1, 10);
+		modifyProtounitAbsolute("Cinematic Block", p, 2, 0);
 		modifyProtounitAbsolute("Temple", p, 0, 1000000);
 		modifyProtounitAbsolute("Temple", p, 24, 1);
 		modifyProtounitAbsolute("Temple", p, 25, 1);
 		modifyProtounitAbsolute("Temple", p, 26, 1);
 		modifyProtounitAbsolute("Maceman", p, 0, 9999999999999999999.0);
 		modifyProtounitAbsolute("Maceman", p, 1, 0);
+		modifyProtounitAbsolute("Maceman", p, 2, 0);
 		modifyProtounitAbsolute("Maceman Hero", p, 0, 9999999999999999999.0);
 		modifyProtounitAbsolute("Maceman Hero", p, 1, 0);
+		modifyProtounitAbsolute("Maceman Hero", p, 2, 0);
+		modifyProtounitAbsolute("Tower", p, 10, 1000);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);

@@ -1495,17 +1495,16 @@ string DeadText(){
 		lestring = "eviscerated";
 		return(lestring);
 	}
-	
 	if(lol == 9){
 		lestring = "killed";
 		return(lestring);
 	}
 	if(lol == 10){
-		lestring = "murdered";
+		lestring = "disintigrated";
 		return(lestring);
 	}
 	if(lol == 11){
-		lestring = "pwned";
+		lestring = "obliterated";
 		return(lestring);
 	}
 	if(lol == 12){

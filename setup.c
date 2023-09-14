@@ -43,10 +43,6 @@ runImmediately
 	}
 	trSetFogAndBlackmap(false, false);
 	%
-	for(p=1; <= cNumberNonGaiaPlayers) {
-		code("trStringQuestVarSet(\"p"+p+"name\", \""+rmGetPlayerName(p)+"\");");
-	}
-	//code("map(\"q\", \"ShowImageBox\", \"gadgetUnreal("+quote+"ShowImageBox"+quote+")\");");
 	code("map(\"space\",\"game\",\"uiFindType("+k+"Maceman"+k+"); uiTransformSelectedUnit("+k+"Maceman Hero"+k+")\");");
 	%
 	xsDisableSelf();
@@ -83,6 +79,11 @@ highFrequency
 	characterDialog("Initialising map", " ", "earth");
 	xsEnableRule("load1");
 	xsDisableSelf();
+	%
+	for(p=1; <= cNumberNonGaiaPlayers) {
+		code("trStringQuestVarSet(\"p"+p+"name\", \""+rmGetPlayerName(p)+"\");");
+	}
+	%
 	//HOTKEYS
 }
 

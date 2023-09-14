@@ -1,8 +1,15 @@
 void LevelUpChoice(int p = 0){
+	xSetPointer(dPlayerData, p);
 	PlayerChoice(p, "Choose a reward:", RewardText(xGetInt(dPlayerData, xLUCL)), xGetInt(dPlayerData,xLUCL), RewardText(xGetInt(dPlayerData, xLUCR)), xGetInt(dPlayerData,xLUCR));
 }
 
 void LevelUp(int p = 0){
+	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"Space")) == -1){
+		int temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(p, "Cinematic Block", p*3, MapSize-1, 0);
+		trQuestVarSet("P"+p+"Space", temp);
+		debugLog("Space selector dead");
+	}
 	trUnitSelectByQV("P"+p+"Space");
 	trUnitChangeProtoUnit("Maceman");
 	trUnitSelectByQV("P"+p+"Space");
@@ -16,7 +23,7 @@ void LevelUp(int p = 0){
 	}
 }
 
-rule ETERNAL_LOOPS
+rule Eternal_Loops
 inactive
 highFrequency
 {
@@ -45,7 +52,8 @@ highFrequency
 						//Defeated
 						EvilLaugh();
 						PlayerLighting(p, 4.0);
-						PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + " has been " + DeadText());
+						OverlayTextPlayerColor(p);
+						trOverlayText(trStringQuestVarGet("p"+p+"name") + " has been " + DeadText(), 5.0, 404, 300, 3000);
 						trSetPlayerDefeated(p);
 						trPlayerKillAllBuildings(p);
 						trPlayerKillAllGodPowers(p);
@@ -101,6 +109,6 @@ highFrequency
 	if((trTime()-cActivationTime) >= 3){
 		xsDisableSelf();
 		LevelUp(1);
+		LevelUp(2);
 	}
 }
-

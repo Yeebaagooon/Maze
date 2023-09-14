@@ -548,7 +548,7 @@ highFrequency
 		}
 		trBlockAllSounds(false);
 		trUnblockAllSounds();
-		xsEnableRule("ETERNAL_LOOPS");
+		xsEnableRule("Eternal_Loops");
 		trSetDisableGPBlocking(true);
 		for(p = 1 ; < cNumberNonGaiaPlayers){
 			trUnitSelectClear();

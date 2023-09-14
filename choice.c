@@ -7,7 +7,7 @@ string NoChoiceUnitName = "Lancer";
 string RewardText(int r = 0){
 	string reward = "error";
 	if(r == 3){
-		reward = "Lure";
+		reward = "Walls level 2";
 	}
 	if(r == 4){
 		reward = "Vision";
@@ -16,10 +16,8 @@ string RewardText(int r = 0){
 }
 
 int PlayerChoice(int p = 0, string prompt = "Question", string answerone = "Answer 1", int effectone = 0, string answertwo = "Answer 2", int effecttwo = 0){
-	xsDisableSelf();
 	int temp = 0;
 	//Check choice units alive
-	xsSetContextPlayer(-1);
 	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"Yes")) == -1){
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(p, "Cinematic Block", p*3, 1, 0);
@@ -50,8 +48,6 @@ int PlayerChoice(int p = 0, string prompt = "Question", string answerone = "Answ
 }
 
 void ChooseYes(int p = 0){
-	//xsSetContextPlayer(0);
-	xsDisableSelf();
 	if(trCurrentPlayer() == p){
 		trackInsert();
 		trackAddWaypoint();
@@ -63,9 +59,7 @@ void ChooseYes(int p = 0){
 }
 
 void ChooseNo(int p = 0){
-	//xsSetContextPlayer(0);
 	p = p-12;
-	xsDisableSelf();
 	if(trCurrentPlayer() == p){
 		trackInsert();
 		trackAddWaypoint();
@@ -86,7 +80,6 @@ active
 		PlayerCycle = 1;
 	}
 	int p = PlayerCycle;
-	//xsSetContextPlayer(-1);
 	if(trPlayerUnitCountSpecific(p, ""+YesChoiceUnitName + " Hero") != 0){
 		ChoiceEffect = 1*trQuestVarGet("P"+p+"YesAction");
 		ActionChoice = p;
@@ -111,7 +104,7 @@ rule AnswerConsequences
 highFrequency
 inactive
 {
-	xsSetContextPlayer(0);
+	//xsSetContextPlayer(0);
 	//[REMEMBER THIS IS OPEN AND MAY NEED PLAYER SPECIFIC TAG]
 	if(ActionChoice != 0){
 		int p = ActionChoice;
@@ -141,11 +134,18 @@ inactive
 			}
 			case 3:
 			{
-				trTechGodPower(p, "Animal Magnetism", 1);
+				//trTechSetStatus(p, 127, 4);
+				trUnitSelectClear();
+				trUnitSelectByID(0);
+				trUnitChangeInArea(p,p, "Tower", "Titan Atlantean", MapSize);
+				trUnitSelectClear();
+				trUnitSelectByID(0);
+				trUnitChangeInArea(p,p, "Titan Atlantean", "Tower", MapSize);
+				unitTransform("Titan Gate Dead", "Tower");
 			}
 			case 4:
 			{
-				trTechGodPower(p, "Vision", 1);
+				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
 			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);

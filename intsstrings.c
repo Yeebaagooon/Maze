@@ -2,6 +2,7 @@
 BUG
 
 Camera post level reward
+IceC in top corner for choice units? also other corner for hunters
 */
 
 
@@ -10,7 +11,7 @@ Camera post level reward
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
-bool ForceAutoOff = true;
+bool ForceAutoOff = false;
 
 
 bool AutoEscape = false;
