@@ -32,7 +32,7 @@ highFrequency
 		trUnforbidProtounit(p, "Wall Long");
 	}
 	trRateTrain(10);
-	//  trUnforbidProtounit(1*p, "Oracle Hero");
+	//  trUnforbidProtounit(1*p, "Maceman Hero");
 	xsDisableSelf();
 }
 
@@ -74,6 +74,10 @@ highFrequency
 		modifyProtounitAbsolute("Temple", p, 24, 1);
 		modifyProtounitAbsolute("Temple", p, 25, 1);
 		modifyProtounitAbsolute("Temple", p, 26, 1);
+		modifyProtounitAbsolute("Maceman", p, 0, 9999999999999999999.0);
+		modifyProtounitAbsolute("Maceman", p, 1, 0);
+		modifyProtounitAbsolute("Maceman Hero", p, 0, 9999999999999999999.0);
+		modifyProtounitAbsolute("Maceman Hero", p, 1, 0);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);
@@ -82,6 +86,7 @@ highFrequency
 		MakeUnitFree("Wall Medium", p);
 		MakeUnitFree("Wall Long", p);
 		MakeUnitFree("Temple", p);
+		MakeUnitFree("Maceman Hero", p);
 		HunterUnit("Scorpion Man", p, 1);
 		HunterUnit("Centaur", p, 1);
 		trModifyProtounit("Dwarf", p, 55, 4);

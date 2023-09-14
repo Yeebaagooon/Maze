@@ -5,3 +5,4 @@ rmSetSeaType("greek river");
 rmTerrainInitialize("GrassB",5);
 rmSetLightingSet("Default");
 rmSetGaiaCiv(cCivIsis);
+

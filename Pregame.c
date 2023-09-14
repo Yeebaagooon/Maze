@@ -558,5 +558,7 @@ highFrequency
 		if(AutoEscape){
 			xsEnableRule("AI_Activate");
 		}
+		xsEnableRule("Test");
+		trMusicPlayCurrent();
 	}
 }

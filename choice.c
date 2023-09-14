@@ -4,6 +4,17 @@ int ChoiceEffect = 0;
 string YesChoiceUnitName = "Swordsman";
 string NoChoiceUnitName = "Lancer";
 
+string RewardText(int r = 0){
+	string reward = "error";
+	if(r == 3){
+		reward = "Lure";
+	}
+	if(r == 4){
+		reward = "Vision";
+	}
+	return(reward);
+}
+
 int PlayerChoice(int p = 0, string prompt = "Question", string answerone = "Answer 1", int effectone = 0, string answertwo = "Answer 2", int effecttwo = 0){
 	xsDisableSelf();
 	int temp = 0;
@@ -128,6 +139,14 @@ inactive
 				PregameTimeout = 999999;
 				xsEnableRule("BeginChooseHunters");
 			}
+			case 3:
+			{
+				trTechGodPower(p, "Animal Magnetism", 1);
+			}
+			case 4:
+			{
+				trTechGodPower(p, "Vision", 1);
+			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);
 		trQuestVarSet("P"+ActionChoice+"NoAction", 0);
@@ -152,6 +171,9 @@ inactive
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(p, "Cinematic Block", p*3, 3, 0);
 		trQuestVarSet("P"+p+"No", temp);
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(p, "Cinematic Block", p*3, MapSize-1, 0);
+		trQuestVarSet("P"+p+"Space", temp);
 	}
 }
 

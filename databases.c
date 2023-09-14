@@ -56,6 +56,8 @@ int xCellConnectedL = 0;
 int xCellConnectedR = 0;
 int xCellConnectedU = 0;
 int xCellConnectedD = 0;
+int xLUCL = 0;
+int xLUCR = 0;
 int xCellConnections= 0;
 
 int dFrontier = 0;
@@ -72,6 +74,8 @@ highFrequency
 	xPlayerAlive = xInitAddBool(dPlayerData, "alive", true);
 	xPlayerRunner = xInitAddBool(dPlayerData, "runner", true);
 	xRoleDefined = xInitAddBool(dPlayerData, "role chosen", false);
+	xLUCL = xInitAddInt(dPlayerData, "reward", 0);
+	xLUCR = xInitAddInt(dPlayerData, "reward", 0);
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);
@@ -91,7 +95,7 @@ highFrequency
 	xCellZPos = xInitAddInt(dFrontier, "CellZ");
 	xDirectionToBuild = xInitAddString(dFrontier, "dir", "nil");
 	xCellConnected = xInitAddBool(dFrontier, "Connected", false);
-
+	
 	dEnemies = xInitDatabase("Enemies DB");
 	xUnitID = xInitAddInt(dEnemies, "id", -1);
 	xIdleTimeout = xInitAddInt(dEnemies, "id", 0);

@@ -1,3 +1,10 @@
+/*
+BUG
+
+Camera post level reward
+*/
+
+
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
 int QuickStart = 0;
@@ -36,6 +43,10 @@ int SwitchMapSize(int small = 18, int medium = 24, int large = 30){
 	}
 }
 
+const int gCellSize = 11;
+const int gCellPadding = 3;
+const int EVENT_REMOVE_CAM_TRACKS = 26;
+
 bool Pregame = false;
 bool AllowHunterChoice = false;
 int PregameTimeout = 20;
@@ -46,7 +57,6 @@ int HunterCount = 0;
 int DestroyAbove = 1;
 int gGameEndTime = 9999;
 
-const int EVENT_REMOVE_CAM_TRACKS = 26;
 
 
 

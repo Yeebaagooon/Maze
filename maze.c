@@ -353,7 +353,7 @@ inactive
 	//Small, 18
 	//Medium 24 = 578
 	//GIant 30
-	ConnectingMaze((MapSize-2)/22,(MapSize-2)/22,11,3, "CliffGreekA", "OlympusTile");
+	ConnectingMaze((MapSize-2)/22,(MapSize-2)/22,gCellSize,gCellPadding, "CliffGreekA", "OlympusTile");
 	refreshPassability();
 	/*
 	Set start tile

@@ -1,8 +1,27 @@
+void LevelUpChoice(int p = 0){
+	PlayerChoice(p, "Choose a reward:", RewardText(xGetInt(dPlayerData, xLUCL)), xGetInt(dPlayerData,xLUCL), RewardText(xGetInt(dPlayerData, xLUCR)), xGetInt(dPlayerData,xLUCR));
+}
+
+void LevelUp(int p = 0){
+	trUnitSelectByQV("P"+p+"Space");
+	trUnitChangeProtoUnit("Maceman");
+	trUnitSelectByQV("P"+p+"Space");
+	trSetSelectedScale(0,0,0);
+	xSetPointer(dPlayerData, p);
+	xSetInt(dPlayerData, xLUCL, 3);
+	xSetInt(dPlayerData, xLUCR, 4);
+	if(trCurrentPlayer() == p){
+		OverlayTextPlayerColor(p);
+		trOverlayText("LEVEL UP - press space to choose a reward", 5.0, 404, 300, 3000);
+	}
+}
+
 rule ETERNAL_LOOPS
 inactive
 highFrequency
 {
 	if(Pregame == false){
+		int old = xsGetContextPlayer();
 		CyclePlayers = CyclePlayers+1;
 		if(CyclePlayers > cNumberNonGaiaPlayers){
 			CyclePlayers = 1;
@@ -12,11 +31,9 @@ highFrequency
 		trUnitSelectByID(0);
 		trDamageUnitsInArea(p, "Temple", MapSize, -100000);
 		xSetPointer(dPlayerData, p);
-		if(trPlayerUnitCountSpecific(p, "Wall Long") > 0){
-			trUnitSelectClear();
-			trUnitSelectByID(0);
-			trUnitChangeInArea(p,p, "Wall Long", "Gate", MapSize);
-		}
+		trUnitSelectClear();
+		trUnitSelectByID(0);
+		trUnitChangeInArea(p,p, "Wall Long", "Gate", MapSize);
 		if(xGetBool(dPlayerData, xPlayerAlive)){
 			if(playerIsPlaying(p)){
 				if(xGetBool(dPlayerData, xPlayerRunner) == true){
@@ -60,5 +77,30 @@ highFrequency
 				}
 			}
 		}
+		if(trPlayerUnitCountSpecific(p, "Maceman Hero") > 0){
+			trUnitSelectByQV("P"+p+"Space");
+			trUnitChangeProtoUnit("Cinematic Block");
+			if(trCurrentPlayer() == p){
+				uiZoomToProto("Villager Atlantean Hero");
+			}
+			old = xsGetContextPlayer();
+			xsSetContextPlayer(0);
+			LevelUpChoice(p);
+			xsSetContextPlayer(0);
+			xSetInt(dPlayerData, xLUCL, 0);
+			xSetInt(dPlayerData, xLUCR, 0);
+			xsSetContextPlayer(old);
+		}
 	}
 }
+
+rule Test
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 3){
+		xsDisableSelf();
+		LevelUp(1);
+	}
+}
+

@@ -46,6 +46,8 @@ runImmediately
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		code("trStringQuestVarSet(\"p"+p+"name\", \""+rmGetPlayerName(p)+"\");");
 	}
+	//code("map(\"q\", \"ShowImageBox\", \"gadgetUnreal("+quote+"ShowImageBox"+quote+")\");");
+	code("map(\"space\",\"game\",\"uiFindType("+k+"Maceman"+k+"); uiTransformSelectedUnit("+k+"Maceman Hero"+k+")\");");
 	%
 	xsDisableSelf();
 }
@@ -82,9 +84,6 @@ highFrequency
 	xsEnableRule("load1");
 	xsDisableSelf();
 	//HOTKEYS
-	/*map("q", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,26);");
-	map("w", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,27);");
-	map("e", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,28);");*/
 }
 
 rule load1
@@ -171,7 +170,7 @@ highFrequency
 		gadgetReal("ShowImageBox-BordersRightBottom");
 		gadgetReal("ShowImageBox-BordersRightTop");
 		gadgetReal("ShowImageBox-CloseButton");
-		if(AutoEscape){
+		if(AutoEscape == true){
 			xsEnableRule("PregameSkip");
 		}
 		else{
@@ -198,3 +197,4 @@ highFrequency
 	}
 	xsDisableSelf();
 }
+

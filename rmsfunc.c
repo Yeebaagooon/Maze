@@ -7,3 +7,4 @@ int getMapSize(){
 //Small, 18
 //Medium 24 = 578
 //GIant 30
+string k = "\\";
