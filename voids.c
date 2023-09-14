@@ -682,6 +682,10 @@ void CounterShow(int xx = 0){
 	trSetCounterDisplay(colourString+incomeString);
 }
 
+void PlayerColouredChat(int p = 0, string chats = ""){
+	trChatSend(0, "<color={PlayerColor("+p+")}> "+chats+"</color>");
+}
+
 void ColouredTimer(int c = 0, string text = "", int time = 0, string name = "countdown", int eventID = -1){
 	string colourString = "<color={PlayerColor("+c+")}>";
 	trCounterAddTime(name, time, 0, colourString + text, eventID);
@@ -717,6 +721,88 @@ void OverlayTextPlayerColor(int p = 0){
 	if(p == 10)trOverlayTextColour(179, 251, 186);
 	if(p == 11)trOverlayTextColour(80, 80, 80);
 	if(p == 12)trOverlayTextColour(255, 0, 102);
+}
+
+void PlayerLighting(int p = 0, float timeout = 3.0){
+	if(p == 0){
+		ambientColor(153, 102, 0);
+		fakeSpecularSunColor(153, 102, 0);
+		sunColor(153, 102, 0);
+		terrainAmbient(153, 102, 0);
+	}
+	if(p == 1){
+		ambientColor(50, 50, 255);
+		fakeSpecularSunColor(50, 50, 255);
+		sunColor(50, 50, 255);
+		terrainAmbient(50, 50, 255);
+	}
+	if(p == 2){
+		ambientColor(255, 50, 50);
+		fakeSpecularSunColor(255, 50, 50);
+		sunColor(255, 50, 50);
+		terrainAmbient(255, 50, 50);
+	}
+	if(p == 3){
+		ambientColor(0, 150, 0);
+		fakeSpecularSunColor(0, 150, 0);
+		sunColor(0, 150, 0);
+		terrainAmbient(0, 150, 0);
+	}
+	if(p == 4){
+		ambientColor(50, 235, 255);
+		fakeSpecularSunColor(50, 235, 255);
+		sunColor(50, 235, 255);
+		terrainAmbient(50, 235, 255);
+	}
+	if(p == 5){
+		ambientColor(223, 52, 238);
+		fakeSpecularSunColor(223, 52, 238);
+		sunColor(223, 52, 238);
+		terrainAmbient(223, 52, 238);
+	}
+	if(p == 6){
+		ambientColor(255, 255, 0);
+		fakeSpecularSunColor(255, 255, 0);
+		sunColor(255, 255, 0);
+		terrainAmbient(255, 255, 0);
+	}
+	if(p == 7){
+		ambientColor(255, 102, 0);
+		fakeSpecularSunColor(255, 102, 0);
+		sunColor(255, 102, 0);
+		terrainAmbient(255, 102, 0);
+	}
+	if(p == 8){
+		ambientColor(128, 0, 64);
+		fakeSpecularSunColor(128, 0, 64);
+		sunColor(128, 0, 64);
+		terrainAmbient(128, 0, 64);
+	}
+	if(p == 9){
+		ambientColor(50, 255, 50);
+		fakeSpecularSunColor(50, 255, 50);
+		sunColor(50, 255, 50);
+		terrainAmbient(50, 255, 50);
+	}
+	if(p == 10){
+		ambientColor(179, 251, 186);
+		fakeSpecularSunColor(179, 251, 186);
+		sunColor(179, 251, 186);
+		terrainAmbient(179, 251, 186);
+	}
+	if(p == 11){
+		ambientColor(80, 80, 80);
+		fakeSpecularSunColor(80, 80, 80);
+		sunColor(80, 80, 80);
+		terrainAmbient(80, 80, 80);
+	}
+	if(p == 12){
+		ambientColor(255, 0, 102);
+		fakeSpecularSunColor(255, 0, 102);
+		sunColor(255, 0, 102);
+		terrainAmbient(255, 0, 102);
+	}
+	trSetLighting("default",timeout);
 }
 
 void UnitCreate(int xplayerx = 0, string protounitname = "", int xx = 0, int zz = 0, int xheadingx = 0){
@@ -1370,5 +1456,72 @@ void EvilLaugh(){
 	}
 	if(lol == 15){
 		playSound("\xpack\xdialog\it\xkri075.mp3");
+	}
+}
+
+string DeadText(){
+	int lol = 0;
+	lol = iModulo(15, trTime()+1);
+	string lestring = "defeated";
+	if(lol == 1){
+		lestring = "defeated";
+		return(lestring);
+	}
+	if(lol == 2){
+		lestring = "murdered";
+		return(lestring);
+	}
+	if(lol == 3){
+		lestring = "pwned";
+		return(lestring);
+	}
+	if(lol == 4){
+		lestring = "destroyed";
+		return(lestring);
+	}
+	if(lol == 5){
+		lestring = "slaughtered";
+		return(lestring);
+	}
+	if(lol == 6){
+		lestring = "eaten";
+		return(lestring);
+	}
+	if(lol == 7){
+		lestring = "butchered";
+		return(lestring);
+	}
+	if(lol == 8){
+		lestring = "eviscerated";
+		return(lestring);
+	}
+	
+	if(lol == 9){
+		lestring = "killed";
+		return(lestring);
+	}
+	if(lol == 10){
+		lestring = "murdered";
+		return(lestring);
+	}
+	if(lol == 11){
+		lestring = "pwned";
+		return(lestring);
+	}
+	if(lol == 12){
+		lestring = "caught";
+		return(lestring);
+	}
+	if(lol == 13){
+		lestring = "turned into food";
+		return(lestring);
+	}
+	if(lol == 14){
+		lestring = "unalived";
+		return(lestring);
+	}
+	if(lol == 15){
+		lestring = "fed to the hounds";
+		return(lestring);
 	}
 }

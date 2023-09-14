@@ -14,6 +14,29 @@ highFrequency
 	}
 }
 
+rule PregameSkip
+inactive
+highFrequency
+{
+	for(p = 1; < cNumberNonGaiaPlayers){
+		if(playerIsPlaying(p)){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xRoleDefined) == false){
+				xSetBool(dPlayerData, xRoleDefined, true);
+				xSetBool(dPlayerData, xPlayerRunner, true);
+				RunnerCount = RunnerCount+1;
+			}
+		}
+	}
+	int comp = cNumberNonGaiaPlayers;
+	xSetPointer(dPlayerData, comp);
+	xSetBool(dPlayerData, xRoleDefined, true);
+	xSetBool(dPlayerData, xPlayerRunner, false);
+	HunterNumber = 1;
+	xsDisableSelf();
+	xsEnableRule("AssignmentCommonEnd");
+}
+
 rule HuntersTimeout
 inactive
 highFrequency
@@ -104,62 +127,64 @@ rule CheckChoice
 inactive
 highFrequency
 {
-	CyclePlayers = CyclePlayers+1;
-	vector pos = vector(0,0,0);
-	if(CyclePlayers > cNumberNonGaiaPlayers){
-		CyclePlayers = 1;
-	}
-	int p = CyclePlayers;
-	xSetPointer(dPlayerData, p);
-	if(xGetBool(dPlayerData, xRoleDefined) == false){
-		pos =  kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID));
-		if(xsVectorGetX(pos) < 40){
-			//choose runner
-			trUnitSelectClear();
-			trUnitSelect(""+xGetInt(dPlayerData, xPlayerUnitID));
-			trUnitChangeProtoUnit("Hero Death");
-			xSetBool(dPlayerData, xRoleDefined, true);
-			xSetBool(dPlayerData, xPlayerRunner, true);
-			RunnerCount = RunnerCount+1;
-			trUnitSelectClear();
-			trUnitSelect(""+1*trQuestVarGet("RunnerCol"+RunnerCount));
-			trUnitChangeProtoUnit("Flag");
-			trUnitSelectClear();
-			trUnitSelect(""+1*trQuestVarGet("RunnerCol"+RunnerCount));
-			trUnitConvert(p);
-			trUnitSetAnimationPath("0,0,0,0,0,0");
+	if(Pregame == true){
+		CyclePlayers = CyclePlayers+1;
+		vector pos = vector(0,0,0);
+		if(CyclePlayers > cNumberNonGaiaPlayers){
+			CyclePlayers = 1;
 		}
-		if(xsVectorGetX(pos) > 62){
-			//choose hunter
-			trUnitSelectClear();
-			trUnitSelect(""+xGetInt(dPlayerData, xPlayerUnitID));
-			trUnitChangeProtoUnit("Hero Death");
-			xSetBool(dPlayerData, xRoleDefined, true);
-			xSetBool(dPlayerData, xPlayerRunner, false);
-			HunterCount = HunterCount+1;
-			trUnitSelectClear();
-			trUnitSelect(""+1*trQuestVarGet("HunterCol"+HunterCount));
-			trUnitChangeProtoUnit("Flag");
-			trUnitSelectClear();
-			trUnitSelect(""+1*trQuestVarGet("HunterCol"+HunterCount));
-			trUnitConvert(p);
-			trUnitSetAnimationPath("0,0,0,0,0,0");
+		int p = CyclePlayers;
+		xSetPointer(dPlayerData, p);
+		if(xGetBool(dPlayerData, xRoleDefined) == false){
+			pos =  kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID));
+			if(xsVectorGetX(pos) < 40){
+				//choose runner
+				trUnitSelectClear();
+				trUnitSelect(""+xGetInt(dPlayerData, xPlayerUnitID));
+				trUnitChangeProtoUnit("Hero Death");
+				xSetBool(dPlayerData, xRoleDefined, true);
+				xSetBool(dPlayerData, xPlayerRunner, true);
+				RunnerCount = RunnerCount+1;
+				trUnitSelectClear();
+				trUnitSelect(""+1*trQuestVarGet("RunnerCol"+RunnerCount));
+				trUnitChangeProtoUnit("Flag");
+				trUnitSelectClear();
+				trUnitSelect(""+1*trQuestVarGet("RunnerCol"+RunnerCount));
+				trUnitConvert(p);
+				trUnitSetAnimationPath("0,0,0,0,0,0");
+			}
+			if(xsVectorGetX(pos) > 62){
+				//choose hunter
+				trUnitSelectClear();
+				trUnitSelect(""+xGetInt(dPlayerData, xPlayerUnitID));
+				trUnitChangeProtoUnit("Hero Death");
+				xSetBool(dPlayerData, xRoleDefined, true);
+				xSetBool(dPlayerData, xPlayerRunner, false);
+				HunterCount = HunterCount+1;
+				trUnitSelectClear();
+				trUnitSelect(""+1*trQuestVarGet("HunterCol"+HunterCount));
+				trUnitChangeProtoUnit("Flag");
+				trUnitSelectClear();
+				trUnitSelect(""+1*trQuestVarGet("HunterCol"+HunterCount));
+				trUnitConvert(p);
+				trUnitSetAnimationPath("0,0,0,0,0,0");
+			}
 		}
-	}
-	if(HunterCount == HunterNumber){
-		//end
-		xsDisableSelf();
-		trCounterAbort("cdchoicehunt");
-		xsEnableRule("AssignEveryoneRunner");
-		xsDisableRule("AssignRemaining");
-		ChoiceTimeout = 999999;
-	}
-	if(RunnerCount == (cNumberNonGaiaPlayers-HunterNumber)){
-		xsDisableSelf();
-		trCounterAbort("cdchoicehunt");
-		xsEnableRule("AssignEveryoneHunter");
-		xsDisableRule("AssignRemaining");
-		ChoiceTimeout = 999999;
+		if(HunterCount == HunterNumber){
+			//end
+			xsDisableSelf();
+			trCounterAbort("cdchoicehunt");
+			xsEnableRule("AssignEveryoneRunner");
+			xsDisableRule("AssignRemaining");
+			ChoiceTimeout = 999999;
+		}
+		if(RunnerCount == (cNumberNonGaiaPlayers-HunterNumber)){
+			xsDisableSelf();
+			trCounterAbort("cdchoicehunt");
+			xsEnableRule("AssignEveryoneHunter");
+			xsDisableRule("AssignRemaining");
+			ChoiceTimeout = 999999;
+		}
 	}
 }
 
@@ -403,8 +428,15 @@ highFrequency
 				}
 			}
 			else{
-				if(trCurrentPlayer() == p){
-					characterDialog("If your citizen dies you lose", "Build and timeshift towers and sky passages to escape the hunters", "icons\villager x male hero icons 64");
+				if(AutoEscape){
+					if(trCurrentPlayer() == p){
+						characterDialog("If your citizen dies you lose", "Build and timeshift towers and sky passages to escape the computer", "icons\villager x male hero icons 64");
+					}
+				}
+				else{
+					if(trCurrentPlayer() == p){
+						characterDialog("If your citizen dies you lose", "Build and timeshift towers and sky passages to escape the hunters", "icons\villager x male hero icons 64");
+					}
 				}
 			}
 		}
@@ -449,7 +481,19 @@ highFrequency
 		
 		//Runners
 		for(a = 1; <= 1*trQuestVarGet("Runners")){
-			UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",5+a,5);
+			trQuestVarSetFromRand("pos", 0, SwitchMapSize()-1);
+			if(iModulo(4, a) == 0){
+				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",1*trQuestVarGet("pos")*22+10,12);
+			}
+			else if(iModulo(3, a) == 0){
+				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",10,1*trQuestVarGet("pos")*22+12);
+			}
+			else if(iModulo(2, a) == 0){
+				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",1*trQuestVarGet("pos")*22+10,MapSize-12);
+			}
+			else{
+				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",MapSize-12,1*trQuestVarGet("pos")*22+10);
+			}
 		}
 		
 		//Timer
@@ -467,6 +511,52 @@ highFrequency
 					GreenTimer("Runners win", 1500, "cdgametimer", -1);
 				}
 			}
+		}
+		
+		//Camera and groups
+		trBlockAllSounds(true);
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				
+				if(trCurrentPlayer() == p){
+					uiFindType("Villager Atlantean Hero");
+					uiCreateNumberGroup(1);
+					uiClearSelection();
+					uiZoomToProto("Villager Atlantean Hero");
+				}
+			}
+			else{
+				trUnforbidProtounit(p, "Centaur");
+				trUnforbidProtounit(p, "Scorpion Man");
+				if(trCurrentPlayer() == p){
+					uiFindType("Temple");
+					uiCreateNumberGroup(1);
+					uiClearSelection();
+					if(HunterNumber < 3){
+						uiFindType("Temple");
+						uiFindType("Temple");
+						uiCreateNumberGroup(2);
+						uiClearSelection();
+					}
+					uiZoomToProto("Temple");
+				}
+			}
+			if(playerIsPlaying(p) == false){
+				xSetBool(dPlayerData, xPlayerAlive, false);
+			}
+		}
+		trBlockAllSounds(false);
+		trUnblockAllSounds();
+		xsEnableRule("ETERNAL_LOOPS");
+		trSetDisableGPBlocking(true);
+		for(p = 1 ; < cNumberNonGaiaPlayers){
+			trUnitSelectClear();
+			trUnitSelectByID(0);
+			trUnitChangeInArea(p,p, "Temple", "Temple", MapSize);
+		}
+		if(AutoEscape){
+			xsEnableRule("AI_Activate");
 		}
 	}
 }

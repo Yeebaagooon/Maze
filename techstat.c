@@ -14,6 +14,8 @@ highFrequency
 		trTechSetStatus(p, 144, 0);
 		trTechSetStatus(p, 143, 0);
 		trTechSetStatus(p, 379, 0);
+		trTechSetStatus(p, 304, 0);
+		trTechSetStatus(p, 446, 0);
 		trTechSetStatus(p, 28, 4);
 		trTechSetStatus(p, 30, 4);
 		trTechSetStatus(p, 350, 4);
@@ -37,6 +39,14 @@ highFrequency
 void MakeUnitFree(string unit = "", int p = 0){
 	for(a = 16; < 20){
 		modifyProtounitAbsolute(unit, p, a, 0);
+		modifyProtounitAbsolute(unit, p, 6, 0);
+	}
+}
+
+void HunterUnit(string unit = "", int p = 0, int pop = 1){
+	for(a = 16; < 20){
+		modifyProtounitAbsolute(unit, p, a, 0);
+		modifyProtounitAbsolute(unit, p, 6, pop);
 	}
 }
 
@@ -60,6 +70,10 @@ highFrequency
 	SetBuildPoints(10);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		modifyProtounitAbsolute("Old Man", p, 1, 10);
+		modifyProtounitAbsolute("Temple", p, 0, 1000000);
+		modifyProtounitAbsolute("Temple", p, 24, 1);
+		modifyProtounitAbsolute("Temple", p, 25, 1);
+		modifyProtounitAbsolute("Temple", p, 26, 1);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);
@@ -68,7 +82,10 @@ highFrequency
 		MakeUnitFree("Wall Medium", p);
 		MakeUnitFree("Wall Long", p);
 		MakeUnitFree("Temple", p);
+		HunterUnit("Scorpion Man", p, 1);
+		HunterUnit("Centaur", p, 1);
 		trModifyProtounit("Dwarf", p, 55, 4);
+		trModifyProtounit("Temple", p, 7, 150);
 		trModifyProtounit("Animal Attractor", p, 55, 4);
 		trModifyProtounit(""+YesChoiceUnitName, p, 55, 4);
 		trModifyProtounit(""+YesChoiceUnitName, p, 1, -10);

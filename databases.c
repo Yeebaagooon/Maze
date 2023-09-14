@@ -16,6 +16,10 @@ int xPlayerAlive = 0;
 int xPlayerRunner = 0;
 int xRoleDefined = 0;
 
+int dEnemies = 0;
+int xUnitID = 0;
+int xIdleTimeout = 0;
+
 /*DB HELP
 dPlayerData = xInitDatabase("playerData");
 xDrillPower = xInitAddInt(dPlayerData, "drillpower", 10);
@@ -87,6 +91,10 @@ highFrequency
 	xCellZPos = xInitAddInt(dFrontier, "CellZ");
 	xDirectionToBuild = xInitAddString(dFrontier, "dir", "nil");
 	xCellConnected = xInitAddBool(dFrontier, "Connected", false);
+
+	dEnemies = xInitDatabase("Enemies DB");
+	xUnitID = xInitAddInt(dEnemies, "id", -1);
+	xIdleTimeout = xInitAddInt(dEnemies, "id", 0);
 	
 }
 

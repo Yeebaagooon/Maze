@@ -37,7 +37,7 @@ runImmediately
 	if(QuickStart == 0){
 	}
 	trBlockAllSounds(true);
-	trArmyDispatch("0,0", "Cinematic Block", 1, 0, 0, 0, 0, false);
+	trArmyDispatch("0,0", "Cinematic Block", 1, MapSize/2, 0, MapSize/2, 0, false);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		deployLocHeading(0, p*2, "Victory Marker", p, 180);
 	}
@@ -107,6 +107,12 @@ highFrequency
 		trPlayerSetDiplomacy(0, p, "Enemy");
 		trPlayerSetDiplomacy(p, 0, "Enemy");
 	}
+	if(ForceAutoOff == false){
+		if(kbIsPlayerHuman(cNumberNonGaiaPlayers) == false){
+			AutoEscape = true;
+			aiSet("NoAI", cNumberNonGaiaPlayers);
+		}
+	}
 	trTechSetStatus(0, 304, 4);
 }
 
@@ -165,7 +171,12 @@ highFrequency
 		gadgetReal("ShowImageBox-BordersRightBottom");
 		gadgetReal("ShowImageBox-BordersRightTop");
 		gadgetReal("ShowImageBox-CloseButton");
-		xsEnableRule("PregameBegin");
+		if(AutoEscape){
+			xsEnableRule("PregameSkip");
+		}
+		else{
+			xsEnableRule("PregameBegin");
+		}
 		//xsEnableRule("PaintTerrain");
 		//xsEnableRule("CustomContentChat");
 	}

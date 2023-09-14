@@ -3,9 +3,10 @@
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
+bool ForceAutoOff = true;
 
-//This needs to dynamically change
 
+bool AutoEscape = false;
 int dPlayerData = 0;
 int xSpyID = 0;
 int xOldAnim = 0;
@@ -21,6 +22,17 @@ int MapFactor(){
 	}
 	if(MapSize == 662){
 		return(3);
+	}
+}
+int SwitchMapSize(int small = 18, int medium = 24, int large = 30){
+	if(MapFactor() == 1){
+		return(small);
+	}
+	if(MapFactor() == 2){
+		return(medium);
+	}
+	if(MapFactor() == 3){
+		return(large);
 	}
 }
 
