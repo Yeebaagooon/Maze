@@ -4,13 +4,46 @@ int ChoiceEffect = 0;
 string YesChoiceUnitName = "Swordsman";
 string NoChoiceUnitName = "Lancer";
 
+
+const int RunnerRewardL1 = 4;
+const int RunnerRewardL2 = 10;
+
 string RewardText(int r = 0){
 	string reward = "error";
-	if(r == 3){
-		reward = "Walls level 2";
-	}
-	if(r == 4){
-		reward = "Vision";
+	switch(r){
+		//RUNNER REWARD LEVEL 1, 4-13
+		case 3:
+		{
+			reward = "Walls level " + (xGetInt(dPlayerData, xPlayerWallLevel)+1);
+		}
+		case 4:
+		{
+			reward = "+0.5 citizen speed";
+		}
+		case 5:
+		{
+			reward = "+1 tower range";
+		}
+		case 6:
+		{
+			reward = "+2 tower attack";
+		}
+		case 7:
+		{
+			reward = "+2 tower LOS";
+		}
+		case 8:
+		{
+			reward = "Vision";
+		}
+		case 9:
+		{
+			reward = "Towers build 10 percent faster";
+		}
+		case 10:
+		{
+			reward = "+100 citizen hp";
+		}
 	}
 	return(reward);
 }
@@ -108,6 +141,7 @@ inactive
 	//[REMEMBER THIS IS OPEN AND MAY NEED PLAYER SPECIFIC TAG]
 	if(ActionChoice != 0){
 		int p = ActionChoice;
+		xSetPointer(dPlayerData, p);
 		switch(ChoiceEffect)
 		{
 			case 0:
@@ -134,18 +168,45 @@ inactive
 			}
 			case 3:
 			{
-				//trTechSetStatus(p, 127, 4);
-				trUnitSelectClear();
+				if(xGetInt(dPlayerData, xPlayerWallLevel) == 1){
+					trTechSetStatus(p, 127, 4);
+					xSetInt(dPlayerData, xPlayerWallLevel, xGetInt(dPlayerData, xPlayerWallLevel)+1);
+				}
+				/*trUnitSelectClear();
 				trUnitSelectByID(0);
 				trUnitChangeInArea(p,p, "Tower", "Titan Atlantean", MapSize);
 				trUnitSelectClear();
 				trUnitSelectByID(0);
 				trUnitChangeInArea(p,p, "Titan Atlantean", "Tower", MapSize);
-				unitTransform("Titan Gate Dead", "Tower");
+				unitTransform("Titan Gate Dead", "Tower");*/
 			}
 			case 4:
 			{
+				trModifyProtounit("Villager Atlantean Hero", p, 1, 0.5);
+			}
+			case 5:
+			{
+				trModifyProtounit("Tower", p, 11, 1);
+			}
+			case 6:
+			{
+				trModifyProtounit("Tower", p, 31, 2);
+			}
+			case 7:
+			{
+				trModifyProtounit("Tower", p, 2, 2);
+			}
+			case 8:
+			{
 				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+			}
+			case 9:
+			{
+				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.9);
+			}
+			case 10:
+			{
+				trModifyProtounit("Villager Atlantean Hero", p, 0, 100);
 			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);
@@ -154,6 +215,9 @@ inactive
 		//Safety
 		unitTransform(""+YesChoiceUnitName + " Hero", "Cinematic Block");
 		unitTransform(""+NoChoiceUnitName + " Hero", "Cinematic Block");
+		if(xGetBool(dPlayerData, xPlayerRunner) == true){
+			uiZoomToProto("Villager Atlantean Hero");
+		}
 		xsDisableSelf();
 	}
 }

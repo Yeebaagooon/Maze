@@ -440,8 +440,10 @@ highFrequency
 				}
 			}
 		}
-		trPlayerResetBlackMapForAllPlayers();
-		trSetFogAndBlackmap(true, true);
+		if(Visible == false){
+			trPlayerResetBlackMapForAllPlayers();
+			trSetFogAndBlackmap(true, true);
+		}
 		xsDisableSelf();
 		xsEnableRule("START_GAME");
 	}
@@ -457,26 +459,28 @@ highFrequency
 		trLetterBox(false);
 		trUIFadeToColor(0,0,0,500,100,false);
 		//Hunter Temples
-		if(HunterNumber == 1){
-			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
-			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
-		}
-		if(HunterNumber == 2){
-			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
-			UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
-			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
-			UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
-		}
-		if(HunterNumber == 3){
-			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
-			UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
-			UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
-		}
-		if(HunterNumber == 4){
-			UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
-			UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
-			UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
-			UnitCreate(1*trQuestVarGet("Hunter4"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
+		if(AutoEscape == false){
+			if(HunterNumber == 1){
+				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
+			}
+			if(HunterNumber == 2){
+				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
+				UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
+				UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
+			}
+			if(HunterNumber == 3){
+				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
+				UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+				UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
+			}
+			if(HunterNumber == 4){
+				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
+				UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+				UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
+				UnitCreate(1*trQuestVarGet("Hunter4"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
+			}
 		}
 		
 		//Runners
@@ -518,7 +522,7 @@ highFrequency
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
-				
+				trSetCivilizationNameOverride(p, "Kills: " + 1*trQuestVarGet("P"+p+"UnitKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 				if(trCurrentPlayer() == p){
 					uiFindType("Villager Atlantean Hero");
 					uiCreateNumberGroup(1);
@@ -527,6 +531,7 @@ highFrequency
 				}
 			}
 			else{
+				trSetCivilizationNameOverride(p, "Razes: " + 1*trQuestVarGet("P"+p+"BuildingKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 				trUnforbidProtounit(p, "Centaur");
 				trUnforbidProtounit(p, "Scorpion Man");
 				if(trCurrentPlayer() == p){
@@ -550,6 +555,7 @@ highFrequency
 		trUnblockAllSounds();
 		xsEnableRule("Eternal_Loops");
 		trSetDisableGPBlocking(true);
+		gadgetRefresh("unitStatPanel");
 		for(p = 1 ; < cNumberNonGaiaPlayers){
 			trUnitSelectClear();
 			trUnitSelectByID(0);
@@ -558,7 +564,7 @@ highFrequency
 		if(AutoEscape){
 			xsEnableRule("AI_Activate");
 		}
-		xsEnableRule("Test");
+		xsEnableRule("GameEvents");
 		trMusicPlayCurrent();
 	}
 }

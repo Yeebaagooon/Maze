@@ -15,8 +15,24 @@ void LevelUp(int p = 0){
 	trUnitSelectByQV("P"+p+"Space");
 	trSetSelectedScale(0,0,0);
 	xSetPointer(dPlayerData, p);
-	xSetInt(dPlayerData, xLUCL, 3);
-	xSetInt(dPlayerData, xLUCR, 4);
+	xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
+	//Level 0-5 rewards
+	trQuestVarSetFromRand("C1", RunnerRewardL1, RunnerRewardL2);
+	trQuestVarSet("C2", 1*trQuestVarGet("C1"));
+	while(1*trQuestVarGet("C1") == 1*trQuestVarGet("C2")){
+		trQuestVarSetFromRand("C2", RunnerRewardL1, RunnerRewardL2);
+		if(1*trQuestVarGet("C2") == RunnerRewardL2){
+			if(xGetInt(dPlayerData, xPlayerWallLevel) == 1){
+				trQuestVarSet("C2", 3);
+			}
+			else{
+				trQuestVarSetFromRand("C2", RunnerRewardL1, RunnerRewardL2-1);
+			}
+		}
+	}
+	//trChatSend(p, ""+1*trQuestVarGet("C1") + " and " + 1*trQuestVarGet("C2"));
+	xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("C1"));
+	xSetInt(dPlayerData, xLUCR, 1*trQuestVarGet("C2"));
 	if(trCurrentPlayer() == p){
 		OverlayTextPlayerColor(p);
 		trOverlayText("LEVEL UP - press space to choose a reward", 5.0, 404, 300, 3000);
@@ -48,6 +64,17 @@ highFrequency
 					trPlayerGrantResources(p, "Gold", -10000.0);
 					trPlayerGrantResources(p, "Wood", 200.0);
 					trPlayerGrantResources(p, "Gold", 100.0);
+					//runner stat checker
+					if(trGetStatValue(p, 2) > trQuestVarGet("P"+p+"UnitKills")){
+						trQuestVarSet("P"+p+"UnitKills", trGetStatValue(p, 2));
+						trSetCivilizationNameOverride(p, "Kills: " + 1*trQuestVarGet("P"+p+"UnitKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
+						gadgetRefresh("unitStatPanel");
+						if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"UnitKills")){
+							xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
+							xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
+							LevelUp(p);
+						}
+					}
 					if(trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0){
 						//Defeated
 						EvilLaugh();
@@ -73,21 +100,34 @@ highFrequency
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
 				trPlayerGrantResources(p, "Wood", -10000.0);
 				trPlayerGrantResources(p, "Wood", 5.0);
+				//hunter stats
+				if(trGetStatValue(p, 3) > trQuestVarGet("P"+p+"BuildingKills")){
+					trQuestVarSet("P"+p+"BuildingKills", trGetStatValue(p, 3));
+					trSetCivilizationNameOverride(p, "Razes: " + 1*trQuestVarGet("P"+p+"BuildingKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
+					gadgetRefresh("unitStatPanel");
+					if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"BuildingKills")){
+						xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
+						xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
+						LevelUp(p);
+					}
+				}
 				//hunter resign
-				if((playerIsPlaying(p) == false) || (trPlayerUnitCountSpecific(p, "Temple") == 0) ){
-					PlayerColouredChat(p, "I am a resigning n00b");
-					PlayerColouredChat(p, "Repeat hunter resigners will be locked out of the map");
-					trSetPlayerDefeated(p);
-					trPlayerKillAllBuildings(p);
-					trPlayerKillAllGodPowers(p);
-					trPlayerKillAllUnits(p);
-					xSetBool(dPlayerData, xPlayerAlive, false);
+				if(AutoEscape == false){
+					if((playerIsPlaying(p) == false) || (trPlayerUnitCountSpecific(p, "Temple") == 0) ){
+						PlayerColouredChat(p, "I am a resigning n00b");
+						PlayerColouredChat(p, "Repeat hunter resigners will be locked out of the map");
+						trSetPlayerDefeated(p);
+						trPlayerKillAllBuildings(p);
+						trPlayerKillAllGodPowers(p);
+						trPlayerKillAllUnits(p);
+						xSetBool(dPlayerData, xPlayerAlive, false);
+					}
 				}
 			}
 		}
 		if(trPlayerUnitCountSpecific(p, "Maceman Hero") > 0){
 			trUnitSelectByQV("P"+p+"Space");
-			trUnitChangeProtoUnit("Cinematic Block");
+			trUnitChangeInArea(p,p, "Maceman Hero", "Cinematic Block", MapSize);
 			if(trCurrentPlayer() == p){
 				uiZoomToProto("Villager Atlantean Hero");
 			}
@@ -102,13 +142,257 @@ highFrequency
 	}
 }
 
-rule Test
+rule GameEvents
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 3){
+	xsDisableSelf();
+	xsEnableRule("HunterUnits2Mins");
+	xsEnableRule("HunterPower1Mins");
+	xsEnableRule("HunterPower3Mins");
+	xsEnableRule("HunterUnits4Mins");
+	xsEnableRule("HunterPower5Mins");
+	xsEnableRule("HunterUnits6Mins");
+	xsEnableRule("HunterPower7Mins");
+	xsEnableRule("HunterPower8Mins");
+	xsEnableRule("HunterPower9Mins");
+	rangedunit = "Centaur";
+	handunit = "Scorpion Man";
+}
+
+rule HunterPower1Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*1){
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				grantGodPowerNoRechargeNextPosition(p, "Reverse Time", MapFactor());
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Deconstruction granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
 		xsDisableSelf();
-		LevelUp(1);
-		LevelUp(2);
+	}
+}
+
+rule HunterUnits2Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*2){
+		if(AutoEscape){
+			rangedunit = "Satyr";
+			handunit = "Cyclops";
+		}
+		else{
+			for(p = 1; <= cNumberNonGaiaPlayers){
+				xSetPointer(dPlayerData, p);
+				if(xGetBool(dPlayerData, xPlayerRunner) == false){
+					trForbidProtounit(p, "Centaur");
+					trForbidProtounit(p, "Scorpion Man");
+					trUnforbidProtounit(p, "Cyclops");
+					trUnforbidProtounit(p, "Satyr");
+					trTechSetStatus(p, 80, 4);
+					if(trCurrentPlayer() == p){
+						trMessageSetText("You can now train cyclops and satyrs.", 8000);
+						playSound("ageadvance.wav");
+					}
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterPower3Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*3){
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				grantGodPowerNoRechargeNextPosition(p, "Undermine", MapFactor());
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Undermine granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterUnits4Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*4){
+		if(AutoEscape){
+			rangedunit = "Wadjet";
+			handunit = "Battle Boar";
+		}
+		else{
+			for(p = 1; <= cNumberNonGaiaPlayers){
+				xSetPointer(dPlayerData, p);
+				if(xGetBool(dPlayerData, xPlayerRunner) == false){
+					trForbidProtounit(p, "Cyclops");
+					trForbidProtounit(p, "Satyr");
+					trUnforbidProtounit(p, "Battle Boar");
+					trUnforbidProtounit(p, "Wadjet");
+					trTechSetStatus(p, 215, 4);
+					trTechSetStatus(p, 440, 4);
+					if(trCurrentPlayer() == p){
+						trMessageSetText("You can now train battle boars and wadjets.", 8000);
+						playSound("ageadvance.wav");
+					}
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterPower5Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*5){
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				grantGodPowerNoRechargeNextPosition(p, "Vision", MapFactor());
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Vision granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Vision granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterUnits6Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*6){
+		if(AutoEscape){
+			rangedunit = "Mountain Giant";
+			handunit = "Sphinx";
+		}
+		else{
+			for(p = 1; <= cNumberNonGaiaPlayers){
+				xSetPointer(dPlayerData, p);
+				if(xGetBool(dPlayerData, xPlayerRunner) == false){
+					trForbidProtounit(p, "Battle Boar");
+					trForbidProtounit(p, "Wadjet");
+					trUnforbidProtounit(p, "Scarab");
+					trUnforbidProtounit(p, "Sphinx");
+					trUnforbidProtounit(p, "Mountain Giant");
+					trTechSetStatus(p, 74, 4);
+					trTechSetStatus(p, 75, 4);
+					if(trCurrentPlayer() == p){
+						trMessageSetText("You can now train sphinxes, scarabs and mountain giants.", 8000);
+						playSound("ageadvance.wav");
+					}
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterPower7Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*7){
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				grantGodPowerNoRechargeNextPosition(p, "Eclipse", MapFactor());
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Eclipse granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterPower8Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*8){
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				grantGodPowerNoRechargeNextPosition(p, "Meteor", MapFactor());
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Meteor granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterPower9Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*9){
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				grantGodPowerNoRechargeNextPosition(p, "SPC Meteor", MapFactor());
+				if(trCurrentPlayer() == p){
+					trMessageSetText("SPC Meteor granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterPower11Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*11){
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				grantGodPowerNoRechargeNextPosition(p, "Vision", MapFactor());
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Vision granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Vision granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
+		xsDisableSelf();
 	}
 }

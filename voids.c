@@ -805,12 +805,13 @@ void PlayerLighting(int p = 0, float timeout = 3.0){
 	trSetLighting("default",timeout);
 }
 
-void UnitCreate(int xplayerx = 0, string protounitname = "", int xx = 0, int zz = 0, int xheadingx = 0){
+int UnitCreate(int xplayerx = 0, string protounitname = "", int xx = 0, int zz = 0, int xheadingx = 0){
 	trQuestVarSet("CreatingU", trGetNextUnitScenarioNameNumber());
 	trArmyDispatch(""+xplayerx+",0", "Dwarf", 1, xx, 0, zz, xheadingx, true);
 	trUnitSelectClear();
 	trUnitSelect(""+1*trQuestVarGet("CreatingU"));
 	trMutateSelected(kbGetProtoUnitID(""+protounitname+""));
+	return(1*trQuestVarGet("CreatingU"));
 }
 
 void FloatingUnit(string protounitname="", int xx = 0, int yy = 0, int zz = 0, int xheadingx = 0, float scalex = 1, float scaley = 1, float scalez = 1){

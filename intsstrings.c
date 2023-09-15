@@ -12,6 +12,7 @@ int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
 bool ForceAutoOff = false;
+bool Visible = true;
 
 
 bool AutoEscape = false;
@@ -57,6 +58,8 @@ int RunnerCount = 0;
 int HunterCount = 0;
 int DestroyAbove = 1;
 int gGameEndTime = 9999;
+string rangedunit = "error";
+string handunit = "error";
 
 
 

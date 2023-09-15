@@ -15,6 +15,10 @@ int xPlayerUnitID = 0;
 int xPlayerAlive = 0;
 int xPlayerRunner = 0;
 int xRoleDefined = 0;
+int xTowerBuild = 0;
+int xPlayerLevel = 0;
+int xPlayerNextLevel = 0;
+int xPlayerWallLevel = 0;
 
 int dEnemies = 0;
 int xUnitID = 0;
@@ -76,6 +80,10 @@ highFrequency
 	xRoleDefined = xInitAddBool(dPlayerData, "role chosen", false);
 	xLUCL = xInitAddInt(dPlayerData, "reward", 0);
 	xLUCR = xInitAddInt(dPlayerData, "reward", 0);
+	xTowerBuild = xInitAddFloat(dPlayerData, "tower build points", 3.333);
+	xPlayerLevel = xInitAddInt(dPlayerData, "level", 1);
+	xPlayerNextLevel = xInitAddInt(dPlayerData, "k to next l", 5);
+	xPlayerWallLevel = xInitAddInt(dPlayerData, "wall level", 1);
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);

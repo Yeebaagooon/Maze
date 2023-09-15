@@ -58,6 +58,8 @@ void HunterUnit(string unit = "", int p = 0, int pop = 1){
 
 void SetBuildPoints(int a = 10){
 	for(p = 1; <= cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		xSetFloat(dPlayerData, xTowerBuild, a/3);
 		modifyProtounitAbsolute("Tower", p, 4, a/3);
 		modifyProtounitAbsolute("Gate", p, 4, a/5);
 		modifyProtounitAbsolute("Wall Connector", p, 4, a/5);
@@ -66,6 +68,16 @@ void SetBuildPoints(int a = 10){
 		modifyProtounitAbsolute("Wall Long", p, 4, a/5);
 		modifyProtounitAbsolute("Sky Passage", p, 4, a);
 	}
+}
+
+void SetBuildPointsPlayer(int a = 10, int p =0){
+	modifyProtounitAbsolute("Tower", p, 4, a/3);
+	modifyProtounitAbsolute("Gate", p, 4, a/5);
+	modifyProtounitAbsolute("Wall Connector", p, 4, a/5);
+	modifyProtounitAbsolute("Wall Short", p, 4, a/5);
+	modifyProtounitAbsolute("Wall Medium", p, 4, a/5);
+	modifyProtounitAbsolute("Wall Long", p, 4, a/5);
+	modifyProtounitAbsolute("Sky Passage", p, 4, a);
 }
 
 rule Stats
@@ -88,6 +100,7 @@ highFrequency
 		modifyProtounitAbsolute("Maceman Hero", p, 1, 0);
 		modifyProtounitAbsolute("Maceman Hero", p, 2, 0);
 		modifyProtounitAbsolute("Tower", p, 10, 1000);
+		modifyProtounitAbsolute("Tower", p, 0, 500);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);
@@ -99,6 +112,13 @@ highFrequency
 		MakeUnitFree("Maceman Hero", p);
 		HunterUnit("Scorpion Man", p, 1);
 		HunterUnit("Centaur", p, 1);
+		HunterUnit("Cyclops", p, 1);
+		HunterUnit("Satyr", p, 1);
+		HunterUnit("Battle Boar", p, 1);
+		HunterUnit("Wadjet", p, 1);
+		HunterUnit("Sphinx", p, 1);
+		HunterUnit("Scarab", p, 1);
+		HunterUnit("Mountain Giant", p, 2);
 		trModifyProtounit("Dwarf", p, 55, 4);
 		trModifyProtounit("Temple", p, 7, 150);
 		trModifyProtounit("Animal Attractor", p, 55, 4);
