@@ -49,12 +49,17 @@ highFrequency
 			case kbGetProtoUnitID("Attack Revealer"):
 			{
 				if(AutoEscape){
-					GodPowerChance(j);
+					if(kbUnitGetOwner(id) == cNumberNonGaiaPlayers){
+						GodPowerChance(j);
+					}
 				}
 				break;
 			}
 			case kbGetProtoUnitID("Tower"):
 			{
+				xAddDatabaseBlock(dTowers, true);
+				xSetInt(dTowers, xTowerName, j);
+				xSetInt(dTowers, xPlayerOwner, kbUnitGetOwner(id));
 				if(AutoEscape){
 					GodPowerChance(j);
 				}

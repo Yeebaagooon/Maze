@@ -12,7 +12,7 @@ int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
 bool ForceAutoOff = false;
-bool Visible = false;
+bool Visible = true;
 
 
 bool AutoEscape = false;
@@ -21,6 +21,7 @@ int xSpyID = 0;
 int xOldAnim = 0;
 int xTarget = 0;
 int CyclePlayers = 0;
+int AutoHunterLevel = 1;
 //MapSize
 int MapFactor(){
 	if(MapSize == 398){

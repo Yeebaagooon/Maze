@@ -76,6 +76,10 @@ int xSpecialStep = 0;
 int xSpecialTarget = 0;
 int xSpecialTargetID = 0;
 
+//Towers
+int dTowers = 0;
+int xTowerName = 0;
+
 
 
 rule setup_first_databases
@@ -124,6 +128,10 @@ highFrequency
 	xSpecialStep = xInitAddInt(dMountainGiants, "status", 0);
 	xSpecialTarget = xInitAddVector(dMountainGiants, "target", vector(0,0,0));
 	xSpecialTargetID = xInitAddInt(dMountainGiants, "status", 0);
+	
+	dTowers = xInitDatabase("towerdb");
+	xTowerName = xInitAddInt(dTowers, "name", -1);
+	xPlayerOwner = xInitAddInt(dTowers, "owner", 0);
 	
 }
 

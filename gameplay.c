@@ -46,16 +46,19 @@ void LevelUp(int p = 0){
 		while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
 			trQuestVarSetFromRand("CR"+p, HunterRewardL1, (HunterRewardL2-1));
 		}
+		if(AutoEscape){
+			//Auto reward for hunter CPU AI
+			xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+			ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+			ActionChoice = p;
+			xsEnableRule("HunterConsequences");
+			AutoHunterLevel=AutoHunterLevel+1;
+			trChatSend(0, "Hunter level" + AutoHunterLevel);
+		}
 	}
 	//trChatSend(p, ""+1*trQuestVarGet("CL"+p) + " and " + 1*trQuestVarGet("CR"+p));
 	xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
 	xSetInt(dPlayerData, xLUCR, 1*trQuestVarGet("CR"+p));
-	if(AutoEscape){
-		//Auto reward for hunter CPU AI
-		ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-		ActionChoice = p;
-		xsEnableRule("HunterConsequences");
-	}
 	if(trCurrentPlayer() == p){
 		OverlayTextPlayerColor(p);
 		trOverlayText("LEVEL UP - press space to choose a reward", 5.0, 404, 300, 3000);
@@ -183,6 +186,7 @@ highFrequency
 	xsEnableRule("HunterPower9Mins");
 	xsEnableRule("HunterUnits10Mins");
 	xsEnableRule("MGSpecial");
+	xsEnableRule("TowerDB");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
 }
@@ -191,7 +195,7 @@ rule HunterPower1Mins
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 6){
+	if((trTime()-cActivationTime) >= 60){
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
@@ -227,8 +231,12 @@ highFrequency
 				}
 			}
 		}
+		if(AutoEscape){
+			trChatSend(0, "Firing GP");
+			xsEnableRule("AI_Force_Power");
+		}
+		xsDisableSelf();
 	}
-	xsDisableSelf();
 }
 
 rule HunterPower3Mins
@@ -272,8 +280,8 @@ highFrequency
 				}
 			}
 		}
+		xsDisableSelf();
 	}
-	xsDisableSelf();
 }
 
 rule HunterPower5Mins
@@ -326,6 +334,10 @@ highFrequency
 			}
 		}
 		trChatSend(0, "Watch out for mountain giants special attack!");
+		if(AutoEscape){
+			trChatSend(0, "Firing GP");
+			xsEnableRule("AI_Force_Power");
+		}
 		xsDisableSelf();
 	}
 }
@@ -408,6 +420,10 @@ highFrequency
 					playSound("ageadvance.wav");
 				}
 			}
+		}
+		if(AutoEscape){
+			trChatSend(0, "Firing GP");
+			xsEnableRule("AI_Force_Power");
 		}
 		xsDisableSelf();
 	}

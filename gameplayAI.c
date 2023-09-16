@@ -1,13 +1,52 @@
-int GodPowerChance(int name = 0){
+bool GodPowerChance(int name = 0, int override = 0){
 	//chance of invoking GP for AI
-	trQuestVarSetFromRand("temp", 1, 100);
-	if(1*trQuestVarGet("temp") < 10){
-		grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "SPCMeteor", MapFactor());
-		trUnitSelectClear();
-		trUnitSelect(""+name);
-		trTechInvokeGodPower(cNumberNonGaiaPlayers, "SPCMeteor", kbGetBlockPosition(""+name), vector(0,0,0));
+	if(override == 0){
+		trQuestVarSetFromRand("temp", 0, 100);
 	}
-	return(name);
+	else{
+		trQuestVarSet("temp", 0);
+	}
+	if(1*trQuestVarGet("temp") < MapFactor()){
+		if(AutoHunterLevel == 2){
+			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Undermine", MapFactor());
+			trUnitSelectClear();
+			trUnitSelect(""+name);
+			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Undermine", kbGetBlockPosition(""+name), vector(0,0,0));
+		}
+		if(AutoHunterLevel == 3){
+			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Lightning Storm", MapFactor());
+			trUnitSelectClear();
+			trUnitSelect(""+name);
+			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Lightning Storm", kbGetBlockPosition(""+name), vector(0,0,0));
+		}
+		if(AutoHunterLevel == 4){
+			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
+			trUnitSelectClear();
+			trUnitSelect(""+name);
+			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+		}
+		if(AutoHunterLevel == 5){
+			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
+			trUnitSelectClear();
+			trUnitSelect(""+name);
+			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
+		}
+		if(AutoHunterLevel >= 6){
+			trQuestVarSetFromRand("temp", 5, 6);
+			if(1*trQuestVarGet("temp") == 6){
+				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "SPCMeteor", MapFactor());
+				trUnitSelectClear();
+				trUnitSelect(""+name);
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "SPCMeteor", kbGetBlockPosition(""+name), vector(0,0,0));
+			}
+			if(1*trQuestVarGet("temp") == 6){
+				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Vortex", MapFactor());
+				trUnitSelectClear();
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Vortex", kbGetBlockPosition(""+name), vector(0,0,0));
+			}
+		}
+		return(true);
+	}
 }
 
 rule AI_Activate
@@ -16,11 +55,10 @@ highFrequency
 {
 	if((trTime()-cActivationTime) >= 30){
 		xsDisableSelf();
-		int old = xsGetContextPlayer();
 		trOverlayText("The hunter units are coming!", 4.0, 534, 300, 1000);
 		xsSetContextPlayer(cNumberNonGaiaPlayers);
 		aiSetAttackResponseDistance(800.0);
-		xsSetContextPlayer(old);
+		xsSetContextPlayer(0);
 		xsEnableRule("AI_Spawn");
 		xsEnableRule("AI_DB_Check");
 	}
@@ -141,7 +179,6 @@ highFrequency
 						xSetInt(dMountainGiants, xSpecialStep, 1);
 						xSetInt(dMountainGiants, xSpecialTargetID, target);
 						//	trUnitOverrideAnimation(39,0,false,false,-1);
-						trChatSend(0, "Target locked");
 					}
 				}
 				case 1:
@@ -180,6 +217,47 @@ highFrequency
 					//trUnitOverrideAnimation(-1,0,false,true,-1);
 				}
 			}
+		}
+	}
+}
+
+rule AI_Force_Power
+inactive
+highFrequency
+{
+	bool Done = false;
+	int Safety = 0;
+	int target = xsMin(250,xGetDatabaseCount(dTowers));
+	while(Done == false){
+		xDatabaseNext(dTowers);
+		Safety = Safety+1;
+		if(kbUnitVisible(kbGetBlockID(""+xGetInt(dTowers, xTowerName)))){
+			if(GodPowerChance(xGetInt(dTowers, xTowerName), 1)){
+				Done = true;
+				debugLog("Successful force fire");
+			}
+		}
+		if(Safety > target){
+			Done = true;
+			debugLog("GP try failed");
+		}
+	}
+	xsDisableSelf();
+}
+
+rule TowerDB
+inactive
+highFrequency
+{
+	//Zeno MG code
+	if (xGetDatabaseCount(dTowers) > 0) {
+		xDatabaseNext(dTowers);
+		int name = xGetInt(dTowers,xTowerName);
+		trUnitSelectClear();
+		trUnitSelect(""+name);
+		//p = xGetInt(dTowers,xPlayerOwner);
+		if (trUnitAlive() == false) {
+			xFreeDatabaseBlock(dTowers);
 		}
 	}
 }

@@ -102,6 +102,10 @@ highFrequency
 		modifyProtounitAbsolute("Maceman Hero", p, 2, 0);
 		modifyProtounitAbsolute("Tower", p, 10, 1000);
 		modifyProtounitAbsolute("Tower", p, 0, 500);
+		modifyProtounitAbsolute("Behemoth", p, 0, 1500);
+		modifyProtounitAbsolute("Troll", p, 0, 1250);
+		modifyProtounitAbsolute("Behemoth", p, 29, 100);
+		modifyProtounitAbsolute("Troll", p, 32, 50);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);
@@ -119,7 +123,7 @@ highFrequency
 		HunterUnit("Wadjet", p, 1);
 		HunterUnit("Sphinx", p, 1);
 		HunterUnit("Scarab", p, 1);
-		HunterUnit("Mountain Giant", p, 2);
+		HunterUnit("Mountain Giant", p, 1);
 		trModifyProtounit("Dwarf", p, 55, 4);
 		trModifyProtounit("Temple", p, 7, 150);
 		trModifyProtounit("Animal Attractor", p, 55, 4);
