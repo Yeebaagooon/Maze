@@ -90,6 +90,7 @@ highFrequency
 		modifyProtounitAbsolute("Old Man", p, 1, 10);
 		modifyProtounitAbsolute("Cinematic Block", p, 2, 0);
 		modifyProtounitAbsolute("Temple", p, 0, 1000000);
+		modifyProtounitAbsolute("Temple", p, 4, 40);
 		modifyProtounitAbsolute("Temple", p, 24, 1);
 		modifyProtounitAbsolute("Temple", p, 25, 1);
 		modifyProtounitAbsolute("Temple", p, 26, 1);

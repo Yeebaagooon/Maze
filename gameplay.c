@@ -1,6 +1,11 @@
 void LevelUpChoice(int p = 0){
 	xSetPointer(dPlayerData, p);
-	PlayerChoice(p, "Choose a reward:", RewardText(xGetInt(dPlayerData, xLUCL)), xGetInt(dPlayerData,xLUCL), RewardText(xGetInt(dPlayerData, xLUCR)), xGetInt(dPlayerData,xLUCR));
+	if(xGetBool(dPlayerData, xPlayerRunner)){
+		PlayerChoice(p, "Choose a reward:", RewardText(xGetInt(dPlayerData, xLUCL)), xGetInt(dPlayerData,xLUCL), RewardText(xGetInt(dPlayerData, xLUCR)), xGetInt(dPlayerData,xLUCR));
+	}
+	else{
+		PlayerChoice(p, "Choose a reward:", RewardTextHunter(xGetInt(dPlayerData, xLUCL)), xGetInt(dPlayerData,xLUCL), RewardTextHunter(xGetInt(dPlayerData, xLUCR)), xGetInt(dPlayerData,xLUCR));
+	}
 }
 
 void LevelUp(int p = 0){
@@ -16,26 +21,45 @@ void LevelUp(int p = 0){
 	trSetSelectedScale(0,0,0);
 	xSetPointer(dPlayerData, p);
 	xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
-	//Level 0-5 rewards
-	trQuestVarSetFromRand("C1", RunnerRewardL1, RunnerRewardL2);
-	trQuestVarSet("C2", 1*trQuestVarGet("C1"));
-	while(1*trQuestVarGet("C1") == 1*trQuestVarGet("C2")){
-		trQuestVarSetFromRand("C2", RunnerRewardL1, RunnerRewardL2);
-		if(1*trQuestVarGet("C2") == RunnerRewardL2){
-			if(xGetInt(dPlayerData, xPlayerWallLevel) == 1){
-				trQuestVarSet("C2", 3);
-			}
-			else{
-				trQuestVarSetFromRand("C2", RunnerRewardL1, RunnerRewardL2-1);
+	//RUNNER REWARDS
+	if(xGetBool(dPlayerData, xPlayerRunner)){
+		//Level 0-5 rewards
+		trQuestVarSetFromRand("CL"+p, RunnerRewardL1, RunnerRewardL2);
+		trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+		while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+			trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2);
+			if(1*trQuestVarGet("CR"+p) == RunnerRewardL2){
+				if(xGetInt(dPlayerData, xPlayerWallLevel) == 1){
+					trQuestVarSet("CR"+p, 3);
+				}
+				else{
+					trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2-1);
+				}
 			}
 		}
 	}
-	//trChatSend(p, ""+1*trQuestVarGet("C1") + " and " + 1*trQuestVarGet("C2"));
-	xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("C1"));
-	xSetInt(dPlayerData, xLUCR, 1*trQuestVarGet("C2"));
+	else{
+		//HUNTER REWARDS
+		//Level 0-5 rewards
+		trQuestVarSetFromRand("CL"+p, HunterRewardL1, (HunterRewardL2-1));
+		trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+		while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+			trQuestVarSetFromRand("CR"+p, HunterRewardL1, (HunterRewardL2-1));
+		}
+	}
+	//trChatSend(p, ""+1*trQuestVarGet("CL"+p) + " and " + 1*trQuestVarGet("CR"+p));
+	xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+	xSetInt(dPlayerData, xLUCR, 1*trQuestVarGet("CR"+p));
+	if(AutoEscape){
+		//Auto reward for hunter CPU AI
+		ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+		ActionChoice = p;
+		xsEnableRule("HunterConsequences");
+	}
 	if(trCurrentPlayer() == p){
 		OverlayTextPlayerColor(p);
 		trOverlayText("LEVEL UP - press space to choose a reward", 5.0, 404, 300, 3000);
+		playSound("arkantosarrive.wav");
 	}
 }
 
@@ -106,7 +130,8 @@ highFrequency
 					trSetCivilizationNameOverride(p, "Razes: " + 1*trQuestVarGet("P"+p+"BuildingKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 					gadgetRefresh("unitStatPanel");
 					if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"BuildingKills")){
-						xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
+						//	xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
+						xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerNextLevel)+1);
 						xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
 						LevelUp(p);
 					}
@@ -175,6 +200,14 @@ highFrequency
 				}
 			}
 		}
+		UnitCreate(2, "Tower",10,10);
+		UnitCreate(2, "Tower",12,10);
+		UnitCreate(2, "Tower",14,10);
+		UnitCreate(2, "Tower",16,10);
+		UnitCreate(2, "Tower",18,10);
+		UnitCreate(2, "Tower",20,10);
+		UnitCreate(2, "Tower",22,10);
+		UnitCreate(2, "Tower",24,10);
 		xsDisableSelf();
 	}
 }
@@ -184,28 +217,24 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*2){
-		if(AutoEscape){
-			rangedunit = "Satyr";
-			handunit = "Cyclops";
-		}
-		else{
-			for(p = 1; <= cNumberNonGaiaPlayers){
-				xSetPointer(dPlayerData, p);
-				if(xGetBool(dPlayerData, xPlayerRunner) == false){
-					trForbidProtounit(p, "Centaur");
-					trForbidProtounit(p, "Scorpion Man");
-					trUnforbidProtounit(p, "Cyclops");
-					trUnforbidProtounit(p, "Satyr");
-					trTechSetStatus(p, 80, 4);
-					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train cyclops and satyrs.", 8000);
-						playSound("ageadvance.wav");
-					}
+		rangedunit = "Satyr";
+		handunit = "Cyclops";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trForbidProtounit(p, "Centaur");
+				trForbidProtounit(p, "Scorpion Man");
+				trUnforbidProtounit(p, "Cyclops");
+				trUnforbidProtounit(p, "Satyr");
+				trTechSetStatus(p, 80, 4);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("You can now train cyclops and satyrs.", 8000);
+					playSound("ageadvance.wav");
 				}
 			}
 		}
-		xsDisableSelf();
 	}
+	xsDisableSelf();
 }
 
 rule HunterPower3Mins
@@ -232,29 +261,25 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*4){
-		if(AutoEscape){
-			rangedunit = "Wadjet";
-			handunit = "Battle Boar";
-		}
-		else{
-			for(p = 1; <= cNumberNonGaiaPlayers){
-				xSetPointer(dPlayerData, p);
-				if(xGetBool(dPlayerData, xPlayerRunner) == false){
-					trForbidProtounit(p, "Cyclops");
-					trForbidProtounit(p, "Satyr");
-					trUnforbidProtounit(p, "Battle Boar");
-					trUnforbidProtounit(p, "Wadjet");
-					trTechSetStatus(p, 215, 4);
-					trTechSetStatus(p, 440, 4);
-					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train battle boars and wadjets.", 8000);
-						playSound("ageadvance.wav");
-					}
+		rangedunit = "Wadjet";
+		handunit = "Battle Boar";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trForbidProtounit(p, "Cyclops");
+				trForbidProtounit(p, "Satyr");
+				trUnforbidProtounit(p, "Battle Boar");
+				trUnforbidProtounit(p, "Wadjet");
+				trTechSetStatus(p, 215, 4);
+				trTechSetStatus(p, 440, 4);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("You can now train battle boars and wadjets.", 8000);
+					playSound("ageadvance.wav");
 				}
 			}
 		}
-		xsDisableSelf();
 	}
+	xsDisableSelf();
 }
 
 rule HunterPower5Mins
@@ -288,30 +313,26 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*6){
-		if(AutoEscape){
-			rangedunit = "Mountain Giant";
-			handunit = "Sphinx";
-		}
-		else{
-			for(p = 1; <= cNumberNonGaiaPlayers){
-				xSetPointer(dPlayerData, p);
-				if(xGetBool(dPlayerData, xPlayerRunner) == false){
-					trForbidProtounit(p, "Battle Boar");
-					trForbidProtounit(p, "Wadjet");
-					trUnforbidProtounit(p, "Scarab");
-					trUnforbidProtounit(p, "Sphinx");
-					trUnforbidProtounit(p, "Mountain Giant");
-					trTechSetStatus(p, 74, 4);
-					trTechSetStatus(p, 75, 4);
-					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train sphinxes, scarabs and mountain giants.", 8000);
-						playSound("ageadvance.wav");
-					}
+		rangedunit = "Mountain Giant";
+		handunit = "Sphinx";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trForbidProtounit(p, "Battle Boar");
+				trForbidProtounit(p, "Wadjet");
+				trUnforbidProtounit(p, "Scarab");
+				trUnforbidProtounit(p, "Sphinx");
+				trUnforbidProtounit(p, "Mountain Giant");
+				trTechSetStatus(p, 74, 4);
+				trTechSetStatus(p, 75, 4);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("You can now train sphinxes, scarabs and mountain giants.", 8000);
+					playSound("ageadvance.wav");
 				}
 			}
 		}
-		xsDisableSelf();
 	}
+	xsDisableSelf();
 }
 
 rule HunterPower7Mins

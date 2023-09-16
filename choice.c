@@ -8,6 +8,10 @@ string NoChoiceUnitName = "Lancer";
 const int RunnerRewardL1 = 4;
 const int RunnerRewardL2 = 10;
 
+
+const int HunterRewardL1 = 3;
+const int HunterRewardL2 = 14;
+
 string RewardText(int r = 0){
 	string reward = "error";
 	switch(r){
@@ -43,6 +47,63 @@ string RewardText(int r = 0){
 		case 10:
 		{
 			reward = "+100 citizen hp";
+		}
+	}
+	return(reward);
+}
+
+string RewardTextHunter(int r = 0){
+	string reward = "error";
+	switch(r){
+		//RUNNER REWARD LEVEL 1, 4-13
+		case 3:
+		{
+			reward = "Temple timeshift 10 percent faster";
+		}
+		case 4:
+		{
+			reward = "+4 Temple LOS";
+		}
+		case 5:
+		{
+			reward = "+2 " + handunit + " LOS";
+		}
+		case 6:
+		{
+			reward = "+5 " + handunit + " crush attack";
+		}
+		case 7:
+		{
+			reward = "+4 " + rangedunit + " LOS";
+		}
+		case 8:
+		{
+			reward = "+5 " + rangedunit + " crush attack";
+		}
+		case 9:
+		{
+			if(rangedunit == "Mountain Giant"){
+				reward = "+1 " + rangedunit + " speed";
+			}
+			else{
+				reward = "+4 " + rangedunit + " range";
+			}
+		}
+		case 10:
+		{
+			reward = "+0.5 " + handunit + " speed";
+		}
+		case 11:
+		{
+			reward = "+0.5 " + rangedunit + " speed";
+		}
+		case 12:
+		{
+			reward = ""+MapFactor() + "x Undermine power";
+		}
+		case 13:
+		{
+			reward = ""+MapFactor() + "x Vision power";
 		}
 	}
 	return(reward);
@@ -113,10 +174,16 @@ active
 		PlayerCycle = 1;
 	}
 	int p = PlayerCycle;
+	xSetPointer(dPlayerData, p);
 	if(trPlayerUnitCountSpecific(p, ""+YesChoiceUnitName + " Hero") != 0){
 		ChoiceEffect = 1*trQuestVarGet("P"+p+"YesAction");
 		ActionChoice = p;
-		xsEnableRule("AnswerConsequences");
+		if(xGetBool(dPlayerData, xPlayerRunner)){
+			xsEnableRule("AnswerConsequences");
+		}
+		else{
+			xsEnableRule("HunterConsequences");
+		}
 		trUnitSelectByQV("P"+p+"No");
 		trUnitChangeProtoUnit("Cinematic Block");
 		trUnitSelectByQV("P"+p+"Yes");
@@ -125,7 +192,12 @@ active
 	if(trPlayerUnitCountSpecific(p, ""+NoChoiceUnitName + " Hero") != 0){
 		ChoiceEffect = 1*trQuestVarGet("P"+p+"NoAction");
 		ActionChoice = p;
-		xsEnableRule("AnswerConsequences");
+		if(xGetBool(dPlayerData, xPlayerRunner)){
+			xsEnableRule("AnswerConsequences");
+		}
+		else{
+			xsEnableRule("HunterConsequences");
+		}
 		trUnitSelectByQV("P"+p+"No");
 		trUnitChangeProtoUnit("Cinematic Block");
 		trUnitSelectByQV("P"+p+"Yes");
@@ -203,6 +275,7 @@ inactive
 			case 9:
 			{
 				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.9);
+				modifyProtounitAbsolute("Tower", p, 4, xGetFloat(dPlayerData, xTowerBuild));
 			}
 			case 10:
 			{
@@ -218,6 +291,91 @@ inactive
 		if(xGetBool(dPlayerData, xPlayerRunner) == true){
 			uiZoomToProto("Villager Atlantean Hero");
 		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterConsequences
+highFrequency
+inactive
+{
+	//xsSetContextPlayer(0);
+	//[REMEMBER THIS IS OPEN AND MAY NEED PLAYER SPECIFIC TAG]
+	if(ActionChoice != 0){
+		int p = ActionChoice;
+		xSetPointer(dPlayerData, p);
+		switch(ChoiceEffect)
+		{
+			case 0:
+			{
+				debugLog("NO CONSEQUENCE SET");
+			}
+			case 1:
+			{
+				//reserved
+			}
+			case 2:
+			{
+				//reserved
+			}
+			case 3:
+			{
+				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.9);
+				modifyProtounitAbsolute("Temple", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+			}
+			case 4:
+			{
+				trModifyProtounit("Temple", p, 2, 4);
+			}
+			case 5:
+			{
+				trModifyProtounit(handunit, p, 2, 2);
+			}
+			case 6:
+			{
+				trModifyProtounit(handunit, p, 29, 5);
+			}
+			case 7:
+			{
+				trModifyProtounit(rangedunit, p, 2, 2);
+			}
+			case 8:
+			{
+				trModifyProtounit(rangedunit, p, 32, 5);
+			}
+			case 9:
+			{
+				if(rangedunit == "Mountain Giant"){
+					trModifyProtounit(rangedunit, p, 1, 1);
+				}
+				else{
+					trModifyProtounit(rangedunit, p, 11, 4);
+				}
+			}
+			case 10:
+			{
+				trModifyProtounit(handunit, p, 1, 0.5);
+			}
+			case 11:
+			{
+				trModifyProtounit(rangedunit, p, 1, 0.5);
+			}
+			case 12:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Undermine", MapFactor());
+			}
+			case 13:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Vision", MapFactor());
+			}
+		}
+		trQuestVarSet("P"+ActionChoice+"YesAction", 0);
+		trQuestVarSet("P"+ActionChoice+"NoAction", 0);
+		ActionChoice = 0;
+		//Safety
+		unitTransform(""+YesChoiceUnitName + " Hero", "Cinematic Block");
+		unitTransform(""+NoChoiceUnitName + " Hero", "Cinematic Block");
+		//camera required
 		xsDisableSelf();
 	}
 }

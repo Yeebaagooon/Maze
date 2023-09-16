@@ -519,6 +519,7 @@ highFrequency
 		
 		//Camera and groups
 		trBlockAllSounds(true);
+		//Player cycles
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
@@ -532,6 +533,7 @@ highFrequency
 			}
 			else{
 				trSetCivilizationNameOverride(p, "Razes: " + 1*trQuestVarGet("P"+p+"BuildingKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
+				xSetFloat(dPlayerData, xTowerBuild, 40);
 				trUnforbidProtounit(p, "Centaur");
 				trUnforbidProtounit(p, "Scorpion Man");
 				if(trCurrentPlayer() == p){

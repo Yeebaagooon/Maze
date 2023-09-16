@@ -149,3 +149,66 @@ void spyEffect(int proto = 0, int anim = 0, vector dest = vector(0,0,0), vector 
 	//unitTransform("Prisoner", "Ball of fire");
 }
 
+//Zeno MG code
+/*
+if (xGetDatabaseCount(dMountainGiants) > 0) {
+	xDatabaseNext(dMountainGiants);
+	id = xGetInt(dMountainGiants,xUnitID);
+	trUnitSelectClear();
+	trUnitSelectByID(id);
+	p = xGetInt(dMountainGiants,xPlayerOwner);
+	db = databaseName(p);
+	if (trUnitAlive() == false) {
+		trQuestVarSet("giantKills", 1 + trQuestVarGet("giantKills"));
+		trUnitChangeProtoUnit("Mountain Giant");
+		xFreeDatabaseBlock(dMountainGiants);
+	} else if (trTimeMS() > xGetInt(dMountainGiants, xSpecialNext)) {
+		switch(xGetInt(dMountainGiants, xSpecialStep))
+		{
+			case 0:
+			{
+				if (kbUnitGetAnimationActionType(id) == 39) {
+					xsSetContextPlayer(p);
+					target = trGetUnitScenarioNameNumber(kbUnitGetTargetUnitID(id));
+					xsSetContextPlayer(0);
+					xSetVector(dMountainGiants,xSpecialTarget,kbGetBlockPosition(""+target));
+					
+					xSetInt(dMountainGiants, xSpecialNext, trTimeMS() + 1800);
+					xSetInt(dMountainGiants, xSpecialStep, 1);
+					trUnitOverrideAnimation(39,0,false,false,-1);
+				}
+			}
+			case 1:
+			{
+				end = xGetVector(dMountainGiants,xSpecialTarget);
+				db = opponentDatabaseName(p);
+				for(x=xGetDatabaseCount(db); >0) {
+					xDatabaseNext(db);
+					xUnitSelectByID(db,xUnitID);
+					if (trUnitAlive() == false) {
+						removeOpponentUnit(p);
+					} else if (unitDistanceToVector(xGetInt(db,xUnitName), end) < 4) {
+						damageOpponentUnit(p, 100 + 100 * trQuestVarGet("stage"));
+						if (xGetBool(db, xIsHero) && trCurrentPlayer() == xGetInt(db, xPlayerOwner)) {
+							trCameraShake(0.7, 0.7);
+						}
+					}
+				}
+				trArmyDispatch("1,0","Dwarf",1,xsVectorGetX(end),0,xsVectorGetZ(end),45,true);
+				trArmyDispatch("1,0","Dwarf",1,xsVectorGetX(end),0,xsVectorGetZ(end),135,false);
+				trArmySelect("1,0");
+				trUnitChangeProtoUnit("Tartarian Gate Flame");
+				xSetInt(dMountainGiants, xSpecialStep, 2);
+				xSetInt(dMountainGiants, xSpecialNext, xGetInt(dMountainGiants, xSpecialNext) + 1200);
+				
+			}
+			case 2:
+			{
+				xSetInt(dMountainGiants, xSpecialStep, 0);
+				xSetInt(dMountainGiants, xSpecialNext, trTimeMS() + 15000);
+				trUnitOverrideAnimation(-1,0,false,true,-1);
+			}
+		}
+	}
+}
+*/
