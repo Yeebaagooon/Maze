@@ -11,7 +11,7 @@ IceC in top corner for choice units? also other corner for hunters
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
-bool ForceAutoOff = false;
+bool ForceAutoOff = true;
 bool Visible = true;
 
 
@@ -46,7 +46,7 @@ int SwitchMapSize(int small = 18, int medium = 24, int large = 30){
 }
 
 const int gCellSize = 11;
-const int gCellPadding = 3;
+const int gCellPadding = 2;
 const int EVENT_REMOVE_CAM_TRACKS = 26;
 
 bool Pregame = false;

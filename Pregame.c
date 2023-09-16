@@ -567,6 +567,7 @@ highFrequency
 			xsEnableRule("AI_Activate");
 		}
 		xsEnableRule("GameEvents");
+		//xsEnableRule("ysearch");
 		trMusicPlayCurrent();
 	}
 }

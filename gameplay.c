@@ -181,6 +181,7 @@ highFrequency
 	xsEnableRule("HunterPower7Mins");
 	xsEnableRule("HunterPower8Mins");
 	xsEnableRule("HunterPower9Mins");
+	xsEnableRule("MGSpecial");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
 }
@@ -189,7 +190,7 @@ rule HunterPower1Mins
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 60*1){
+	if((trTime()-cActivationTime) >= 6){
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
@@ -208,6 +209,7 @@ highFrequency
 		UnitCreate(2, "Tower",20,10);
 		UnitCreate(2, "Tower",22,10);
 		UnitCreate(2, "Tower",24,10);
+		UnitCreate(1, "Mountain Giant",26,12);
 		xsDisableSelf();
 	}
 }
@@ -331,8 +333,8 @@ highFrequency
 				}
 			}
 		}
+		xsDisableSelf();
 	}
-	xsDisableSelf();
 }
 
 rule HunterPower7Mins
