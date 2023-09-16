@@ -1,3 +1,15 @@
+int GodPowerChance(int name = 0){
+	//chance of invoking GP for AI
+	trQuestVarSetFromRand("temp", 1, 100);
+	if(1*trQuestVarGet("temp") < 10){
+		grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "SPCMeteor", MapFactor());
+		trUnitSelectClear();
+		trUnitSelect(""+name);
+		trTechInvokeGodPower(cNumberNonGaiaPlayers, "SPCMeteor", kbGetBlockPosition(""+name), vector(0,0,0));
+	}
+	return(name);
+}
+
 rule AI_Activate
 inactive
 highFrequency
@@ -7,7 +19,7 @@ highFrequency
 		int old = xsGetContextPlayer();
 		trOverlayText("The hunter units are coming!", 4.0, 534, 300, 1000);
 		xsSetContextPlayer(cNumberNonGaiaPlayers);
-		aiSetAttackResponseDistance(80.0);
+		aiSetAttackResponseDistance(800.0);
 		xsSetContextPlayer(old);
 		xsEnableRule("AI_Spawn");
 		xsEnableRule("AI_DB_Check");
@@ -19,16 +31,42 @@ inactive
 highFrequency
 {
 	int anim = 0;
+	int x = 0;
+	int z = 0;
 	for(n = 1 ; < xsMin(8, xGetDatabaseCount(dEnemies))){
 		xDatabaseNext(dEnemies);
 		if(xGetInt(dEnemies, xIdleTimeout) < trTime()){
 			anim = kbUnitGetAnimationActionType(kbGetBlockID(""+xGetInt(dEnemies, xUnitID)));
 			if(anim == 9){
-				trQuestVarSetFromRand("x", 0 , MapSize);
-				trQuestVarSetFromRand("z", 0 , MapSize);
-				xUnitSelect(dEnemies, xUnitID);
-				trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
-				xSetInt(dEnemies, xIdleTimeout, 1*trQuestVarGet("x")/10+trTime()+30);
+				//roll to check idle time
+				trQuestVarSetFromRand("temp", 1 , 10);
+				//override if clump
+				x = trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "All", 20);
+				if((x > 10) && (x < 20)){
+					trQuestVarSetFromRand("temp", 3 , 4);
+				}
+				if(x > 20){
+					trQuestVarSet("temp", 4);
+				}
+				if(1*trQuestVarGet("temp") <= 3){
+					x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)));
+					z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)));
+					trQuestVarSetFromRand("x", x-50 , x+50);
+					trQuestVarSetFromRand("z", z-50 , z+50);
+					xUnitSelect(dEnemies, xUnitID);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+					xSetInt(dEnemies, xIdleTimeout, 1*trQuestVarGet("x")/10+trTime()+30);
+				}
+				if(1*trQuestVarGet("temp") == 4){
+					trQuestVarSetFromRand("x", 0 , MapSize);
+					trQuestVarSetFromRand("z", 0 , MapSize);
+					xUnitSelect(dEnemies, xUnitID);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+					xSetInt(dEnemies, xIdleTimeout, 1*trQuestVarGet("x")/10+trTime()+30);
+				}
+				else{
+					xSetInt(dEnemies, xIdleTimeout, trTime()+10);
+				}
 			}
 		}
 		xUnitSelect(dEnemies, xUnitID);
@@ -74,14 +112,14 @@ inactive
 highFrequency
 {
 	//Zeno MG code
-	/*if (xGetDatabaseCount(dMountainGiants) > 0) {
+	if (xGetDatabaseCount(dMountainGiants) > 0) {
 		int id = 0;
 		int p = 0;
 		int target = 0;
 		int temp = 0;
 		vector end = vector(0,0,0);
 		xDatabaseNext(dMountainGiants);
-		id = xGetInt(dMountainGiants,xUnitID);
+		id = xGetInt(dMountainGiants,xMountainGiantID);
 		trUnitSelectClear();
 		trUnitSelectByID(id);
 		p = xGetInt(dMountainGiants,xPlayerOwner);
@@ -94,6 +132,7 @@ highFrequency
 				case 0:
 				{
 					if (kbUnitGetAnimationActionType(id) == 48) {
+						//Centaur or satyr special is 49
 						xsSetContextPlayer(p);
 						target = trGetUnitScenarioNameNumber(kbUnitGetTargetUnitID(id));
 						xsSetContextPlayer(0);
@@ -142,5 +181,5 @@ highFrequency
 				}
 			}
 		}
-	}*/
+	}
 }

@@ -130,8 +130,8 @@ highFrequency
 					trSetCivilizationNameOverride(p, "Razes: " + 1*trQuestVarGet("P"+p+"BuildingKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 					gadgetRefresh("unitStatPanel");
 					if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"BuildingKills")){
-						//	xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
-						xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerNextLevel)+1);
+						xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
+						//xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerNextLevel)+1);
 						xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
 						LevelUp(p);
 					}
@@ -172,8 +172,8 @@ inactive
 highFrequency
 {
 	xsDisableSelf();
-	xsEnableRule("HunterUnits2Mins");
 	xsEnableRule("HunterPower1Mins");
+	xsEnableRule("HunterUnits2Mins");
 	xsEnableRule("HunterPower3Mins");
 	xsEnableRule("HunterUnits4Mins");
 	xsEnableRule("HunterPower5Mins");
@@ -181,6 +181,7 @@ highFrequency
 	xsEnableRule("HunterPower7Mins");
 	xsEnableRule("HunterPower8Mins");
 	xsEnableRule("HunterPower9Mins");
+	xsEnableRule("HunterUnits10Mins");
 	xsEnableRule("MGSpecial");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
@@ -201,15 +202,6 @@ highFrequency
 				}
 			}
 		}
-		UnitCreate(2, "Tower",10,10);
-		UnitCreate(2, "Tower",12,10);
-		UnitCreate(2, "Tower",14,10);
-		UnitCreate(2, "Tower",16,10);
-		UnitCreate(2, "Tower",18,10);
-		UnitCreate(2, "Tower",20,10);
-		UnitCreate(2, "Tower",22,10);
-		UnitCreate(2, "Tower",24,10);
-		UnitCreate(1, "Mountain Giant",26,12);
 		xsDisableSelf();
 	}
 }
@@ -333,6 +325,7 @@ highFrequency
 				}
 			}
 		}
+		trChatSend(0, "Watch out for mountain giants special attack!");
 		xsDisableSelf();
 	}
 }
@@ -387,6 +380,32 @@ highFrequency
 				if(trCurrentPlayer() == p){
 					trMessageSetText("SPC Meteor granted.", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterUnits10Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*10){
+		rangedunit = "Troll";
+		handunit = "Behemoth";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trForbidProtounit(p, "Scarab");
+				trForbidProtounit(p, "Sphinx");
+				trUnforbidProtounit(p, "Behemoth");
+				trUnforbidProtounit(p, "Troll");
+				trTechSetStatus(p, 74, 4);
+				trTechSetStatus(p, 75, 4);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("You can now train trolls and behemoths.", 8000);
+					playSound("ageadvance.wav");
 				}
 			}
 		}

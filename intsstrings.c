@@ -11,8 +11,8 @@ IceC in top corner for choice units? also other corner for hunters
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
-bool ForceAutoOff = true;
-bool Visible = true;
+bool ForceAutoOff = false;
+bool Visible = false;
 
 
 bool AutoEscape = false;

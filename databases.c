@@ -69,6 +69,7 @@ int xDirectionToBuild = 0;
 
 //Mountain giants
 int dMountainGiants = 0;
+int xMountainGiantID = 0;
 int xPlayerOwner = 0;
 int xSpecialNext = 0;
 int xSpecialStep = 0;
@@ -117,7 +118,7 @@ highFrequency
 	xIdleTimeout = xInitAddInt(dEnemies, "id", 0);
 	
 	dMountainGiants = xInitDatabase("MG DB");
-	xUnitID = xInitAddInt(dMountainGiants, "id", -1);
+	xMountainGiantID = xInitAddInt(dMountainGiants, "id", -1);
 	xPlayerOwner = xInitAddInt(dMountainGiants, "owner", 0);
 	xSpecialNext = xInitAddInt(dMountainGiants, "time", 0);
 	xSpecialStep = xInitAddInt(dMountainGiants, "status", 0);
