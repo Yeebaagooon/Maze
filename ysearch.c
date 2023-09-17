@@ -86,48 +86,13 @@ highFrequency
 			case kbGetProtoUnitID("Lightning Sparks"):
 			{
 				trUnitSelectClear();
-				trUnitSelectByID(id);
-				for(p = 1 ; <= cNumberNonGaiaPlayers){
-					xSetPointer(dPlayerData, p);
-					if(xGetBool (dPlayerData, xPlayerRunner)){
-						trDamageUnitsInArea(p, "Building", 1, 200);
-						trDamageUnitsInArea(p, "Unit", 1, 50);
-						/*
-						HALP KB STUFF to add to kill count
-						int kbnum = 0;
-						xsSetContextPlayer(5);
-						kbnum = kbUnitQueryCreate("id");
-						kbUnitQuerySetPlayerID(kbnum, true);
-						kbUnitQuerySetMaximumDistance(3);
-						kbUnitQuerySetPosition(kbGetBlockPosition(""+id, true));
-						kbUnitQuerySetUnitType(-1);
-						kbLookAtAllUnitsOnMap();
-						int counts = kbUnitQueryExecute(kbnum);
-						for(inte = 0; < counts){
-							trUnitSelectClear();
-							trUnitSelectByID(kbUnitQueryGetResult(kbnum, inte));
-							if(trUnitPercentDamaged() >= 100){
-								trQuestVarSet("P"+(1*trQuestVarGet("M9"))+"AddKills", trQuestVarGet("P"+(1*trQuestVarGet("M9"))+"AddKills") + 1);
-							}
-						}
-						kbUnitQueryDestroy(id);
-						trUnitSelectClear();
-						trUnitSelectByID(UnitID);
-						xsSetContextPlayer(0);
-						*/
-					}
-				}
+				DamageBuildingCountRazes(kbUnitGetOwner(id),kbGetBlockPosition(""+j),1.0,200.0);
 				break;
 			}
 			case kbGetProtoUnitID("Lightning Scorch"):
 			{
 				trUnitSelectClear();
-				trUnitSelectByID(id);
-				for(p = 1 ; <= cNumberNonGaiaPlayers){
-					xSetPointer(dPlayerData, p);
-					//trDamageUnitsInArea(p, "Building", 1, 2000);
-					trDamageUnitsInArea(p, "Unit", 1, 2000);
-				}
+				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),1.0,200.0);
 				break;
 			}
 			case kbGetProtoUnitID("Earthquake"):

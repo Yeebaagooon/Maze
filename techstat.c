@@ -110,6 +110,9 @@ highFrequency
 		modifyProtounitAbsolute("Troll", p, 32, 50);
 		modifyProtounitAbsolute("Satyr", p, 32, 10);
 		modifyProtounitAbsolute("Wadjet", p, 32, 15);
+		modifyProtounitAbsolute("Lightning Strike", p, 27, 0.0);
+		modifyProtounitAbsolute("Lightning Strike", p, 28, 0.0);
+		modifyProtounitAbsolute("Lightning Strike", p, 29, 0.0);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);

@@ -99,7 +99,7 @@ void DamageBuildingCountRazes(int p = 1, vector pos = vector(0,0,0), float dista
 				trUnitSelectByID(UnitID);
 				if(trUnitPercentDamaged() >= 100.0){
 					trDamageUnitPercent(100.0);
-					trChatSend(0, "Add a kill");
+					trQuestVarModify("P"+p+"AddKills", "+", 1);
 				}
 			}
 			kbUnitQueryDestroy(kbid);
@@ -128,7 +128,66 @@ void DamageBuildingPercentCountRazes(int p = 1, vector pos = vector(0,0,0), floa
 				}
 				if(trUnitPercentDamaged() >= 100.0){
 					trDamageUnitPercent(100.0);
-					trChatSend(0, "Add a kill");
+					trQuestVarModify("P"+p+"AddKills", "+", 1);
+				}
+			}
+			kbUnitQueryDestroy(kbid);
+		}
+	}
+}
+
+void DamageUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
+	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
+		xsSetContextPlayer(otherp);
+		if(otherp != p && kbIsPlayerAlly(p) == false){
+			int kbid = kbUnitQueryCreate("damage");
+			kbUnitQuerySetPlayerID(kbid, otherp);
+			kbUnitQuerySetPosition(kbid, pos);
+			kbUnitQuerySetUnitType(kbid, 935);
+			kbUnitQuerySetState(kbid, 2);
+			kbUnitQuerySetMaximumDistance(kbid, distance);
+			int count = kbUnitQueryExecute(kbid);
+			for(a = 0 ; < count){
+				int UnitID = kbUnitQueryGetResult(kbid, a);
+				trUnitSelectClear();
+				trUnitSelectByID(UnitID);
+				if(trUnitPercentDamaged() < 100.0){
+					trDamageUnit(damage);
+				}
+				trUnitSelectClear();
+				trUnitSelectByID(UnitID);
+				if(trUnitPercentDamaged() >= 100.0){
+					trDamageUnitPercent(100.0);
+					trQuestVarModify("P"+p+"AddKills", "+", 1);
+				}
+			}
+			kbUnitQueryDestroy(kbid);
+		}
+	}
+	xsSetContextPlayer(0);
+}
+
+void DamageUnitPercentCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
+	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
+		xsSetContextPlayer(otherp);
+		if(otherp != p && kbIsPlayerAlly(p) == false){
+			int kbid = kbUnitQueryCreate("damage");
+			kbUnitQuerySetPlayerID(kbid, otherp);
+			kbUnitQuerySetPosition(kbid, pos);
+			kbUnitQuerySetUnitType(kbid, 935);
+			kbUnitQuerySetState(kbid, 2);
+			kbUnitQuerySetMaximumDistance(kbid, distance);
+			int count = kbUnitQueryExecute(kbid);
+			for(a = 0 ; < count){
+				int UnitID = kbUnitQueryGetResult(kbid, a);
+				trUnitSelectClear();
+				trUnitSelectByID(UnitID);
+				if(trUnitPercentDamaged() < 100.0){
+					trDamageUnitPercent(damage);
+				}
+				if(trUnitPercentDamaged() >= 100.0){
+					trDamageUnitPercent(100.0);
+					trQuestVarModify("P"+p+"AddKills", "+", 1);
 				}
 			}
 			kbUnitQueryDestroy(kbid);

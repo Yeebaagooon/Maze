@@ -27,7 +27,7 @@ void LevelUp(int p = 0){
 		trChatSend(0, "<color=1,1,0>P" + p + " Level " + xGetInt(dPlayerData, xPlayerLevel));
 		//Level 0-5 rewards
 		if(xGetInt(dPlayerData, xPlayerLevel) < 5){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL1, RunnerRewardL2);
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL1, (RunnerRewardL2-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
 				trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2);
@@ -43,7 +43,7 @@ void LevelUp(int p = 0){
 		}
 		//Level 5-10rewards
 		else if(xGetInt(dPlayerData, xPlayerLevel) >= 5){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL2, RunnerRewardL3);
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL2, (RunnerRewardL3-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
 				trQuestVarSetFromRand("CR"+p, RunnerRewardL2, RunnerRewardL3);
@@ -132,8 +132,8 @@ highFrequency
 					trPlayerGrantResources(p, "Wood", 200.0);
 					trPlayerGrantResources(p, "Gold", 100.0);
 					//runner stat checker
-					if(trGetStatValue(p, 2) > trQuestVarGet("P"+p+"UnitKills")){
-						trQuestVarSet("P"+p+"UnitKills", trGetStatValue(p, 2));
+					if(trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"UnitKills")){
+						trQuestVarSet("P"+p+"UnitKills", trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills"));
 						trSetCivilizationNameOverride(p, "Kills: " + 1*trQuestVarGet("P"+p+"UnitKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 						gadgetRefresh("unitStatPanel");
 						if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"UnitKills")){
@@ -168,8 +168,8 @@ highFrequency
 				trPlayerGrantResources(p, "Wood", -10000.0);
 				trPlayerGrantResources(p, "Wood", 5.0);
 				//hunter stats
-				if(trGetStatValue(p, 3) > trQuestVarGet("P"+p+"BuildingKills")){
-					trQuestVarSet("P"+p+"BuildingKills", trGetStatValue(p, 3));
+				if(trGetStatValue(p, 3)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"BuildingKills")){
+					trQuestVarSet("P"+p+"BuildingKills", trGetStatValue(p, 3)+trQuestVarGet("P"+p+"BuildingKills"));
 					trSetCivilizationNameOverride(p, "Razes: " + 1*trQuestVarGet("P"+p+"BuildingKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 					gadgetRefresh("unitStatPanel");
 					if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"BuildingKills")){
@@ -266,7 +266,7 @@ highFrequency
 	UnitCreate(2, "Tower", 16, 12);
 	UnitCreate(2, "Tower", 18, 12);
 	UnitCreate(2, "Tower", 20, 12);
-	modifyProtounitAbsolute("Tower", 2, 0, 20000);
+	modifyProtounitAbsolute("Tower", 2, 0, 2000);
 }
 
 rule HunterPower1Mins
