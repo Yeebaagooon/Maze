@@ -1925,6 +1925,7 @@ You'll probably want to use some other echo instead.&#xD;
         <parameters type="int" name="defID"/>
         <parameters type="int" name="playerID"/>
         <parameters type="int" name="areaID"/>
+        <parameters type="int" name="count"/>
         <javadoc>Place object definition for the player at the given area's location.</javadoc>
     </method>
     <method return="void" name="rmPlaceObjectDefAtLoc">
@@ -2925,82 +2926,103 @@ When called, the player is set to be victorious on the local machine.&#xD;
         <javadoc>Creates a unit query, returns the query ID.</javadoc>
     </method>
     <method return="bool" name="kbUnitQueryResetData">
+        <parameters type="int" name="queryID"/>
         <javadoc>Resets the given unit query data AND results.</javadoc>
     </method>
     <method return="bool" name="kbUnitQueryResetResults">
+        <parameters type="int" name="queryID"/>
         <javadoc>Resets the given unit query results.</javadoc>
     </method>
     <method return="bool" name="kbUnitQueryDestroy">
+        <parameters type="int" name="queryID"/>
         <javadoc>Destroys the given unit query.</javadoc>
     </method>
     <method return="int" name="kbUnitQueryNumberResults">
+        <parameters type="int" name="queryID"/>
         <javadoc>Returns the number of results in the current query.</javadoc>
     </method>
     <method return="int" name="kbUnitQueryGetResult">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="index"/>
         <javadoc>Returns the UnitID of the index'th result in the current query.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetPlayerID">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="playerID"/>
         <parameters type="bool" name="resetQueryData"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetPlayerRelation">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="playerRelation"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetUnitType">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="unitTypeID"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetActionType">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="actionTypeID"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetState">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="state"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetPosition">
+        <parameters type="int" name="queryID"/>
         <parameters type="vector" name="v"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetMaximumDistance">
+        <parameters type="int" name="queryID"/>
         <parameters type="float" name="distance"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetAscendingSort">
+        <parameters type="int" name="queryID"/>
         <parameters type="bool" name="ascending"/>
         <javadoc>If ascending is true, results are sorted in ascending distance order from the query position.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetBaseID">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="baseID"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetAreaID">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="areaID"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetAreaGroupID">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="areaGroupID"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetArmyID">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="armyID"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="bool" name="kbUnitQuerySetSeeableOnly">
+        <parameters type="int" name="queryID"/>
         <parameters type="bool" name="seeableOnly"/>
         <javadoc>Sets query data.</javadoc>
     </method>
     <method return="int" name="kbUnitQueryExecute">
+        <parameters type="int" name="queryID"/>
         <javadoc>Executes the current query; returns number of results.</javadoc>
     </method>
     <method return="int" name="kbUnitQueryExecuteOnQuery">
+        <parameters type="int" name="queryID"/>
         <parameters type="int" name="previousQueryID"/>
         <javadoc>Executes the current query on the previous query's results; returns the new number of results.</javadoc>
     </method>
     <method return="int" name="kbUnitQueryExecuteOnQueryByName">
+        <parameters type="int" name="queryID"/>
         <parameters type="string" name="previousQueryName"/>
         <javadoc>Executes the current query on the previous query's results; returns the new number of results.</javadoc>
     </method>
@@ -3029,6 +3051,10 @@ Copies value of one of the trigger scratch variables.&#xD;
         <javadoc>&#xD;
 Chats out the value of one of the trigger scratch variables.&#xD;
 @since AoT</javadoc>
+    </method>
+    <method return="void" name="configDef">
+        <parameters type="string" name="parameter"/>
+        <javadoc>Sets the specified configuration to true</javadoc>
     </method>
     <method return="void" name="configUndef">
         <parameters type="string" name="parameter"/>
@@ -3520,7 +3546,7 @@ Returns the culture name for the given culture.&#xD;
         <parameters type="string" name="effectType"/>
         <javadoc>Add an effect from the trigger(2)\typetest.xml file to the random map.</javadoc>
     </method>
-    <method return="void" name="rmCreateTrigger">
+    <method return="int" name="rmCreateTrigger">
         <parameters type="string" name="triggerName"/>
         <javadoc>&#xD;
 Create a trigger to add to this random map.&#xD;
@@ -3679,13 +3705,13 @@ Enters the mode specified.&#xD;
         <javadoc>&#xD;
 Modifies protounit data for this scenario only.&#xD;
 &#xD;
-@param 	protoUnit&#xD;
+@param  protoUnit&#xD;
 The name of the protounit to modify.&#xD;
-@param	playerID&#xD;
+@param  playerID&#xD;
 The player for which the modifications should occur.&#xD;
-@param	field&#xD;
+@param  field&#xD;
 {@link TriggerParamType#PUFIELD}&#xD;
-@param	delta&#xD;
+@param  delta&#xD;
 The (relative) amount to change.&#xD;
 &#xD;
 @since AoT
@@ -3846,13 +3872,13 @@ Automatically pauses the game if the Age Advancement windows opens.&#xD;
         <javadoc>&#xD;
 Displays dialog with 2 choices, and activates a trigger in response.&#xD;
 &#xD;
-@local 	Be careful when used online. The trigger events are only fired locally,&#xD;
+@local  Be careful when used online. The trigger events are only fired locally,&#xD;
 so an OoS is likely to occur if 2 players choose different options.</javadoc>
     </method>
     <method return="void" name="trShowWinLose">
         <parameters type="string" name="text"/>
         <parameters type="string" name="soundfile"/>
-        <parameters type="float" name="volume"/>
+        <parameters type="string" name="volume"/>
         <javadoc>Shows a win/lose message and plays a sound.</javadoc>
     </method>
     <method return="void" name="trStartGameRecord">
@@ -5915,7 +5941,7 @@ Returns the cost of the protounit for the given resource.&#xD;
     </method>
     <method return="vector" name="kbGetBlockPosition">
         <parameters type="string" name="blockName"/>
-		<parameters type="bool" name="backwardsSearch"/>
+        <parameters type="bool" name="backwardsSearch"/>
         <javadoc>&#xD;
 Returns the position of the given unit.&#xD;
 This was intended to only work for cinematic blocks,&#xD;
@@ -5923,7 +5949,7 @@ but it turns out to work fine for every unit.</javadoc>
     </method>
     <method return="int" name="kbGetBlockID">
         <parameters type="string" name="unitName"/>
-		<parameters type="bool" name="backwardsSearch"/>
+        <parameters type="bool" name="backwardsSearch"/>
         <javadoc>&#xD;
 Returns the UnitID of the given unit.&#xD;
 This was intended to only work for cinematic blocks,&#xD;
@@ -6001,6 +6027,7 @@ but it turns out to work fine for every unit.</javadoc>
     </method>
     <method return="bool" name="kbUnitIsType">
         <parameters type="int" name="unitID"/>
+        <parameters type="int" name="typeId"/>
         <javadoc>Returns true if the unit is of the unitTypeID.</javadoc>
     </method>
     <method return="int" name="kbUnitGetActionType">
@@ -6834,7 +6861,7 @@ Clears all cinematic info including model/texture precache info.</javadoc>
         <javadoc>&#xD;
 Maps an input event to the given command, in the given context.&#xD;
 &#xD;
-@param 	key	The input key to be bound to an action.&#xD;
+@param  key The input key to be bound to an action.&#xD;
 When prefixed with a plus, the given action is executed on both keydown and keyup, with param keyState 0 and 1 respectively.&#xD;
 &lt;img src="{@docRoot}/resources/keys.png" alt="keymap"&gt;&#xD;
 &#xD;
@@ -7300,10 +7327,10 @@ Does the right thing.&#xD;
         <javadoc>&#xD;
 Pops up a message box with some text and an OK button.&#xD;
 &#xD;
-@param	text&#xD;
+@param  text&#xD;
 The text to show.&#xD;
 &#xD;
-@param 	command&#xD;
+@param  command&#xD;
 The command to execute when the OK button is pressed.&#xD;
 &#xD;
 @local&#xD;
@@ -7503,7 +7530,7 @@ Brings up the age advancement dialog with a suitable set of minor god choices.&#
 A techName="Age 2 Fake" seems to work fine for all ages.&#xD;
 I have not yet been able to automatically choose 1 of the 2 minor gods through the console.&#xD;
 &#xD;
-@local 	Once a minor god is chosen reseachByID will probably be called,&#xD;
+@local  Once a minor god is chosen reseachByID will probably be called,&#xD;
 which will sync your choice with other computers.&#xD;
 &#xD;
 @see #researchByID(int, int, int)</javadoc>
@@ -7618,7 +7645,7 @@ Changes the minimap rotation mode. No arguments means toggle.&#xD;
 In mode A, the minimap is fixed and won't rotate. Instead, the camera box inside it will rotate.&#xD;
 In mode B, the minimap is as you all know it.&#xD;
 &#xD;
-@note 	This command only seems to toggle the mode.&#xD;
+@note   This command only seems to toggle the mode.&#xD;
 Directly setting is does not seem to work anymore.&#xD;
 &#xD;
 @local</javadoc>
@@ -8296,11 +8323,11 @@ When released, the selection rectangle disappears.</javadoc>
 Double click select at pointer location.&#xD;
 A doubleclick action selects all units of the same type as the unit under the pointer.&#xD;
 &#xD;
-@param	add&#xD;
+@param  add&#xD;
 If add == 1, the previous selected is extended with this selection.&#xD;
 Else, the previous selection is dropped.&#xD;
 &#xD;
-@param 	checkAction&#xD;
+@param  checkAction&#xD;
 When checkAction is true, only units that are performing the same action (idle, moving, ...) are selected.</javadoc>
     </method>
     <method return="void" name="uiAddSelectionButtonDown">
@@ -8655,7 +8682,7 @@ Plays the current track, with no arguments uses current duration, otherwise sets
 @see Unit#uiTransformSelectedUnit(string) uiTransformSelectedUnit(string)&#xD;
 @see aom.scripting.xs.tr.UserInterface#trRenderSnow(float) trRenderSnow(float)&#xD;
 &#xD;
-@local 	The trigger event is only fired on the local computer.&#xD;
+@local  The trigger event is only fired on the local computer.&#xD;
 Only use this with trigger that either autosync (e.g. uiTransformSelectedUnit(string))&#xD;
 or that don't impact the gameplay (e.g. trRenderSnow(float)).&#xD;
 &#xD;
@@ -8914,7 +8941,7 @@ Indicates that the move unit down key has gone up/down.&#xD;
         <javadoc>&#xD;
 Transforms the selected unit into the specified ProtoUnit.&#xD;
 &#xD;
-@sync 	This command can be used to manually transfer a series of bits to other players&#xD;
+@sync   This command can be used to manually transfer a series of bits to other players&#xD;
 by converting gatherers in ulfsarks or walls in gates and back.</javadoc>
     </method>
     <method return="int" name="protoCount">
@@ -9048,7 +9075,7 @@ Rotates the selected unit.</javadoc>
         <javadoc>&#xD;
 Indicates that the delete units button has gone up/down.</javadoc>
     </method>
-	    <method return="void" name="trPaintTerrain">
+        <method return="void" name="trPaintTerrain">
         <parameters type="int" name="x0"/>
         <parameters type="int" name="y0"/>
         <parameters type="int" name="x1"/>
@@ -9056,7 +9083,7 @@ Indicates that the delete units button has gone up/down.</javadoc>
         <parameters type="int" name="type"/>
         <parameters type="int" name="subType"/>
         <parameters type="bool" name="updateObstruction"/>
-		<javadoc>Paint the provided rectangle terrain type for the provided type and sub type. Coordinates are inclusive. Look up table is below:
+        <javadoc>Paint the provided rectangle terrain type for the provided type and sub type. Coordinates are inclusive. Look up table is below:
 Black: major=5; minor=4;
 BlackRock: major=2; minor=13;
 CityTileA: major=0; minor=70;
@@ -9239,7 +9266,7 @@ Water: major=1; minor=0;</javadoc>
     <method return="int" name="trGetTerrainType">
         <parameters type="int" name="x"/>
         <parameters type="int" name="y"/>
-		<javadoc>Gets the terrain type at the provided location. Look up table is below:
+        <javadoc>Gets the terrain type at the provided location. Look up table is below:
 Black: major=5; minor=4;
 BlackRock: major=2; minor=13;
 CityTileA: major=0; minor=70;
@@ -9422,7 +9449,7 @@ Water: major=1; minor=0;</javadoc>
     <method return="int" name="trGetTerrainSubType">
         <parameters type="int" name="x"/>
         <parameters type="int" name="y"/>
-		<javadoc>Gets the terrain sub type at the provided location. Look up table is below:
+        <javadoc>Gets the terrain sub type at the provided location. Look up table is below:
 Black: major=5; minor=4;
 BlackRock: major=2; minor=13;
 CityTileA: major=0; minor=70;
@@ -9609,18 +9636,18 @@ Water: major=1; minor=0;</javadoc>
         <parameters type="int" name="y1"/>
         <parameters type="float" name="height"/>
         <parameters type="bool" name="updateObstruction"/>
-		<javadoc>Sets the terrain elevation for the provided rectangle location. Coordinates are inclusive.</javadoc>
+        <javadoc>Sets the terrain elevation for the provided rectangle location. Coordinates are inclusive.</javadoc>
     </method>
     <method return="float" name="trGetTerrainHeight">
         <parameters type="int" name="x"/>
         <parameters type="int" name="y"/>
-		<javadoc>Gets the terrain elevation at the provided location.</javadoc>
+        <javadoc>Gets the terrain elevation at the provided location.</javadoc>
     </method>
     <method return="void" name="trSetCivAndCulture">
         <parameters type="int" name="player"/>
         <parameters type="int" name="civ"/>
         <parameters type="int" name="culture"/>
-		<javadoc>Overrides the player civilisation and culture.
+        <javadoc>Overrides the player civilisation and culture.
 Known civs:
 Zeus = 0;
 Poseidon = 1;
@@ -9649,28 +9676,28 @@ None = 5;</javadoc>
     </method>
     <method return="int" name="trGetUnitScenarioNameNumber">
         <parameters type="int" name="id"/>
-		<javadoc>Retrieves the scenario name number from the instance id. This is the reverse of kbGetBlockID.</javadoc>
+        <javadoc>Retrieves the scenario name number from the instance id. This is the reverse of kbGetBlockID.</javadoc>
     </method>
     <method return="int" name="trGetNextUnitScenarioNameNumber">
-	<javadoc>Retrieves the next scenario name number that will be allocated for a unit.</javadoc>
+    <javadoc>Retrieves the next scenario name number that will be allocated for a unit.</javadoc>
     </method>
     <method return="void" name="trCoverTerrainWithWater">
         <parameters type="int" name="height"/>
         <parameters type="int" name="depth"/>
         <parameters type="string" name="water"/>
-		<javadoc>Paints the entire map with water. This includes flattening the map and replacing the terrain. This version is compatible with online play.</javadoc>
+        <javadoc>Paints the entire map with water. This includes flattening the map and replacing the terrain. This version is compatible with online play.</javadoc>
     </method>
     <method return="float" name="trGetWaterHeight">
         <parameters type="int" name="x"/>
         <parameters type="int" name="y"/>
-		<javadoc>Retrieves the height of the water at the current location.</javadoc>
+        <javadoc>Retrieves the height of the water at the current location.</javadoc>
     </method>
     <method return="void" name="trSetGPData">
         <parameters type="int" name="playerID"/>
         <parameters type="int" name="type"/>
         <parameters type="int" name="slot"/>
         <parameters type="int" name="data"/>
-		<javadoc>Unlike what the command suggests, this adds rather than sets the god power data for the provided index. The fields are known to be the following:
+        <javadoc>Unlike what the command suggests, this adds rather than sets the god power data for the provided index. The fields are known to be the following:
 (0) God power tech id
 (1) Immediate use count
 (2) Recharge use count
@@ -9682,7 +9709,7 @@ None = 5;</javadoc>
         <parameters type="int" name="playerID"/>
         <parameters type="int" name="type"/>
         <parameters type="int" name="slot"/>
-		<javadoc>Retrieves the god power data for the following type. The fields are known to be the following:
+        <javadoc>Retrieves the god power data for the following type. The fields are known to be the following:
 (0) God power tech id
 (1) Immediate use count
 (2) Recharge use count
@@ -9692,87 +9719,87 @@ None = 5;</javadoc>
     </method>
     <method return="void" name="trMutateSelected">
         <parameters type="int" name="newunittype"/>
-		<javadoc>Transform the current selection to the new provided type. This is equivalent to unitTransform for the selection only.</javadoc>
+        <javadoc>Transform the current selection to the new provided type. This is equivalent to unitTransform for the selection only.</javadoc>
     </method>
     <method return="float" name="xsSqrt">
         <parameters type="float" name="value"/>
-		<javadoc>Square roots the provided value.</javadoc>
+        <javadoc>Square roots the provided value.</javadoc>
     </method>
     <method return="float" name="xsSin">
         <parameters type="float" name="value"/>
-		<javadoc>Calculates the sine of the provided value in radians.</javadoc>
+        <javadoc>Calculates the sine of the provided value in radians.</javadoc>
     </method>
     <method return="float" name="xsCos">
         <parameters type="float" name="value"/>
-		<javadoc>Calculates the cosine of the provided value in radians.</javadoc>
+        <javadoc>Calculates the cosine of the provided value in radians.</javadoc>
     </method>
     <method return="float" name="xsAtan">
         <parameters type="float" name="value"/>
-		<javadoc>Calculates the arctangent of the provided value giving the result in radians</javadoc>
+        <javadoc>Calculates the arctangent of the provided value giving the result in radians</javadoc>
     </method>
     <method return="float" name="xsAtan2">
         <parameters type="float" name="y"/>
         <parameters type="float" name="x"/>
-		<javadoc>Calculates the arctangent of the provided values the result in radians. This version gives the correct quadrant.</javadoc>
+        <javadoc>Calculates the arctangent of the provided values the result in radians. This version gives the correct quadrant.</javadoc>
     </method>
     <method return="float" name="xsPow">
         <parameters type="float" name="base"/>
         <parameters type="int" name="power"/>
-		<javadoc>Rases the value to the power value.</javadoc>
+        <javadoc>Rases the value to the power value.</javadoc>
     </method>
     <method return="float" name="xsFloor">
         <parameters type="float" name="value"/>
-		<javadoc>Rounds down the value to the next whole number.</javadoc>
+        <javadoc>Rounds down the value to the next whole number.</javadoc>
     </method>
     <method return="float" name="xsCeil">
         <parameters type="float" name="value"/>
-		<javadoc>Rounds up the value to the next whole number.</javadoc>
+        <javadoc>Rounds up the value to the next whole number.</javadoc>
     </method>
     <method return="float" name="xsRound">
         <parameters type="float" name="value"/>
-		<javadoc>Rounds the value to the nearest whole number.</javadoc>
+        <javadoc>Rounds the value to the nearest whole number.</javadoc>
     </method>
     <method return="float" name="xsClamp">
         <parameters type="float" name="value"/>
         <parameters type="float" name="min"/>
         <parameters type="float" name="max"/>
-		<javadoc>Shifts the provided value until it is inside the provided range.</javadoc>
+        <javadoc>Shifts the provided value until it is inside the provided range.</javadoc>
     </method>
     <method return="float" name="xsMin">
         <parameters type="float" name="first"/>
         <parameters type="float" name="second"/>
-		<javadoc>Returns the minimum of the provided values.</javadoc>
+        <javadoc>Returns the minimum of the provided values.</javadoc>
     </method>
     <method return="float" name="xsMax">
         <parameters type="float" name="first"/>
         <parameters type="float" name="second"/>
-		<javadoc>Returns the maximum of the provided values.</javadoc>
+        <javadoc>Returns the maximum of the provided values.</javadoc>
     </method>
     <method return="float" name="xsAbs">
         <parameters type="float" name="value"/>
-		<javadoc>Removes the sign of the provided value giving the magnitude only.</javadoc>
+        <javadoc>Removes the sign of the provided value giving the magnitude only.</javadoc>
     </method>
     <method return="int" name="xsStringLength">
         <parameters type="string" name="value"/>
-		<javadoc>Gets the length of the provided string.</javadoc>
+        <javadoc>Gets the length of the provided string.</javadoc>
     </method>
     <method return="string" name="xsSubString">
         <parameters type="string" name="value"/>
         <parameters type="int" name="length"/>
         <parameters type="int" name="pos"/>
-		<javadoc>Retrives part of the string based on the length and position.</javadoc>
+        <javadoc>Retrives part of the string based on the length and position.</javadoc>
     </method>
     <method return="int" name="xsFindString">
         <parameters type="string" name="value"/>
         <parameters type="string" name="findValue"/>
         <parameters type="int" name="position"/>
-		<javadoc>Finds the provided string inside the other string with a starting search position. The value retrieved is the next occurance.</javadoc>
+        <javadoc>Finds the provided string inside the other string with a starting search position. The value retrieved is the next occurance.</javadoc>
     </method>
     <method return="void" name="trSetSunPosition">
         <parameters type="float" name="inclination"/>
         <parameters type="float" name="rotation"/>
         <parameters type="bool" name="relative"/>
-		<javadoc>Sets the sun inclination and rotation in degrees.</javadoc>
+        <javadoc>Sets the sun inclination and rotation in degrees.</javadoc>
     </method>
     <method return="void" name="trSetCloudData">
         <parameters type="float" name="intensity"/>
@@ -9781,38 +9808,38 @@ None = 5;</javadoc>
         <parameters type="float" name="speed"/>
         <parameters type="float" name="directionX"/>
         <parameters type="float" name="directionZ"/>
-		<javadoc>Modifies the cloud data according to the provided parameters. Note that larger scale actually reduces the cloud size.</javadoc>
+        <javadoc>Modifies the cloud data according to the provided parameters. Note that larger scale actually reduces the cloud size.</javadoc>
     </method>
     <method return="void" name="trSetCloudMap">
         <parameters type="string" name="texture"/>
-		<javadoc>Sets the file path to use for the cloud. This searches from the texture folder and supports sub folders with the appropriate provided path. The texture file extension should be included.</javadoc>
+        <javadoc>Sets the file path to use for the cloud. This searches from the texture folder and supports sub folders with the appropriate provided path. The texture file extension should be included.</javadoc>
     </method>
     <method return="void" name="trSetSelectedScale">
         <parameters type="float" name="scaleX"/>
         <parameters type="float" name="scaleY"/>
         <parameters type="float" name="scaleZ"/>
-		<javadoc>Changes the scale of the current selection.</javadoc>
+        <javadoc>Changes the scale of the current selection.</javadoc>
     </method>
     <method return="void" name="trSetSelectedHeight">
         <parameters type="float" name="height"/>
-		<javadoc>This appears to change the flying height of selected bird units if applied while moving.</javadoc>
+        <javadoc>This appears to change the flying height of selected bird units if applied while moving.</javadoc>
     </method>
     <method return="void" name="trSetSelectedUpVector">
         <parameters type="float" name="stretchX"/>
         <parameters type="float" name="stretchY"/>
         <parameters type="float" name="stretchZ"/>
-		<javadoc>Applies the provided stretch values to the current selection.</javadoc>
+        <javadoc>Applies the provided stretch values to the current selection.</javadoc>
     </method>
     <method return="void" name="trSetUnitOrientation">
         <parameters type="vector" name="mX"/>
         <parameters type="vector" name="mY"/>
         <parameters type="bool" name="immediate"/>
-		<javadoc>Applies the provided rotation matrix to the current selection. The Z part is automatically calculated using cross product.</javadoc>
+        <javadoc>Applies the provided rotation matrix to the current selection. The Z part is automatically calculated using cross product.</javadoc>
     </method>
     <method return="int" name="xsStringToInt">
         <parameters type="string" name="value"/>
-		<javadoc>Converts the provided text into an integer.</javadoc>
-	</method>
+        <javadoc>Converts the provided text into an integer.</javadoc>
+    </method>
     <method return="void" name="trUnitOverrideAnimation">
         <parameters type="int" name="type"/>
         <parameters type="int" name="variation"/>
@@ -9820,7 +9847,7 @@ None = 5;</javadoc>
         <parameters type="bool" name="freeOnDeath"/>
         <parameters type="int" name="eventID"/>
         <parameters type="int" name="extra"/>
-		<javadoc>Applies the provided animation to current selection. The following animation ids are known:
+        <javadoc>Applies the provided animation to current selection. The following animation ids are known:
 Attack=1;
 BehindAttack=36;
 Birth=18;
@@ -9874,52 +9901,52 @@ Throw=31;
 Walk=15;
 WalkAttack=21;
 WhirlwindAttack=39;</javadoc>
-	</method>
-	<method return="void" name="trUnitSetAnimationPath">
+    </method>
+    <method return="void" name="trUnitSetAnimationPath">
         <parameters type="string" name="value"/>
-		<javadoc>Overrides the unit animation look up. E.g. value: "1,0,0,0,0,0,0". Each value represents a selector in the animation file. If more values are provided than needed the rest are ignored.</javadoc>
-	</method>
-	<method return="void" name="trSetCurrentScenarioUserData">
+        <javadoc>Overrides the unit animation look up. E.g. value: "1,0,0,0,0,0,0". Each value represents a selector in the animation file. If more values are provided than needed the rest are ignored.</javadoc>
+    </method>
+    <method return="void" name="trSetCurrentScenarioUserData">
         <parameters type="int" name="index"/>
         <parameters type="int" name="value"/>
-		<javadoc>Stores the provided value in the user profile for this scenario. Index can range from 0-15.</javadoc>
-	</method>
-	<method return="int" name="trGetScenarioUserData">
+        <javadoc>Stores the provided value in the user profile for this scenario. Index can range from 0-15.</javadoc>
+    </method>
+    <method return="int" name="trGetScenarioUserData">
         <parameters type="int" name="index"/>
         <parameters type="string" name="scenario"/>
-		<javadoc>Retrives the provided value for the index with the provided scenario or current scenario if not provided. Index can range from 0-15.</javadoc>
-	</method>
-	<method return="void" name="trPaintWaterColor">
+        <javadoc>Retrives the provided value for the index with the provided scenario or current scenario if not provided. Index can range from 0-15.</javadoc>
+    </method>
+    <method return="void" name="trPaintWaterColor">
         <parameters type="vector" name="color"/>
         <parameters type="int" name="fromX"/>
         <parameters type="int" name="fromZ"/>
         <parameters type="int" name="toX"/>
         <parameters type="int" name="toZ"/>
-		<javadoc>Paints the water color for the provided rectangle. Note that the toX and toZ values are NOT inclusive. Color values are from 0.0 to 1.0.</javadoc>
-	</method>
-	<method return="int" name="kbUnitGetOwner">
+        <javadoc>Paints the water color for the provided rectangle. Note that the toX and toZ values are NOT inclusive. Color values are from 0.0 to 1.0.</javadoc>
+    </method>
+    <method return="int" name="kbUnitGetOwner">
         <parameters type="int" name="unitid"/>
-		<javadoc>Gets the owner of the unit with the provided id. Does not require context player setting.</javadoc>
-	</method>
-	<method return="int" name="kbUnitGetProtoUnitID">
+        <javadoc>Gets the owner of the unit with the provided id. Does not require context player setting.</javadoc>
+    </method>
+    <method return="int" name="kbUnitGetProtoUnitID">
         <parameters type="int" name="unitid"/>
-		<javadoc>Gets the protounit id of the unit with the provided index.</javadoc>
-	</method>
-	<method return="float" name="kbUnitGetResourceAmount">
+        <javadoc>Gets the protounit id of the unit with the provided index.</javadoc>
+    </method>
+    <method return="float" name="kbUnitGetResourceAmount">
         <parameters type="int" name="unitid"/>
-		<javadoc>Unsure what resource refers to in this context. Currently been unable to return anything other than 0.000000 for a unit.</javadoc>
-	</method>
-	<method return="int" name="kbUnitGetResourceType">
+        <javadoc>Unsure what resource refers to in this context. Currently been unable to return anything other than 0.000000 for a unit.</javadoc>
+    </method>
+    <method return="int" name="kbUnitGetResourceType">
         <parameters type="int" name="unitid"/>
-		<javadoc>Retrieves the resource type id the unit id currently contains. (0 gold, 1 wood, 2 food, 3 favor).</javadoc>
-	</method>
-	<method return="int" name="kbUnitGetSubResourceType">
+        <javadoc>Retrieves the resource type id the unit id currently contains. (0 gold, 1 wood, 2 food, 3 favor).</javadoc>
+    </method>
+    <method return="int" name="kbUnitGetSubResourceType">
         <parameters type="int" name="unitid"/>
-		<javadoc>Seems to return 0 for some objects containing resources. Otherwise unsure what it does.</javadoc>
-	</method>
-	<method return="int" name="kbUnitGetAnimationActionType">
+        <javadoc>Seems to return 0 for some objects containing resources. Otherwise unsure what it does.</javadoc>
+    </method>
+    <method return="int" name="kbUnitGetAnimationActionType">
         <parameters type="int" name="unitid"/>
-		<javadoc>Retrieves the animation action the unit is currently performing. Following action ids are known:
+        <javadoc>Retrieves the animation action the unit is currently performing. Following action ids are known:
 AreaAttack=24;
 Attach=35;
 Attack=18;
@@ -9990,11 +10017,11 @@ Use=42;
 Wander=20;
 WhirlwindAttack=48;
 Work=17;</javadoc>
-	</method>
-	<method return="bool" name="kbProtoUnitIsUnitType">
+    </method>
+    <method return="bool" name="kbProtoUnitIsUnitType">
         <parameters type="int" name="protounitid"/>
         <parameters type="int" name="typeid"/>
-		<javadoc>Returns if the protounit id is of the provided type id. The following values are known for the abstract types:
+        <javadoc>Returns if the protounit id is of the provided type id. The following values are known for the abstract types:
 AbstractArcher=956;
 AbstractArcheryRange=1019;
 AbstractArmory=1058;
@@ -10189,25 +10216,25 @@ WaterResource=945;
 WildCrops=1003;
 Wood=1002;
 WoodDropsite=1006;</javadoc>
-	</method>
-	<method return="float" name="kbProtoUnitGetTrainPoints">
+    </method>
+    <method return="float" name="kbProtoUnitGetTrainPoints">
         <parameters type="int" name="protounitid"/>
-		<javadoc>Retrieves the number of train points required to make the provided protounit id.</javadoc>
-	</method>
-	<method return="float" name="kbProtoUnitGetMinimumRange">
+        <javadoc>Retrieves the number of train points required to make the provided protounit id.</javadoc>
+    </method>
+    <method return="float" name="kbProtoUnitGetMinimumRange">
         <parameters type="int" name="protounitid"/>
-		<javadoc>Retrieves the minimum range of the protounit id.</javadoc>
-	</method>
-	<method return="float" name="kbProtoUnitGetMaximumRange">
+        <javadoc>Retrieves the minimum range of the protounit id.</javadoc>
+    </method>
+    <method return="float" name="kbProtoUnitGetMaximumRange">
         <parameters type="int" name="protounitid"/>
-		<javadoc>Retrieves the maximum range of the protounit id.</javadoc>
-	</method>
-	<method return="float" name="kbProtoUnitGetDamage">
+        <javadoc>Retrieves the maximum range of the protounit id.</javadoc>
+    </method>
+    <method return="float" name="kbProtoUnitGetDamage">
         <parameters type="int" name="protounitid"/>
         <parameters type="int" name="action"/>
         <parameters type="int" name="againstplayer"/>
         <parameters type="int" name="againstprotounitid"/>
-		<javadoc>Retrieves the unit bonus damage dealt with a given damage action. Known actions are below:
+        <javadoc>Retrieves the unit bonus damage dealt with a given damage action. Known actions are below:
 Bored=0;
 Build=1;
 Convert=2;
@@ -10278,12 +10305,12 @@ TownBell=66;
 HeroDeath=67;
 Unbuild=68;
 AutoLOS=69;</javadoc>
-	</method>
-	<method return="float" name="kbProtoUnitGetDamageOfType">
+    </method>
+    <method return="float" name="kbProtoUnitGetDamageOfType">
         <parameters type="int" name="protounitid"/>
         <parameters type="int" name="action"/>
         <parameters type="int" name="type"/>
-		<javadoc>Retrieves the unit damage for the provided action and damage type. Types: hack=2, pierce=3, crush=0. Known actions are below:
+        <javadoc>Retrieves the unit damage for the provided action and damage type. Types: hack=2, pierce=3, crush=0. Known actions are below:
 Bored=0;
 Build=1;
 Convert=2;
@@ -10354,58 +10381,64 @@ TownBell=66;
 HeroDeath=67;
 Unbuild=68;
 AutoLOS=69;</javadoc>
-	</method>
-	<method return="float" name="kbProtoUnitGetArmorOfType">
+    </method>
+    <method return="float" name="kbProtoUnitGetArmorOfType">
         <parameters type="int" name="protounitid"/>
         <parameters type="int" name="type"/>
-		<javadoc>Retrieves the unit armour for the provided action and damage type. Types: hack=2, pierce=3, crush=0.</javadoc>
-	</method>
-	<method return="float" name="kbProtoUnitGetMaxHitPoints">
+        <javadoc>Retrieves the unit armour for the provided action and damage type. Types: hack=2, pierce=3, crush=0.</javadoc>
+    </method>
+    <method return="float" name="kbProtoUnitGetMaxHitPoints">
         <parameters type="int" name="protounitid"/>
-		<javadoc>Retrieves the maximum hitpoints for the provided protounit id.</javadoc>
-	</method>
-	<method return="float" name="kbProtoUnitGetMaximumVelocity">
+        <javadoc>Retrieves the maximum hitpoints for the provided protounit id.</javadoc>
+    </method>
+    <method return="float" name="kbProtoUnitGetMaximumVelocity">
         <parameters type="int" name="protounitid"/>
-		<javadoc>Retrieves the unit speed for the provided protounit id.</javadoc>
-	</method>
-	<method return="int" name="kbProtoUnitGetPopulationCount">
+        <javadoc>Retrieves the unit speed for the provided protounit id.</javadoc>
+    </method>
+    <method return="int" name="kbProtoUnitGetPopulationCount">
         <parameters type="int" name="protounitid"/>
-		<javadoc>Retrieves the number of population slots the protovided protounit id currently uses.</javadoc>
-	</method>
-	<method return="int" name="kbBaseGetUnit">
+        <javadoc>Retrieves the number of population slots the protovided protounit id currently uses.</javadoc>
+    </method>
+    <method return="int" name="kbBaseGetUnit">
         <parameters type="int" name="player"/>
         <parameters type="int" name="baseid"/>
         <parameters type="int" name="index"/>
-		<javadoc>Retrieves the unit id in the defined base unit index.</javadoc>
-	</method>
-	<method return="int" name="kbNumberGodPowerActive">
-		<javadoc>Retrieves the total number of god powers that have ever been cast.</javadoc>
-	</method>
-	<method return="int" name="kbActiveGodPowerOwnerID">
-		<parameters type="int" name="index"/>
-		<javadoc>Retrieves the owner of god power cast with the provided cast index. Game seems to crash if calling with index after that god power is no longer active!</javadoc>
-	</method>
-	<method return="int" name="kbActiveGodPowerID">
-		<parameters type="int" name="index"/>
-		<javadoc>Retrieves the proto power id for the god power cast index. Game seems to crash if calling with index after that god power is no longer active!</javadoc>
-	</method>
-	<method return="int" name="aiTaskUnitGarrison">
-		<parameters type="int" name="garrisonedUnitID"/>
-		<parameters type="int" name="containerUnitID"/>
-		<javadoc>AI task to perform a unit garrison.</javadoc>
-	</method>
-	<method return="int" name="aiTaskUnitEject">
-		<parameters type="int" name="containerUnitID"/>
-		<parameters type="int" name="ejectedUnitID"/>
-		<javadoc>AI task to ungarrison a unit.</javadoc>
-	</method>
-	<method return="bool" name="aiTaskSetGatherPoint">
-		<parameters type="int" name="buildingUID"/>
-		<parameters type="vector" name="location"/>
-		<javadoc>Does a lightweight (no plan) move tasking to the given location for all units leaving the given unit. (Only does something for buildings with a gather point but is always true)</javadoc>
-	</method>
-	<method return="bool" name="aiTaskSpeedUpConstruction">
-		<parameters type="int" name="buildingUID"/>
-		<javadoc>Does a lightweight (no plan) activation tasking of Fuxi's Blessed Construction for the given building. Works on all buildings not only Fuxi's! When used on a completed building the animation stays active till the building is destroyed without effecting the repair speed. When used on units the animation stay active even if the unit dies.</javadoc>
-	</method>
+        <javadoc>Retrieves the unit id in the defined base unit index.</javadoc>
+    </method>
+    <method return="int" name="kbNumberGodPowerActive">
+        <javadoc>Retrieves the total number of god powers that have ever been cast.</javadoc>
+    </method>
+    <method return="int" name="kbActiveGodPowerOwnerID">
+        <parameters type="int" name="index"/>
+        <javadoc>Retrieves the owner of god power cast with the provided cast index. Game seems to crash if calling with index after that god power is no longer active!</javadoc>
+    </method>
+    <method return="int" name="kbActiveGodPowerID">
+        <parameters type="int" name="index"/>
+        <javadoc>Retrieves the proto power id for the god power cast index. Game seems to crash if calling with index after that god power is no longer active!</javadoc>
+    </method>
+    <method return="int" name="aiTaskUnitGarrison">
+        <parameters type="int" name="garrisonedUnitID"/>
+        <parameters type="int" name="containerUnitID"/>
+        <javadoc>AI task to perform a unit garrison.</javadoc>
+    </method>
+    <method return="int" name="aiTaskUnitEject">
+        <parameters type="int" name="containerUnitID"/>
+        <parameters type="int" name="ejectedUnitID"/>
+        <javadoc>AI task to ungarrison a unit.</javadoc>
+    </method>
+    <method return="bool" name="aiTaskSetGatherPoint">
+        <parameters type="int" name="buildingUID"/>
+        <parameters type="vector" name="location"/>
+        <javadoc>Does a lightweight (no plan) move tasking to the given location for all units leaving the given unit. (Only does something for buildings with a gather point but is always true)</javadoc>
+    </method>
+    <method return="bool" name="aiTaskSpeedUpConstruction">
+        <parameters type="int" name="buildingUID"/>
+        <javadoc>Does a lightweight (no plan) activation tasking of Fuxi's Blessed Construction for the given building. Works on all buildings not only Fuxi's! When used on a completed building the animation stays active till the building is destroyed without effecting the repair speed. When used on units the animation stay active even if the unit dies.</javadoc>
+    </method>
+    <method return="bool" name="aiCastGodPowerAtPositionFacingPosition">
+        <parameters type="int" name="techId"/>
+        <parameters type="vector" name="start"/>
+        <parameters type="vector" name="to"/>
+        <javadoc>Casts a god power with the direction set to the vector. Note that it is buggy and the vector for direction gets flipped.</javadoc>
+    </method>
 </model>

@@ -455,6 +455,7 @@ highFrequency
 {
 	if((trTime()-cActivationTime) >= 3){
 		Pregame = false;
+		int temp = 0;
 		xsDisableSelf();
 		trLetterBox(false);
 		trUIFadeToColor(0,0,0,500,100,false);
@@ -486,6 +487,7 @@ highFrequency
 		//Runners
 		for(a = 1; <= 1*trQuestVarGet("Runners")){
 			trQuestVarSetFromRand("pos", 0, SwitchMapSize()-1);
+			temp = trGetNextUnitScenarioNameNumber();
 			if(iModulo(4, a) == 0){
 				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",1*trQuestVarGet("pos")*22+10,12);
 			}
@@ -498,6 +500,10 @@ highFrequency
 			else{
 				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",MapSize-12,1*trQuestVarGet("pos")*22+10);
 			}
+			xSetInt(dPlayerData, xPlayerUnitID, temp);
+			trUnitSelectClear();
+			trUnitSelect(""+temp);
+			trUnitSetStance("Passive");
 		}
 		
 		//Timer

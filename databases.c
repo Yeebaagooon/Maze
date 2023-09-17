@@ -80,6 +80,12 @@ int xSpecialTargetID = 0;
 int dTowers = 0;
 int xTowerName = 0;
 
+//EQ
+int dEarthquake = 0;
+int xEarthquakeName = 0;
+int xEarthquakeOwner = 0;
+int xEarthquakeTimeout = 0;
+
 
 
 rule setup_first_databases
@@ -132,6 +138,11 @@ highFrequency
 	dTowers = xInitDatabase("towerdb");
 	xTowerName = xInitAddInt(dTowers, "name", -1);
 	xPlayerOwner = xInitAddInt(dTowers, "owner", 0);
+	
+	dEarthquake = xInitDatabase("eqdb");
+	xEarthquakeName = xInitAddInt(dEarthquake, "name", -1);
+	xEarthquakeOwner = xInitAddInt(dEarthquake, "owner", -1);
+	xEarthquakeTimeout = xInitAddInt(dEarthquake, "timeout", 1);
 	
 }
 

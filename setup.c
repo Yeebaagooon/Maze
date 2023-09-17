@@ -198,4 +198,3 @@ highFrequency
 	}
 	xsDisableSelf();
 }
-

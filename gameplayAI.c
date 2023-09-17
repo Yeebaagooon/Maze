@@ -32,8 +32,8 @@ bool GodPowerChance(int name = 0, int override = 0){
 			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
 		}
 		if(AutoHunterLevel >= 6){
-			trQuestVarSetFromRand("temp", 5, 6);
-			if(1*trQuestVarGet("temp") == 6){
+			trQuestVarSetFromRand("temp", 1, 6);
+			if(1*trQuestVarGet("temp") < 6){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "SPCMeteor", MapFactor());
 				trUnitSelectClear();
 				trUnitSelect(""+name);
@@ -46,6 +46,47 @@ bool GodPowerChance(int name = 0, int override = 0){
 			}
 		}
 		return(true);
+		AIVector = kbGetBlockPosition(""+name);
+	}
+}
+
+bool AI_Send_Death_Squad(int name = 0, int override = 0){
+	int temp = 0;
+	if(override == 0){
+		trQuestVarSetFromRand("temp", 0, 10+(50*MapFactor()));
+	}
+	else{
+		trQuestVarSet("temp", 0);
+	}
+	if(1*trQuestVarGet("temp") < MapFactor()){
+		trQuestVarSetFromRand("temp", 1, 2);
+		if(1*trQuestVarGet("temp") == 1){
+			for(n = 1; < 5){
+				temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
+				xAddDatabaseBlock(dEnemies, true);
+				xSetInt(dEnemies, xUnitID, temp);
+				xSetInt(dEnemies, xIdleTimeout, 0);
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
+			}
+		}
+		else{
+			for(n = 1; < 5){
+				temp = UnitCreate(cNumberNonGaiaPlayers, handunit,(MapSize/2)+5,(MapSize/2)+5);
+				xAddDatabaseBlock(dEnemies, true);
+				xSetInt(dEnemies, xUnitID, temp);
+				xSetInt(dEnemies, xIdleTimeout, 0);
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
+			}
+		}
+		trChatSend(0, "<color=1,0,0>AI death squad deployed");
+		return(true);
+	}
+	else{
+		return(false);
 	}
 }
 
@@ -78,10 +119,10 @@ highFrequency
 			if(anim == 9){
 				//roll to check idle time
 				trQuestVarSetFromRand("temp", 1 , 10);
-				//override if clump
+				//scatter behaviour
 				x = trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "All", 20);
 				if((x > 10) && (x < 20)){
-					trQuestVarSetFromRand("temp", 3 , 4);
+					trUnitMoveToPoint(xsVectorGetX(AIVector),5,xsVectorGetZ(AIVector),-1,true);
 				}
 				if(x > 20){
 					trQuestVarSet("temp", 4);
@@ -189,7 +230,7 @@ highFrequency
 						for(q = 1; <= cNumberNonGaiaPlayers){
 							xSetPointer(dPlayerData, q);
 							if(xGetBool(dPlayerData, xPlayerRunner)){
-								trDamageUnitsInArea(q, "All", 2, 1000);
+								trDamageUnitsInArea(q, "Building", 2, 1000);
 							}
 						}
 						trUnitSelectClear();

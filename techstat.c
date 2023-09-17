@@ -104,8 +104,12 @@ highFrequency
 		modifyProtounitAbsolute("Tower", p, 0, 500);
 		modifyProtounitAbsolute("Behemoth", p, 0, 1500);
 		modifyProtounitAbsolute("Troll", p, 0, 1250);
+		modifyProtounitAbsolute("Sphinx", p, 0, 700);
+		modifyProtounitAbsolute("Wadjet", p, 0, 600);
 		modifyProtounitAbsolute("Behemoth", p, 29, 100);
 		modifyProtounitAbsolute("Troll", p, 32, 50);
+		modifyProtounitAbsolute("Satyr", p, 32, 10);
+		modifyProtounitAbsolute("Wadjet", p, 32, 15);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);

@@ -6,11 +6,13 @@ string NoChoiceUnitName = "Lancer";
 
 
 const int RunnerRewardL1 = 4;
-const int RunnerRewardL2 = 10;
+const int RunnerRewardL2 = 11;
+const int RunnerRewardL3 = 18;
 
 
 const int HunterRewardL1 = 3;
 const int HunterRewardL2 = 14;
+const int HunterRewardL3 = 26;
 
 string RewardText(int r = 0){
 	string reward = "error";
@@ -47,6 +49,39 @@ string RewardText(int r = 0){
 		case 10:
 		{
 			reward = "+100 citizen hp";
+		}
+		//NEXT LEVEL
+		case 11:
+		{
+			reward = "+250 citizen hp";
+		}
+		case 12:
+		{
+			reward = "+1 citizen speed";
+		}
+		case 13:
+		{
+			reward = "+2 tower range";
+		}
+		case 14:
+		{
+			reward = "+4 tower attack";
+		}
+		case 15:
+		{
+			reward = "+4 tower LOS";
+		}
+		case 16:
+		{
+			reward = "Vision";
+		}
+		case 17:
+		{
+			reward = "Lightning storm";
+		}
+		case 18:
+		{
+			reward = "Pegasus";
 		}
 	}
 	return(reward);
@@ -104,6 +139,59 @@ string RewardTextHunter(int r = 0){
 		case 13:
 		{
 			reward = ""+MapFactor() + "x Vision power";
+		}
+		//LEVEL 2 REWARDS
+		case 14:
+		{
+			reward = "Temple timeshift 25 percent faster";
+		}
+		case 15:
+		{
+			reward = "+6 Temple LOS";
+		}
+		case 16:
+		{
+			reward = "+5 " + handunit + " LOS";
+		}
+		case 17:
+		{
+			reward = "+15 " + handunit + " crush attack";
+		}
+		case 18:
+		{
+			reward = "+6 " + rangedunit + " LOS";
+		}
+		case 19:
+		{
+			reward = "+10 " + rangedunit + " crush attack";
+		}
+		case 20:
+		{
+			reward = "+4 " + rangedunit + " range";
+		}
+		case 21:
+		{
+			reward = "+1 " + handunit + " speed";
+		}
+		case 22:
+		{
+			reward = "+1 " + rangedunit + " speed";
+		}
+		case 23:
+		{
+			reward = ""+MapFactor() + "x Earthquake power";
+		}
+		case 24:
+		{
+			reward = ""+MapFactor() + "x Meteor power";
+		}
+		case 25:
+		{
+			reward = "+200 " + rangedunit + " hp";
+		}
+		case 26:
+		{
+			reward = "+400 " + handunit + " hp";
 		}
 	}
 	return(reward);
@@ -244,6 +332,33 @@ inactive
 					trTechSetStatus(p, 127, 4);
 					xSetInt(dPlayerData, xPlayerWallLevel, xGetInt(dPlayerData, xPlayerWallLevel)+1);
 				}
+				else if(xGetInt(dPlayerData, xPlayerWallLevel) == 2){
+					trTechSetStatus(p, 411, 4);
+					xSetInt(dPlayerData, xPlayerWallLevel, xGetInt(dPlayerData, xPlayerWallLevel)+1);
+					trModifyProtounit("Wall Connector", p, 0, 1000);
+					trModifyProtounit("Wall Short", p, 0, 1000);
+					trModifyProtounit("Wall Medium", p, 0, 1000);
+					trModifyProtounit("Wall Long", p, 0, 1000);
+					trModifyProtounit("Gate", p, 0, 1000);
+				}
+				else if(xGetInt(dPlayerData, xPlayerWallLevel) == 3){
+					trTechSetStatus(p, 412, 4);
+					xSetInt(dPlayerData, xPlayerWallLevel, xGetInt(dPlayerData, xPlayerWallLevel)+1);
+					trModifyProtounit("Wall Connector", p, 0, 2500);
+					trModifyProtounit("Wall Short", p, 0, 2500);
+					trModifyProtounit("Wall Medium", p, 0, 2500);
+					trModifyProtounit("Wall Long", p, 0, 2500);
+					trModifyProtounit("Gate", p, 0, 2500);
+				}
+				else if(xGetInt(dPlayerData, xPlayerWallLevel) == 4){
+					trTechSetStatus(p, 413, 4);
+					xSetInt(dPlayerData, xPlayerWallLevel, xGetInt(dPlayerData, xPlayerWallLevel)+1);
+					trModifyProtounit("Wall Connector", p, 0, 5000);
+					trModifyProtounit("Wall Short", p, 0, 5000);
+					trModifyProtounit("Wall Medium", p, 0, 5000);
+					trModifyProtounit("Wall Long", p, 0, 5000);
+					trModifyProtounit("Gate", p, 0, 5000);
+				}
 				/*trUnitSelectClear();
 				trUnitSelectByID(0);
 				trUnitChangeInArea(p,p, "Tower", "Titan Atlantean", MapSize);
@@ -280,6 +395,39 @@ inactive
 			case 10:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 100);
+			}
+			//NEXT LEVEL
+			case 11:
+			{
+				trModifyProtounit("Villager Atlantean Hero", p, 0, 250);
+			}
+			case 12:
+			{
+				trModifyProtounit("Villager Atlantean Hero", p, 1, 1);
+			}
+			case 13:
+			{
+				trModifyProtounit("Tower", p, 11, 2);
+			}
+			case 14:
+			{
+				trModifyProtounit("Tower", p, 31, 4);
+			}
+			case 15:
+			{
+				trModifyProtounit("Tower", p, 2, 4);
+			}
+			case 16:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+			}
+			case 17:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Lightning Storm", 1);
+			}
+			case 18:
+			{
+				UnitCreate(p, "Pegasus", xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID))),xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID))));
 			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);
@@ -367,6 +515,66 @@ inactive
 			case 13:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Vision", MapFactor());
+			}
+			//TIER 2 HUNTER
+			case 14:
+			{
+				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.75);
+				modifyProtounitAbsolute("Temple", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+			}
+			case 15:
+			{
+				trModifyProtounit("Temple", p, 2, 6);
+			}
+			case 16:
+			{
+				trModifyProtounit(handunit, p, 2, 5);
+			}
+			case 17:
+			{
+				trModifyProtounit(handunit, p, 29, 15);
+			}
+			case 18:
+			{
+				trModifyProtounit(rangedunit, p, 2, 6);
+			}
+			case 19:
+			{
+				trModifyProtounit(rangedunit, p, 32, 10);
+			}
+			case 20:
+			{
+				trModifyProtounit(rangedunit, p, 11, 4);
+			}
+			case 21:
+			{
+				trModifyProtounit(handunit, p, 1, 1);
+			}
+			case 22:
+			{
+				trModifyProtounit(rangedunit, p, 1, 1);
+			}
+			case 23:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Earthquake", MapFactor());
+				if(AutoEscape){
+					xsEnableRule("AI_Force_Power");
+				}
+			}
+			case 24:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Meteor", MapFactor());
+				if(AutoEscape){
+					xsEnableRule("AI_Force_Power");
+				}
+			}
+			case 25:
+			{
+				trModifyProtounit(rangedunit, p, 0, 200);
+			}
+			case 26:
+			{
+				trModifyProtounit(handunit, p, 0, 400);
 			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);

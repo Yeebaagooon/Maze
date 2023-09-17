@@ -15,25 +15,45 @@ void LevelUp(int p = 0){
 		trQuestVarSet("P"+p+"Space", temp);
 		debugLog("Space selector dead");
 	}
-	trUnitSelectByQV("P"+p+"Space");
-	trUnitChangeProtoUnit("Maceman");
-	trUnitSelectByQV("P"+p+"Space");
-	trSetSelectedScale(0,0,0);
+	if((AutoEscape == false) || (p != cNumberNonGaiaPlayers)){
+		trUnitSelectByQV("P"+p+"Space");
+		trUnitChangeProtoUnit("Maceman");
+		trUnitSelectByQV("P"+p+"Space");
+		trSetSelectedScale(0,0,0);
+	}
 	xSetPointer(dPlayerData, p);
-	xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
 	//RUNNER REWARDS
 	if(xGetBool(dPlayerData, xPlayerRunner)){
+		trChatSend(0, "<color=1,1,0>P" + p + " Level " + xGetInt(dPlayerData, xPlayerLevel));
 		//Level 0-5 rewards
-		trQuestVarSetFromRand("CL"+p, RunnerRewardL1, RunnerRewardL2);
-		trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-		while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-			trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2);
-			if(1*trQuestVarGet("CR"+p) == RunnerRewardL2){
-				if(xGetInt(dPlayerData, xPlayerWallLevel) == 1){
-					trQuestVarSet("CR"+p, 3);
+		if(xGetInt(dPlayerData, xPlayerLevel) < 5){
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL1, RunnerRewardL2);
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2);
+				if(1*trQuestVarGet("CR"+p) == RunnerRewardL2){
+					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 2){
+						trQuestVarSet("CR"+p, 3);
+					}
+					else{
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2-1);
+					}
 				}
-				else{
-					trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2-1);
+			}
+		}
+		//Level 5-10rewards
+		else if(xGetInt(dPlayerData, xPlayerLevel) >= 5){
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL2, RunnerRewardL3);
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL2, RunnerRewardL3);
+				if(1*trQuestVarGet("CR"+p) == RunnerRewardL3){
+					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 3){
+						trQuestVarSet("CR"+p, 3);
+					}
+					else{
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL2, RunnerRewardL3-1);
+					}
 				}
 			}
 		}
@@ -41,19 +61,37 @@ void LevelUp(int p = 0){
 	else{
 		//HUNTER REWARDS
 		//Level 0-5 rewards
-		trQuestVarSetFromRand("CL"+p, HunterRewardL1, (HunterRewardL2-1));
-		trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-		while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-			trQuestVarSetFromRand("CR"+p, HunterRewardL1, (HunterRewardL2-1));
+		if(xGetInt(dPlayerData, xPlayerLevel) < 5){
+			trQuestVarSetFromRand("CL"+p, HunterRewardL1, (HunterRewardL2-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, HunterRewardL1, (HunterRewardL2-1));
+			}
+			if(AutoEscape){
+				//Auto reward for hunter CPU AI
+				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+				ActionChoice = p;
+				xsEnableRule("HunterConsequences");
+				AutoHunterLevel=AutoHunterLevel+1;
+				trChatSend(0, "Hunter level" + AutoHunterLevel);
+			}
 		}
-		if(AutoEscape){
-			//Auto reward for hunter CPU AI
-			xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-			ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-			ActionChoice = p;
-			xsEnableRule("HunterConsequences");
-			AutoHunterLevel=AutoHunterLevel+1;
-			trChatSend(0, "Hunter level" + AutoHunterLevel);
+		else if(xGetInt(dPlayerData, xPlayerLevel) >= 5){
+			trQuestVarSetFromRand("CL"+p, HunterRewardL2, (HunterRewardL3-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, HunterRewardL2, (HunterRewardL3-1));
+			}
+			if(AutoEscape){
+				//Auto reward for hunter CPU AI
+				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+				ActionChoice = p;
+				xsEnableRule("HunterConsequences");
+				AutoHunterLevel=AutoHunterLevel+1;
+				trChatSend(0, "Hunter level" + AutoHunterLevel);
+			}
 		}
 	}
 	//trChatSend(p, ""+1*trQuestVarGet("CL"+p) + " and " + 1*trQuestVarGet("CR"+p));
@@ -71,6 +109,8 @@ inactive
 highFrequency
 {
 	if(Pregame == false){
+		timediff = (trTimeMS() - timelast); // calculate timediff
+		timelast = trTimeMS();
 		int old = xsGetContextPlayer();
 		CyclePlayers = CyclePlayers+1;
 		if(CyclePlayers > cNumberNonGaiaPlayers){
@@ -167,6 +207,20 @@ highFrequency
 			xSetInt(dPlayerData, xLUCR, 0);
 			xsSetContextPlayer(old);
 		}
+		//GOD POWERS
+		if(xGetDatabaseCount(dEarthquake) > 0){
+			for(a = xGetDatabaseCount(dEarthquake); > 0){
+				xDatabaseNext(dEarthquake);
+				if(trTimeMS() > xGetInt(dEarthquake, xEarthquakeTimeout)){
+					xFreeDatabaseBlock(dEarthquake);
+				}
+				else{
+					xUnitSelect(dEarthquake, xEarthquakeName);
+					DamageBuildingCountRazes(xGetInt(dEarthquake, xEarthquakeOwner),kbGetBlockPosition(""+xGetInt(dEarthquake, xEarthquakeName)),30.0,0.17*timediff);
+					//trDamageUnitsInArea(p, "Unit", 30, 0.03*timediff);
+				}
+			}
+		}
 	}
 }
 
@@ -189,6 +243,30 @@ highFrequency
 	xsEnableRule("TowerDB");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
+	//Set GP vector to a corner
+	trQuestVarSetFromRand("temp", 1,4,true);
+	if(1*trQuestVarGet("temp") == 1){
+		AIVector = vector(4,4,4);
+	}
+	if(1*trQuestVarGet("temp") == 2){
+		AIVector = xsVectorSet(4,4,MapSize-4);
+	}
+	if(1*trQuestVarGet("temp") == 3){
+		AIVector = xsVectorSet(MapSize-4,4,4);
+	}
+	if(1*trQuestVarGet("temp") == 4){
+		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
+	}
+	UnitCreate(2, "Tower", 10, 12);
+	UnitCreate(2, "Tower", 10, 14);
+	UnitCreate(2, "Tower", 10, 16);
+	UnitCreate(2, "Tower", 10, 12);
+	UnitCreate(2, "Tower", 12, 12);
+	UnitCreate(2, "Tower", 14, 12);
+	UnitCreate(2, "Tower", 16, 12);
+	UnitCreate(2, "Tower", 18, 12);
+	UnitCreate(2, "Tower", 20, 12);
+	modifyProtounitAbsolute("Tower", 2, 0, 20000);
 }
 
 rule HunterPower1Mins
