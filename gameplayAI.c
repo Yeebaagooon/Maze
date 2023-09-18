@@ -20,10 +20,10 @@ bool GodPowerChance(int name = 0, int override = 0){
 			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Lightning Storm", kbGetBlockPosition(""+name), vector(0,0,0));
 		}
 		if(AutoHunterLevel == 4){
-			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
+			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "SPC Meteor", MapFactor());
 			trUnitSelectClear();
 			trUnitSelect(""+name);
-			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+			trTechInvokeGodPower(cNumberNonGaiaPlayers, "SPC Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
 		}
 		if(AutoHunterLevel == 5){
 			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
@@ -33,13 +33,19 @@ bool GodPowerChance(int name = 0, int override = 0){
 		}
 		if(AutoHunterLevel >= 6){
 			trQuestVarSetFromRand("temp", 1, 6);
-			if(1*trQuestVarGet("temp") < 6){
-				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "SPCMeteor", MapFactor());
+			if(1*trQuestVarGet("temp") < 3){
+				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
 				trUnitSelectClear();
 				trUnitSelect(""+name);
-				trTechInvokeGodPower(cNumberNonGaiaPlayers, "SPCMeteor", kbGetBlockPosition(""+name), vector(0,0,0));
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
 			}
-			if(1*trQuestVarGet("temp") == 6){
+			else if(1*trQuestVarGet("temp") < 6){
+				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
+				trUnitSelectClear();
+				trUnitSelect(""+name);
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+			}
+			else if(1*trQuestVarGet("temp") == 6){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Vortex", MapFactor());
 				trUnitSelectClear();
 				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Vortex", kbGetBlockPosition(""+name), vector(0,0,0));
@@ -52,38 +58,42 @@ bool GodPowerChance(int name = 0, int override = 0){
 
 bool AI_Send_Death_Squad(int name = 0, int override = 0){
 	int temp = 0;
-	if(override == 0){
-		trQuestVarSetFromRand("temp", 0, 10+(50*MapFactor()));
-	}
-	else{
-		trQuestVarSet("temp", 0);
-	}
-	if(1*trQuestVarGet("temp") < MapFactor()){
-		trQuestVarSetFromRand("temp", 1, 2);
-		if(1*trQuestVarGet("temp") == 1){
-			for(n = 1; < 5){
-				temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
-				xAddDatabaseBlock(dEnemies, true);
-				xSetInt(dEnemies, xUnitID, temp);
-				xSetInt(dEnemies, xIdleTimeout, 0);
-				trUnitSelectClear();
-				trUnitSelect(""+temp);
-				trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
-			}
+	if(trTime() > 300){
+		if(override == 0){
+			trQuestVarSetFromRand("temp", 0, 300/(MapFactor()));
 		}
 		else{
-			for(n = 1; < 5){
-				temp = UnitCreate(cNumberNonGaiaPlayers, handunit,(MapSize/2)+5,(MapSize/2)+5);
-				xAddDatabaseBlock(dEnemies, true);
-				xSetInt(dEnemies, xUnitID, temp);
-				xSetInt(dEnemies, xIdleTimeout, 0);
-				trUnitSelectClear();
-				trUnitSelect(""+temp);
-				trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
-			}
+			trQuestVarSet("temp", 0);
 		}
-		trChatSend(0, "<color=1,0,0>AI death squad deployed");
-		return(true);
+		if(1*trQuestVarGet("temp") < 1){
+			trQuestVarSetFromRand("temp", 1, 2);
+			if(1*trQuestVarGet("temp") == 1){
+				for(n = 1; < 5){
+					temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, temp);
+					xSetInt(dEnemies, xIdleTimeout, 0);
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
+				}
+			}
+			else{
+				for(n = 1; < 5){
+					temp = UnitCreate(cNumberNonGaiaPlayers, handunit,(MapSize/2)+5,(MapSize/2)+5);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, temp);
+					xSetInt(dEnemies, xIdleTimeout, 0);
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
+				}
+			}
+			return(true);
+		}
+		else{
+			return(false);
+		}
 	}
 	else{
 		return(false);
@@ -168,7 +178,7 @@ highFrequency
 			temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
 			xAddDatabaseBlock(dEnemies, true);
 			xSetInt(dEnemies, xUnitID, temp);
-			xSetInt(dEnemies, xIdleTimeout, 0);
+			xSetInt(dEnemies, xIdleTimeout, trTime()+30);
 			trQuestVarSetFromRand("x", 0 , MapSize);
 			trQuestVarSetFromRand("z", 0 , MapSize);
 			trUnitSelectClear();
@@ -177,7 +187,7 @@ highFrequency
 			temp = UnitCreate(cNumberNonGaiaPlayers, handunit,(MapSize/2)-5,(MapSize/2)-5);
 			xAddDatabaseBlock(dEnemies, true);
 			xSetInt(dEnemies, xUnitID, temp);
-			xSetInt(dEnemies, xIdleTimeout, 0);
+			xSetInt(dEnemies, xIdleTimeout, trTime()+30);
 			trUnitSelectClear();
 			trUnitSelect(""+temp);
 			trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
@@ -226,13 +236,6 @@ highFrequency
 				{
 					if (kbUnitGetAnimationActionType(id) == 48) {
 						end = xGetVector(dMountainGiants,xSpecialTarget);
-						xUnitSelect(dMountainGiants, xSpecialTargetID);
-						for(q = 1; <= cNumberNonGaiaPlayers){
-							xSetPointer(dPlayerData, q);
-							if(xGetBool(dPlayerData, xPlayerRunner)){
-								trDamageUnitsInArea(q, "Building", 2, 1000);
-							}
-						}
 						trUnitSelectClear();
 						temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
 						trUnitSelect(""+temp);
@@ -240,6 +243,7 @@ highFrequency
 						trUnitSelectClear();
 						trUnitSelect(""+temp);
 						trUnitChangeProtoUnit("Wall Connector Destruction SFX");
+						DamageBuildingCountRazes(p,kbGetBlockPosition(""+xGetInt(dMountainGiants,xSpecialTargetID)),2.0,1000.0);
 						xSetInt(dMountainGiants, xSpecialStep, 0);
 						xSetInt(dMountainGiants, xSpecialNext, xGetInt(dMountainGiants, xSpecialNext) + 5);
 					}
@@ -256,6 +260,60 @@ highFrequency
 					xSetInt(dMountainGiants, xSpecialStep, 0);
 					xSetInt(dMountainGiants, xSpecialNext, trTimeMS() + 5000);
 					//trUnitOverrideAnimation(-1,0,false,true,-1);
+				}
+			}
+		}
+	}
+}
+
+rule HekaSpecial
+inactive
+highFrequency
+{
+	//Zeno MG code
+	if (xGetDatabaseCount(dHekas) > 0) {
+		int id = 0;
+		int p = 0;
+		int target = 0;
+		int temp = 0;
+		vector end = vector(0,0,0);
+		xDatabaseNext(dHekas);
+		id = xGetInt(dHekas,xHekaID);
+		trUnitSelectClear();
+		trUnitSelectByID(id);
+		p = xGetInt(dHekas,xPlayerOwner);
+		//db = databaseName(p);
+		if (trUnitAlive() == false) {
+			xFreeDatabaseBlock(dHekas);
+		} else if (trTimeMS() > xGetInt(dHekas, xSpecialNext)) {
+			switch(xGetInt(dHekas, xSpecialStep))
+			{
+				case 0:
+				{
+					if (kbUnitGetAnimationActionType(id) == 6) {
+						xsSetContextPlayer(p);
+						target = trGetUnitScenarioNameNumber(kbUnitGetTargetUnitID(id));
+						xsSetContextPlayer(0);
+						xSetVector(dHekas,xSpecialTarget,kbGetBlockPosition(""+target));
+						xSetInt(dHekas, xSpecialNext, trTimeMS() + 1090);
+						xSetInt(dHekas, xSpecialStep, 1);
+						xSetInt(dHekas, xSpecialTargetID, target);
+						trUnitOverrideAnimation(26,0,false,false,-1);
+					}
+				}
+				case 1:
+				{
+					end = xGetVector(dHekas,xSpecialTarget);
+					trUnitSelectClear();
+					DamageBuildingCountRazes(p,kbGetBlockPosition(""+xGetInt(dHekas,xSpecialTargetID)),5.0,1000.0);
+					xSetInt(dHekas, xSpecialNext, trTimeMS() + 1210);
+					xSetInt(dHekas, xSpecialStep, 2);
+				}
+				case 2:
+				{
+					xSetInt(dHekas, xSpecialStep, 0);
+					xSetInt(dHekas, xSpecialNext, trTimeMS() + 15000);
+					trUnitOverrideAnimation(-1,0,false,true,-1);
 				}
 			}
 		}

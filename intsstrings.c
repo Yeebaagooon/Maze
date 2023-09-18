@@ -3,6 +3,9 @@ BUG
 
 Camera post level reward
 IceC in top corner for choice units? also other corner for hunters
+Cyclops picked up maceman RIP - inc special attack cd constantly
+runner powers - temp invulnerability, pestilence
+implode that doesnt explode, check implode pull effect and if = 0, kill the sphere
 
 
 g("configSetInt(\"unbuildWoodCost2\", 200);");
@@ -16,7 +19,7 @@ to revert timeshift cost after player resigns/game ends
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
-bool ForceAutoOff = false;
+bool ForceAutoOff = true;
 bool Visible = true;
 
 
@@ -69,6 +72,7 @@ string rangedunit = "error";
 string handunit = "error";
 float timediff = 0.0;
 float timelast = 0.0;
+int RunnersDead = 0;
 
 
 
@@ -80,8 +84,8 @@ Put the choice area in hunter area so all have LOS
 void DamageBuildingCountRazes(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
 		xsSetContextPlayer(otherp);
-		if(otherp != p && kbIsPlayerAlly(p) == false){
-			int kbid = kbUnitQueryCreate("damage");
+		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+			int kbid = kbUnitQueryCreate("damagebuildabsol");
 			kbUnitQuerySetPlayerID(kbid, otherp);
 			kbUnitQuerySetPosition(kbid, pos);
 			kbUnitQuerySetUnitType(kbid, 937);
@@ -111,8 +115,8 @@ void DamageBuildingCountRazes(int p = 1, vector pos = vector(0,0,0), float dista
 void DamageBuildingPercentCountRazes(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
 		xsSetContextPlayer(otherp);
-		if(otherp != p && kbIsPlayerAlly(p) == false){
-			int kbid = kbUnitQueryCreate("damage");
+		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+			int kbid = kbUnitQueryCreate("damagebuildperc");
 			kbUnitQuerySetPlayerID(kbid, otherp);
 			kbUnitQuerySetPosition(kbid, pos);
 			kbUnitQuerySetUnitType(kbid, 937);
@@ -139,8 +143,8 @@ void DamageBuildingPercentCountRazes(int p = 1, vector pos = vector(0,0,0), floa
 void DamageUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
 		xsSetContextPlayer(otherp);
-		if(otherp != p && kbIsPlayerAlly(p) == false){
-			int kbid = kbUnitQueryCreate("damage");
+		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+			int kbid = kbUnitQueryCreate("damageunitabs");
 			kbUnitQuerySetPlayerID(kbid, otherp);
 			kbUnitQuerySetPosition(kbid, pos);
 			kbUnitQuerySetUnitType(kbid, 935);
@@ -170,8 +174,8 @@ void DamageUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance 
 void DamageUnitPercentCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
 		xsSetContextPlayer(otherp);
-		if(otherp != p && kbIsPlayerAlly(p) == false){
-			int kbid = kbUnitQueryCreate("damage");
+		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+			int kbid = kbUnitQueryCreate("damageunitperc");
 			kbUnitQuerySetPlayerID(kbid, otherp);
 			kbUnitQuerySetPosition(kbid, pos);
 			kbUnitQuerySetUnitType(kbid, 935);

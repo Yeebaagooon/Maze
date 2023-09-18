@@ -18,7 +18,7 @@ rule PregameSkip
 inactive
 highFrequency
 {
-	for(p = 1; < cNumberNonGaiaPlayers){
+	for(p = 1; <= cNumberNonGaiaPlayers){
 		if(playerIsPlaying(p)){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xRoleDefined) == false){

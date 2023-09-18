@@ -46,6 +46,17 @@ highFrequency
 				xSetInt(dMountainGiants, xSpecialTargetID, 0);
 				break;
 			}
+			case kbGetProtoUnitID("Heka Gigantes"):
+			{
+				xAddDatabaseBlock(dHekas, true);
+				xSetInt(dHekas, xHekaID, id);
+				xSetInt(dHekas, xPlayerOwner, kbUnitGetOwner(id));
+				xSetInt(dHekas, xSpecialNext, 0);
+				xSetInt(dHekas, xSpecialStep, 0);
+				xSetVector(dHekas, xSpecialTarget, vector(0,0,0));
+				xSetInt(dHekas, xSpecialTargetID, 0);
+				break;
+			}
 			case kbGetProtoUnitID("Attack Revealer"):
 			{
 				if(AutoEscape){
@@ -77,10 +88,15 @@ highFrequency
 			case kbGetProtoUnitID("Meteor"):
 			{
 				trUnitSelectClear();
-				//trUnitSelectByID(id);
-				DamageBuildingCountRazes(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,2000.0);
-				//trDamageUnitsInArea(p, "Building", 6, 2000);
-				//trDamageUnitsInArea(p, "Unit", 6, 200);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,20000.0);
+				break;
+			}
+			case kbGetProtoUnitID("SPCMeteor"):
+			{
+				trUnitSelectClear();
+				DamageBuildingCountRazes(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,20000.0);
+				trUnitSelectClear();
+				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,20000.0);
 				break;
 			}
 			case kbGetProtoUnitID("Lightning Sparks"):
@@ -101,6 +117,14 @@ highFrequency
 				xSetInt(dEarthquake, xEarthquakeName, j);
 				xSetInt(dEarthquake, xEarthquakeOwner, kbUnitGetOwner(id));
 				xSetInt(dEarthquake, xEarthquakeTimeout, trTimeMS()+12000);
+				break;
+			}
+			case kbGetProtoUnitID("Healing SFX"):
+			{
+				//8s
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitDestroy();
 				break;
 			}
 		}

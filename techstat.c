@@ -88,6 +88,7 @@ highFrequency
 	SetBuildPoints(10);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		modifyProtounitAbsolute("Old Man", p, 1, 10);
+		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 5);
 		modifyProtounitAbsolute("Cinematic Block", p, 2, 0);
 		modifyProtounitAbsolute("Temple", p, 0, 1000000);
 		modifyProtounitAbsolute("Temple", p, 4, 40);
@@ -103,6 +104,7 @@ highFrequency
 		modifyProtounitAbsolute("Tower", p, 10, 1000);
 		modifyProtounitAbsolute("Tower", p, 0, 500);
 		modifyProtounitAbsolute("Behemoth", p, 0, 1500);
+		modifyProtounitAbsolute("Heka Gigantes", p, 0, 2000);
 		modifyProtounitAbsolute("Troll", p, 0, 1250);
 		modifyProtounitAbsolute("Sphinx", p, 0, 700);
 		modifyProtounitAbsolute("Wadjet", p, 0, 600);
@@ -113,6 +115,9 @@ highFrequency
 		modifyProtounitAbsolute("Lightning Strike", p, 27, 0.0);
 		modifyProtounitAbsolute("Lightning Strike", p, 28, 0.0);
 		modifyProtounitAbsolute("Lightning Strike", p, 29, 0.0);
+		modifyProtounitAbsolute("SPCMeteor", p, 27, 0.0);
+		modifyProtounitAbsolute("SPCMeteor", p, 28, 0.0);
+		modifyProtounitAbsolute("SPCMeteor", p, 29, 0.0);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);
@@ -122,6 +127,7 @@ highFrequency
 		MakeUnitFree("Wall Long", p);
 		MakeUnitFree("Temple", p);
 		MakeUnitFree("Maceman Hero", p);
+		MakeUnitFree("Phoenix From Egg", p);
 		HunterUnit("Scorpion Man", p, 1);
 		HunterUnit("Centaur", p, 1);
 		HunterUnit("Cyclops", p, 1);
@@ -130,6 +136,8 @@ highFrequency
 		HunterUnit("Wadjet", p, 1);
 		HunterUnit("Sphinx", p, 1);
 		HunterUnit("Scarab", p, 1);
+		HunterUnit("Phoenix", p, 3);
+		HunterUnit("Phoenix From Egg", p, 3);
 		HunterUnit("Mountain Giant", p, 1);
 		trModifyProtounit("Dwarf", p, 55, 4);
 		trModifyProtounit("Temple", p, 7, 150);

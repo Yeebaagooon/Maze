@@ -127,10 +127,6 @@ highFrequency
 		if(xGetBool(dPlayerData, xPlayerAlive)){
 			if(playerIsPlaying(p)){
 				if(xGetBool(dPlayerData, xPlayerRunner) == true){
-					trPlayerGrantResources(p, "Wood", -10000.0);
-					trPlayerGrantResources(p, "Gold", -10000.0);
-					trPlayerGrantResources(p, "Wood", 200.0);
-					trPlayerGrantResources(p, "Gold", 100.0);
 					//runner stat checker
 					if(trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"UnitKills")){
 						trQuestVarSet("P"+p+"UnitKills", trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills"));
@@ -153,6 +149,7 @@ highFrequency
 						trPlayerKillAllGodPowers(p);
 						trPlayerKillAllUnits(p);
 						xSetBool(dPlayerData, xPlayerAlive, false);
+						RunnersDead = RunnersDead+1;
 					}
 				}
 			}
@@ -163,10 +160,16 @@ highFrequency
 				trPlayerKillAllGodPowers(p);
 				trPlayerKillAllUnits(p);
 				xSetBool(dPlayerData, xPlayerAlive, false);
+				RunnersDead = RunnersDead+1;
+				if(trCurrentPlayer() == p){
+					%
+					code("configSetInt(\"unbuildWoodCost1\", 5);");
+					code("configSetInt(\"unbuildWoodCost2\", 200);");
+					code("configSetInt(\"unbuildGoldCost2\", 100);");
+					%
+				}
 			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				trPlayerGrantResources(p, "Wood", -10000.0);
-				trPlayerGrantResources(p, "Wood", 5.0);
 				//hunter stats
 				if(trGetStatValue(p, 3)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"BuildingKills")){
 					trQuestVarSet("P"+p+"BuildingKills", trGetStatValue(p, 3)+trQuestVarGet("P"+p+"BuildingKills"));
@@ -189,6 +192,13 @@ highFrequency
 						trPlayerKillAllGodPowers(p);
 						trPlayerKillAllUnits(p);
 						xSetBool(dPlayerData, xPlayerAlive, false);
+						if(trCurrentPlayer() == p){
+							%
+							code("configSetInt(\"unbuildWoodCost1\", 5);");
+							code("configSetInt(\"unbuildWoodCost2\", 200);");
+							code("configSetInt(\"unbuildGoldCost2\", 100);");
+							%
+						}
 					}
 				}
 			}
@@ -221,6 +231,11 @@ highFrequency
 				}
 			}
 		}
+		if(trCheckGPActive("Restoration", p)){
+			trUnitSelectClear();
+			trUnitSelect("0");
+			trDamageUnitsInArea(p, "All", MapSize, -10000);
+		}
 	}
 }
 
@@ -228,7 +243,17 @@ rule GameEvents
 inactive
 highFrequency
 {
+	RunnerCount = 0;
+	for(p = 1; <= cNumberNonGaiaPlayers){
+		if(playerIsPlaying(p)){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				RunnerCount = RunnerCount+1;
+			}
+		}
+	}
 	xsDisableSelf();
+	xsEnableRule("TimeShiftMsg");
 	xsEnableRule("HunterPower1Mins");
 	xsEnableRule("HunterUnits2Mins");
 	xsEnableRule("HunterPower3Mins");
@@ -239,12 +264,18 @@ highFrequency
 	xsEnableRule("HunterPower8Mins");
 	xsEnableRule("HunterPower9Mins");
 	xsEnableRule("HunterUnits10Mins");
+	xsEnableRule("HunterPower11Mins");
+	xsEnableRule("HunterUnits13Mins");
+	xsEnableRule("HunterUnits15Mins");
 	xsEnableRule("MGSpecial");
+	xsEnableRule("HekaSpecial");
 	xsEnableRule("TowerDB");
+	xsEnableRule("RunnersWin");
+	xsEnableRule("HuntersWin");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
 	//Set GP vector to a corner
-	trQuestVarSetFromRand("temp", 1,4,true);
+	trQuestVarSetFromRand("temp", 2,4,true);
 	if(1*trQuestVarGet("temp") == 1){
 		AIVector = vector(4,4,4);
 	}
@@ -257,16 +288,35 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	UnitCreate(2, "Tower", 10, 12);
-	UnitCreate(2, "Tower", 10, 14);
-	UnitCreate(2, "Tower", 10, 16);
-	UnitCreate(2, "Tower", 10, 12);
-	UnitCreate(2, "Tower", 12, 12);
-	UnitCreate(2, "Tower", 14, 12);
-	UnitCreate(2, "Tower", 16, 12);
-	UnitCreate(2, "Tower", 18, 12);
-	UnitCreate(2, "Tower", 20, 12);
-	modifyProtounitAbsolute("Tower", 2, 0, 2000);
+	/*UnitCreate(2, "Heka Gigantes", 4, 4);
+	UnitCreate(1, "Tower", 10, 12);
+	UnitCreate(1, "Tower", 10, 14);
+	UnitCreate(1, "Tower", 10, 16);
+	UnitCreate(1, "Tower", 10, 12);
+	UnitCreate(1, "Tower", 12, 12);
+	UnitCreate(1, "Tower", 14, 12);
+	trTechGodPower(1, "Restoration", 4);
+	trTechGodPower(1, "SPCMeteor", 4);*/
+	if(AutoEscape){
+		for(p = 1; < cNumberNonGaiaPlayers){
+			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+		}
+	}
+	%
+	code("configSetInt(\"unbuildWoodCost1\", 0);");
+	code("configSetInt(\"unbuildWoodCost2\", 0);");
+	code("configSetInt(\"unbuildGoldCost2\", 0);");
+	%
+}
+
+rule TimeShiftMsg
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 20){
+		trMessageSetText("Ignore timeshift cost, it is free.", 5000);
+		xsDisableSelf();
+	}
 }
 
 rule HunterPower1Mins
@@ -328,6 +378,13 @@ highFrequency
 				grantGodPowerNoRechargeNextPosition(p, "Undermine", MapFactor());
 				if(trCurrentPlayer() == p){
 					trMessageSetText("Undermine granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+			else{
+				grantGodPowerNoRechargeNextPosition(p, "Restoartion", 1);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Restoration = all units and buildings invulnerable", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
@@ -452,6 +509,9 @@ highFrequency
 					trMessageSetText("Meteor granted.", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
+				if(AutoEscape){
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Eclipse", xsVectorSet(MapSize/2, 5.00, MapSize/2), vector(0,0,0));
+				}
 			}
 		}
 		xsDisableSelf();
@@ -531,4 +591,127 @@ highFrequency
 		}
 		xsDisableSelf();
 	}
+}
+
+rule HunterUnits13Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*13){
+		rangedunit = "Troll";
+		handunit = "Heka Gigantes";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trUnforbidProtounit(p, "Heka Gigantes");
+				if(trCurrentPlayer() == p){
+					trMessageSetText("You can now train hekas, they have a special tower smash ability.", 8000);
+					playSound("ageadvance.wav");
+				}
+			}
+		}
+		if(AutoEscape){
+			trChatSend(0, "Firing GP");
+			xsEnableRule("AI_Force_Power");
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterUnits15Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*15){
+		rangedunit = "Phoenix";
+		handunit = "Heka Gigantes";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trUnforbidProtounit(p, "Phoenix");
+				trUnforbidProtounit(p, "Phoenix From Egg");
+				if(trCurrentPlayer() == p){
+					trMessageSetText("You can now train phoenixes. They take less population room later.", 8000);
+					playSound("ageadvance.wav");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterUnits18Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*15){
+		rangedunit = "Phoenix";
+		handunit = "Heka Gigantes";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trUnforbidProtounit(p, "Phoenix");
+				if(AutoEscape == false){
+					trModifyProtounit("Phoenix", p, 6, -1);
+					trModifyProtounit("Phoenix From Egg", p, 6, -1);
+				}
+				if(trCurrentPlayer() == p){
+					trMessageSetText("You can now train phoenixes. Phoenix pop count reduced.", 8000);
+					playSound("ageadvance.wav");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule RunnersWin
+inactive
+highFrequency
+{
+	if(trTime() > gGameEndTime){
+		for(p = 1 ; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner)){
+				trSetPlayerWon(p);
+			}
+			else{
+				trSetPlayerDefeated(p);
+			}
+		}
+		xsEnableRule("GameEnd");
+		trShowWinLose("The runners have won!");
+	}
+}
+
+rule HuntersWin
+inactive
+highFrequency
+{
+	if(RunnersDead == RunnerCount){
+		for(p = 1 ; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner)){
+				trSetPlayerDefeated(p);
+			}
+			else{
+				trSetPlayerWon(p);
+			}
+		}
+		xsEnableRule("GameEnd");
+		trShowWinLose("The hunters have won!");
+		xsDisableSelf();
+	}
+}
+
+rule GameEnd
+inactive
+highFrequency
+{
+	trEndGame();
+	%
+	code("configSetInt(\"unbuildWoodCost1\", 5);");
+	code("configSetInt(\"unbuildWoodCost2\", 200);");
+	code("configSetInt(\"unbuildGoldCost2\", 100);");
+	%
 }

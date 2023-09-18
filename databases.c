@@ -86,6 +86,10 @@ int xEarthquakeName = 0;
 int xEarthquakeOwner = 0;
 int xEarthquakeTimeout = 0;
 
+//Hekas giants
+int dHekas = 0;
+int xHekaID = 0;
+
 
 
 rule setup_first_databases
@@ -143,6 +147,14 @@ highFrequency
 	xEarthquakeName = xInitAddInt(dEarthquake, "name", -1);
 	xEarthquakeOwner = xInitAddInt(dEarthquake, "owner", -1);
 	xEarthquakeTimeout = xInitAddInt(dEarthquake, "timeout", 1);
+	
+	dHekas = xInitDatabase("Heka DB");
+	xHekaID = xInitAddInt(dHekas, "id", -1);
+	xPlayerOwner = xInitAddInt(dHekas, "owner", 0);
+	xSpecialNext = xInitAddInt(dHekas, "time", 0);
+	xSpecialStep = xInitAddInt(dHekas, "status", 0);
+	xSpecialTarget = xInitAddVector(dHekas, "target", vector(0,0,0));
+	xSpecialTargetID = xInitAddInt(dHekas, "status", 0);
 	
 }
 
