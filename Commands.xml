@@ -23,6 +23,11 @@
         <parameters type="vector" name="location"/>
         <javadoc>Returns true if the location is currently visible to the player.</javadoc>
     </method>
+    <method return="void" name="configSetInt">
+        <parameters type="string" name="stuff"/>
+        <parameters type="int" name="cost"/>
+        <javadoc>Timeshift cost change.</javadoc>
+    </method>
     <method return="int" name="kbFindAreaGroup">
         <parameters type="int" name="groupType"/>
         <parameters type="float" name="surfaceAreaRatio"/>

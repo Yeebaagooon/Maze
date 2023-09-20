@@ -4,10 +4,38 @@ int ChoiceEffect = 0;
 string YesChoiceUnitName = "Swordsman";
 string NoChoiceUnitName = "Lancer";
 
+/*
+Power ideas
+
+RUNNER
+Great jounrey
+Pestilence
+Turn into bird
+Bolt (radial)
+Temporary towers
+Kill shockwave
+
+
+HUNTER
+Spawn scouting raven
+
+
+UNIT
+Lampades that have special spc meteor
+Catapult of doom
+
+
+BOTH
+Temporarily reveal whole map
+Temporary cliff
+
+
+*/
 
 const int RunnerRewardL1 = 4;
 const int RunnerRewardL2 = 11;
 const int RunnerRewardL3 = 18;
+const int RunnerRewardL4 = 18;
 
 
 const int HunterRewardL1 = 3;
@@ -78,10 +106,37 @@ string RewardText(int r = 0){
 		case 17:
 		{
 			reward = "Lightning storm";
+			//Change to barrage
 		}
 		case 18:
 		{
 			reward = "Pegasus";
+		}
+		//NEXT LEVEL
+		case 19:
+		{
+			reward = "+100 tower hp";
+		}
+		case 20:
+		{
+			reward = "Temporary invulnerability power";
+		}
+		case 21:
+		{
+			reward = "+400 citizen hp";
+		}
+		case 22:
+		{
+			reward = "Great Journey power";
+		}
+		case 23:
+		{
+			if(AutoEscape){
+				reward = "Vision";
+			}
+			else{
+				reward = "Flare current hunter temple positions";
+			}
 		}
 	}
 	return(reward);
@@ -193,6 +248,8 @@ string RewardTextHunter(int r = 0){
 		{
 			reward = "+400 " + handunit + " hp";
 		}
+		//Next Level
+		//vision
 	}
 	return(reward);
 }

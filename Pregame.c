@@ -462,25 +462,25 @@ highFrequency
 		//Hunter Temples
 		if(AutoEscape == false){
 			if(HunterNumber == 1){
-				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter1"),UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315));
 				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
 			}
 			if(HunterNumber == 2){
-				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
-				UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter1"),UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225));
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter2"),UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315));
 				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
 				UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
 			}
 			if(HunterNumber == 3){
-				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
-				UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
-				UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter1"),UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225));
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter2"),UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315));
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter3"),UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45));
 			}
 			if(HunterNumber == 4){
-				UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225);
-				UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315);
-				UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45);
-				UnitCreate(1*trQuestVarGet("Hunter4"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135);
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter1"),UnitCreate(1*trQuestVarGet("Hunter1"), "Temple",(MapSize/2)+10,(MapSize/2)-10, 225));
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter2"),UnitCreate(1*trQuestVarGet("Hunter2"), "Temple",(MapSize/2)-10,(MapSize/2)-10, 315));
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter3"),UnitCreate(1*trQuestVarGet("Hunter3"), "Temple",(MapSize/2)-10,(MapSize/2)+10, 45));
+				trQuestVarSet("Temple"+1*trQuestVarGet("Hunter4"),UnitCreate(1*trQuestVarGet("Hunter4"), "Temple",(MapSize/2)+10,(MapSize/2)+10, 135));
 			}
 		}
 		

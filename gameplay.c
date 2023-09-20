@@ -11,7 +11,7 @@ void LevelUpChoice(int p = 0){
 void LevelUp(int p = 0){
 	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"Space")) == -1){
 		int temp = trGetNextUnitScenarioNameNumber();
-		UnitCreate(p, "Cinematic Block", p*3, MapSize-1, 0);
+		UnitCreate(p, "Cinematic Block", p*20, MapSize, 0);
 		trQuestVarSet("P"+p+"Space", temp);
 		debugLog("Space selector dead");
 	}
@@ -163,6 +163,7 @@ highFrequency
 				RunnersDead = RunnersDead+1;
 				if(trCurrentPlayer() == p){
 					%
+					code("configSetInt(\"unbuildWoodCost\", 5);");
 					code("configSetInt(\"unbuildWoodCost1\", 5);");
 					code("configSetInt(\"unbuildWoodCost2\", 200);");
 					code("configSetInt(\"unbuildGoldCost2\", 100);");
@@ -170,6 +171,8 @@ highFrequency
 				}
 			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				//trPlayerGrantResources(p, "Wood", -500);
+				//trPlayerGrantResources(p, "Wood", 5);
 				//hunter stats
 				if(trGetStatValue(p, 3)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"BuildingKills")){
 					trQuestVarSet("P"+p+"BuildingKills", trGetStatValue(p, 3)+trQuestVarGet("P"+p+"BuildingKills"));
@@ -194,6 +197,7 @@ highFrequency
 						xSetBool(dPlayerData, xPlayerAlive, false);
 						if(trCurrentPlayer() == p){
 							%
+							code("configSetInt(\"unbuildWoodCost\", 5);");
 							code("configSetInt(\"unbuildWoodCost1\", 5);");
 							code("configSetInt(\"unbuildWoodCost2\", 200);");
 							code("configSetInt(\"unbuildGoldCost2\", 100);");
@@ -217,6 +221,8 @@ highFrequency
 			xSetInt(dPlayerData, xLUCR, 0);
 			xsSetContextPlayer(old);
 		}
+		trModifyProtounit("Cyclops", p, 9, 1);
+		trModifyProtounit("Lampades", p, 9, 1);
 		//GOD POWERS
 		if(xGetDatabaseCount(dEarthquake) > 0){
 			for(a = xGetDatabaseCount(dEarthquake); > 0){
@@ -267,8 +273,13 @@ highFrequency
 	xsEnableRule("HunterPower11Mins");
 	xsEnableRule("HunterUnits13Mins");
 	xsEnableRule("HunterUnits15Mins");
+	xsEnableRule("HunterUnits18Mins");
+	xsEnableRule("HunterUnits20Mins");
+	xsEnableRule("HunterUnits22Mins");
 	xsEnableRule("MGSpecial");
 	xsEnableRule("HekaSpecial");
+	xsEnableRule("LampadesSpecial");
+	xsEnableRule("YeebSpecial");
 	xsEnableRule("TowerDB");
 	xsEnableRule("RunnersWin");
 	xsEnableRule("HuntersWin");
@@ -288,13 +299,13 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	/*UnitCreate(2, "Heka Gigantes", 4, 4);
-	UnitCreate(1, "Tower", 10, 12);
-	UnitCreate(1, "Tower", 10, 14);
-	UnitCreate(1, "Tower", 10, 16);
-	UnitCreate(1, "Tower", 10, 12);
-	UnitCreate(1, "Tower", 12, 12);
-	UnitCreate(1, "Tower", 14, 12);
+	/*UnitCreate(2, "Lampades", 4, 4);
+	UnitCreate(2, "Tower", 10, 12);
+	UnitCreate(2, "Tower", 10, 14);
+	UnitCreate(2, "Tower", 10, 16);
+	UnitCreate(2, "Tower", 10, 12);
+	UnitCreate(2, "Tower", 12, 12);
+	UnitCreate(2, "Tower", 14, 12);
 	trTechGodPower(1, "Restoration", 4);
 	trTechGodPower(1, "SPCMeteor", 4);*/
 	if(AutoEscape){
@@ -303,6 +314,7 @@ highFrequency
 		}
 	}
 	%
+	code("configSetInt(\"unbuildWoodCost\", 0);");
 	code("configSetInt(\"unbuildWoodCost1\", 0);");
 	code("configSetInt(\"unbuildWoodCost2\", 0);");
 	code("configSetInt(\"unbuildGoldCost2\", 0);");
@@ -381,8 +393,8 @@ highFrequency
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
-			else{
-				grantGodPowerNoRechargeNextPosition(p, "Restoartion", 1);
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				grantGodPowerNoRechargeNextPosition(p, "Restoration", 1);
 				if(trCurrentPlayer() == p){
 					trMessageSetText("Restoration = all units and buildings invulnerable", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
@@ -558,6 +570,15 @@ highFrequency
 					playSound("ageadvance.wav");
 				}
 			}
+			if(AutoEscape == false){
+				if(xGetBool(dPlayerData, xPlayerRunner) == true){
+					grantGodPowerNoRechargeNextPosition(p, "Pestilence", 1);
+					if(trCurrentPlayer() == p){
+						trMessageSetText("Pestilence granted.", 8000);
+						playSound("\cinematics\17_in\weirdthing.mp3");
+					}
+				}
+			}
 		}
 		if(AutoEscape){
 			trChatSend(0, "Firing GP");
@@ -644,22 +665,69 @@ rule HunterUnits18Mins
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 60*15){
-		rangedunit = "Phoenix";
-		handunit = "Heka Gigantes";
+	if((trTime()-cActivationTime) >= 60*18){
+		rangedunit = "Lampades";
+		handunit = "Phoenix";
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				trUnforbidProtounit(p, "Phoenix");
+				trForbidProtounit(p, "Heka Gigantes");
+				trUnforbidProtounit(p, "Lampades");
 				if(AutoEscape == false){
 					trModifyProtounit("Phoenix", p, 6, -1);
 					trModifyProtounit("Phoenix From Egg", p, 6, -1);
 				}
 				if(trCurrentPlayer() == p){
-					trMessageSetText("You can now train phoenixes. Phoenix pop count reduced.", 8000);
+					trMessageSetText("You can now train lampades. Phoenix pop count reduced.", 8000);
 					playSound("ageadvance.wav");
 				}
 			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterUnits20Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*20){
+		rangedunit = "Phoenix";
+		handunit = "Guardian XP";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				trUnforbidProtounit(p, "Pegasus");
+				if(trCurrentPlayer() == p){
+					trMessageSetText("You can now train pegasi, these turn into Guardians.", 8000);
+					playSound("ageadvance.wav");
+				}
+			}
+		}
+		xsDisableSelf();
+	}
+}
+
+rule HunterUnits22Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*22){
+		vector spawn = vector(0,0,0);
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(trPlayerUnitCountSpecific(p, "Temple") > 0){
+				spawn = kbGetBlockPosition(""+1*trQuestVarGet("Temple"+p));
+				UnitCreate(p, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Yeebaagooon has joined you for the final hunt!", 8000);
+					playSound("ageadvance.wav");
+				}
+			}
+		}
+		if(AutoEscape){
+			spawn = xsVectorSet(MapSize/2,0,MapSize/2);
+			UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 		}
 		xsDisableSelf();
 	}
@@ -708,9 +776,18 @@ rule GameEnd
 inactive
 highFrequency
 {
+	if(AutoEscape){
+		trChatSend(0, "<color=1,0.5,0>You can host without an AI and have humans hunt each other!");
+		trChatSend(0, "<color=1,0.5,0>You can also change map size for a bigger map");
+	}
+	else{
+		trChatSend(0, "<color=1,0.5,0>The map also works as an auto escape if the last slot is CPU");
+		trChatSend(0, "<color=1,0.5,0>You can also change map size for a bigger map");
+	}
 	trEndGame();
 	%
 	code("configSetInt(\"unbuildWoodCost1\", 5);");
+	code("configSetInt(\"unbuildWoodCost\", 5);");
 	code("configSetInt(\"unbuildWoodCost2\", 200);");
 	code("configSetInt(\"unbuildGoldCost2\", 100);");
 	%

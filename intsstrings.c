@@ -3,9 +3,9 @@ BUG
 
 Camera post level reward
 IceC in top corner for choice units? also other corner for hunters
-Cyclops picked up maceman RIP - inc special attack cd constantly
-runner powers - temp invulnerability, pestilence
-implode that doesnt explode, check implode pull effect and if = 0, kill the sphere
+AI unit pop increase
+
+
 
 
 g("configSetInt(\"unbuildWoodCost2\", 200);");
@@ -19,8 +19,8 @@ to revert timeshift cost after player resigns/game ends
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
-bool ForceAutoOff = true;
-bool Visible = true;
+bool ForceAutoOff = false;
+bool Visible = false;
 
 
 bool AutoEscape = false;

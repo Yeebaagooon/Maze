@@ -49,6 +49,12 @@ void MakeUnitFree(string unit = "", int p = 0){
 	}
 }
 
+void ZeroArmour(string unit = "", int p = 0){
+	for(a = 24; < 27){
+		modifyProtounitAbsolute(unit, p, a, 0);
+	}
+}
+
 void HunterUnit(string unit = "", int p = 0, int pop = 1){
 	for(a = 16; < 20){
 		modifyProtounitAbsolute(unit, p, a, 0);
@@ -85,6 +91,8 @@ inactive
 highFrequency
 {
 	trModifyProtounit("Dwarf", 0, 55, 4);
+	modifyProtounitAbsolute("Tartarian Gate birth", 0, 8, 2.8);
+	modifyProtounitAbsolute("Stymphalian Bird", 0, 2, 47);
 	SetBuildPoints(10);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		modifyProtounitAbsolute("Old Man", p, 1, 10);
@@ -106,18 +114,37 @@ highFrequency
 		modifyProtounitAbsolute("Behemoth", p, 0, 1500);
 		modifyProtounitAbsolute("Heka Gigantes", p, 0, 2000);
 		modifyProtounitAbsolute("Troll", p, 0, 1250);
+		modifyProtounitAbsolute("Phoenix", p, 0, 1250);
+		modifyProtounitAbsolute("Phoenix From Egg", p, 0, 1250);
 		modifyProtounitAbsolute("Sphinx", p, 0, 700);
 		modifyProtounitAbsolute("Wadjet", p, 0, 600);
+		modifyProtounitAbsolute("Lampades", p, 0, 2500);
+		modifyProtounitAbsolute("Lampades", p, 2, 30);
+		modifyProtounitAbsolute("Lampades", p, 11, 24);
 		modifyProtounitAbsolute("Behemoth", p, 29, 100);
+		modifyProtounitAbsolute("Lampades", p, 32, 200);
 		modifyProtounitAbsolute("Troll", p, 32, 50);
 		modifyProtounitAbsolute("Satyr", p, 32, 10);
 		modifyProtounitAbsolute("Wadjet", p, 32, 15);
+		modifyProtounitAbsolute("Phoenix", p, 29, 250);
+		modifyProtounitAbsolute("Phoenix", p, 32, 250);
+		modifyProtounitAbsolute("Phoenix From Egg", p, 29, 250);
+		modifyProtounitAbsolute("Phoenix From Egg", p, 32, 250);
+		modifyProtounitAbsolute("Phoenix", p, 27, 200);
+		modifyProtounitAbsolute("Phoenix", p, 30, 200);
+		modifyProtounitAbsolute("Phoenix From Egg", p, 27, 200);
+		modifyProtounitAbsolute("Phoenix From Egg", p, 30, 200);
 		modifyProtounitAbsolute("Lightning Strike", p, 27, 0.0);
 		modifyProtounitAbsolute("Lightning Strike", p, 28, 0.0);
 		modifyProtounitAbsolute("Lightning Strike", p, 29, 0.0);
 		modifyProtounitAbsolute("SPCMeteor", p, 27, 0.0);
 		modifyProtounitAbsolute("SPCMeteor", p, 28, 0.0);
 		modifyProtounitAbsolute("SPCMeteor", p, 29, 0.0);
+		modifyProtounitAbsolute("Stymphalian Bird", p, 0, 1000000);
+		modifyProtounitAbsolute("Stymphalian Bird", p, 1, 10);
+		modifyProtounitAbsolute("Stymphalian Bird", p, 2, 47);
+		modifyProtounitAbsolute("Stymphalian Bird", p, 11, 30);
+		modifyProtounitAbsolute("Stymphalian Bird", p, 13, 0);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);
@@ -128,6 +155,10 @@ highFrequency
 		MakeUnitFree("Temple", p);
 		MakeUnitFree("Maceman Hero", p);
 		MakeUnitFree("Phoenix From Egg", p);
+		MakeUnitFree("Heka Gigantes", p);
+		MakeUnitFree("Phoenix", p);
+		MakeUnitFree("Lampades", p);
+		MakeUnitFree("Pegasus", p);
 		HunterUnit("Scorpion Man", p, 1);
 		HunterUnit("Centaur", p, 1);
 		HunterUnit("Cyclops", p, 1);
@@ -139,6 +170,11 @@ highFrequency
 		HunterUnit("Phoenix", p, 3);
 		HunterUnit("Phoenix From Egg", p, 3);
 		HunterUnit("Mountain Giant", p, 1);
+		HunterUnit("Heka Gigantes", p, 1);
+		HunterUnit("Lampades", p, 2);
+		HunterUnit("Pegasus", p, 3);
+		HunterUnit("Guardian XP", p, 3);
+		ZeroArmour("Guardian XP", p);
 		trModifyProtounit("Dwarf", p, 55, 4);
 		trModifyProtounit("Temple", p, 7, 150);
 		trModifyProtounit("Animal Attractor", p, 55, 4);

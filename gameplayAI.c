@@ -33,7 +33,7 @@ bool GodPowerChance(int name = 0, int override = 0){
 		}
 		if(AutoHunterLevel >= 6){
 			trQuestVarSetFromRand("temp", 1, 6);
-			if(1*trQuestVarGet("temp") < 3){
+			if(1*trQuestVarGet("temp") < 4){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
 				trUnitSelectClear();
 				trUnitSelect(""+name);
@@ -298,7 +298,7 @@ highFrequency
 						xSetInt(dHekas, xSpecialNext, trTimeMS() + 1090);
 						xSetInt(dHekas, xSpecialStep, 1);
 						xSetInt(dHekas, xSpecialTargetID, target);
-						trUnitOverrideAnimation(26,0,false,false,-1);
+						trUnitOverrideAnimation(26,0,false,true,-1);
 					}
 				}
 				case 1:
@@ -320,6 +320,167 @@ highFrequency
 	}
 }
 
+rule LampadesSpecial
+inactive
+highFrequency
+{
+	//Zeno MG code
+	if (xGetDatabaseCount(dLampades) > 0) {
+		int id = 0;
+		int p = 0;
+		int target = 0;
+		int temp = 0;
+		vector end = vector(0,0,0);
+		xDatabaseNext(dLampades);
+		id = xGetInt(dLampades,xLampadesID);
+		trUnitSelectClear();
+		trUnitSelectByID(id);
+		p = xGetInt(dLampades,xPlayerOwner);
+		//db = databaseName(p);
+		if (trUnitAlive() == false) {
+			xFreeDatabaseBlock(dLampades);
+		} else if (trTimeMS() > xGetInt(dLampades, xSpecialNext)) {
+			switch(xGetInt(dLampades, xSpecialStep))
+			{
+				case 0:
+				{
+					if (kbUnitGetAnimationActionType(id) == 12) {
+						xsSetContextPlayer(p);
+						target = trGetUnitScenarioNameNumber(kbUnitGetTargetUnitID(id));
+						xsSetContextPlayer(0);
+						xSetVector(dLampades,xSpecialTarget,kbGetBlockPosition(""+target));
+						xSetInt(dLampades, xSpecialNext, trTimeMS() + 500);
+						xSetInt(dLampades, xSpecialStep, 1);
+						xSetInt(dLampades, xSpecialTargetID, target);
+						trUnitOverrideAnimation(37,0,false,true,-1);
+					}
+				}
+				case 1:
+				{
+					end = xGetVector(dLampades,xSpecialTarget);
+					trUnitSelectClear();
+					temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+					trUnitSelect(""+temp);
+					trImmediateUnitGarrison(""+xGetInt(dLampades, xSpecialTargetID));
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitChangeProtoUnit("Tartarian Gate birth");
+					DamageBuildingCountRazes(p,kbGetBlockPosition(""+xGetInt(dLampades,xSpecialTargetID)),6.0,2000.0);
+					xSetInt(dLampades, xSpecialNext, trTimeMS() + 500);
+					xSetInt(dLampades, xSpecialStep, 2);
+				}
+				case 2:
+				{
+					xSetInt(dLampades, xSpecialStep, 0);
+					xSetInt(dLampades, xSpecialNext, trTimeMS() + 20000);
+					trUnitOverrideAnimation(-1,0,false,true,-1);
+				}
+			}
+		}
+	}
+}
+
+rule YeebSpecial
+inactive
+highFrequency
+{
+	//Zeno MG code
+	if (xGetDatabaseCount(dBirds) > 0) {
+		int id = 0;
+		int p = 0;
+		int target = 0;
+		int temp = 0;
+		int anim = 0;
+		vector end = vector(0,0,0);
+		xDatabaseNext(dBirds);
+		id = xGetInt(dBirds,xBirdID);
+		trUnitSelectClear();
+		trUnitSelectByID(id);
+		p = xGetInt(dBirds,xPlayerOwner);
+		//db = databaseName(p);
+		trDamageUnitPercent(-100);
+		if (trUnitAlive() == false) {
+			xFreeDatabaseBlock(dBirds);
+		}else{
+			anim = kbUnitGetAnimationActionType(id);
+			if(anim != xGetInt(dBirds, xYeebAnim)){
+				if (anim == 9) {
+					trUnitSelectClear();
+					xUnitSelect(dBirds, xYeebID);
+					trUnitOverrideAnimation(2,0,true,true,-1);
+				}
+				if ((anim == 11) || (anim == 10)) {
+					trUnitSelectClear();
+					xUnitSelect(dBirds, xYeebID);
+					trUnitOverrideAnimation(15,0,true,true,-1);
+				}
+				xSetInt(dBirds, xYeebAnim, anim);
+			}
+			if (trTimeMS() > xGetInt(dBirds, xSpecialNext)) {
+				switch(xGetInt(dBirds, xSpecialStep))
+				{
+					case 0:
+					{
+						if (kbUnitGetAnimationActionType(id) == 12) {
+							xsSetContextPlayer(p);
+							target = trGetUnitScenarioNameNumber(kbUnitGetTargetUnitID(id));
+							xsSetContextPlayer(0);
+							xSetVector(dBirds,xSpecialTarget,kbGetBlockPosition(""+target));
+							xSetInt(dBirds, xSpecialNext, trTimeMS() + 500);
+							xSetInt(dBirds, xSpecialStep, 1);
+							xSetInt(dBirds, xSpecialTargetID, target);
+							trUnitOverrideAnimation(2,0,false,true,-1);
+							xUnitSelect(dBirds, xYeebID);
+							trUnitOverrideAnimation(25,0,false,true,-1);
+							xSetInt(dBirds, xYeebAnim, anim);
+						}
+					}
+					case 1:
+					{
+						end = xGetVector(dBirds,xSpecialTarget);
+						trUnitSelectClear();
+						temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+						trUnitSelect(""+temp);
+						trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+						trUnitSelectClear();
+						trUnitSelect(""+temp);
+						trUnitChangeProtoUnit("Implode Sphere Effect");
+						trUnitSelectClear();
+						trUnitSelect(""+temp);
+						trDamageUnitPercent(100);
+						temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+						trUnitSelect(""+temp);
+						trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+						trUnitSelectClear();
+						trUnitSelect(""+temp);
+						trUnitChangeProtoUnit("Osiris Box Glow");
+						trUnitSelectClear();
+						temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+						trUnitSelect(""+temp);
+						trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+						trUnitSelectClear();
+						trUnitSelect(""+temp);
+						trUnitChangeProtoUnit("Arkantos God Out");
+						trUnitSelectClear();
+						DamageBuildingCountRazes(p,kbGetBlockPosition(""+xGetInt(dBirds,xSpecialTargetID)),10.0,20000.0);
+						xSetInt(dBirds, xSpecialNext, trTimeMS() + 1000);
+						xSetInt(dBirds, xSpecialStep, 2);
+						xUnitSelect(dBirds, xSpecialTargetID);
+						trDamageUnitPercent(100);
+					}
+					case 2:
+					{
+						xSetInt(dBirds, xSpecialStep, 0);
+						xSetInt(dBirds, xSpecialNext, trTimeMS() + 500);
+						trUnitOverrideAnimation(-1,0,false,true,-1);
+						xSetInt(dBirds, xYeebAnim, 0);
+					}
+				}
+			}
+		}
+	}
+}
+
 rule AI_Force_Power
 inactive
 highFrequency
@@ -333,12 +494,10 @@ highFrequency
 		if(kbUnitVisible(kbGetBlockID(""+xGetInt(dTowers, xTowerName)))){
 			if(GodPowerChance(xGetInt(dTowers, xTowerName), 1)){
 				Done = true;
-				debugLog("Successful force fire");
 			}
 		}
 		if(Safety > target){
 			Done = true;
-			debugLog("GP try failed");
 		}
 	}
 	xsDisableSelf();

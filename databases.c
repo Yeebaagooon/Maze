@@ -90,6 +90,16 @@ int xEarthquakeTimeout = 0;
 int dHekas = 0;
 int xHekaID = 0;
 
+//Lampades
+int dLampades = 0;
+int xLampadesID = 0;
+
+//birds
+int dBirds = 0;
+int xBirdID = 0;
+int xYeebID = 0;
+int xYeebAnim = 0;
+
 
 
 rule setup_first_databases
@@ -155,6 +165,24 @@ highFrequency
 	xSpecialStep = xInitAddInt(dHekas, "status", 0);
 	xSpecialTarget = xInitAddVector(dHekas, "target", vector(0,0,0));
 	xSpecialTargetID = xInitAddInt(dHekas, "status", 0);
+	
+	dLampades = xInitDatabase("Lampade DB");
+	xLampadesID = xInitAddInt(dLampades, "id", -1);
+	xPlayerOwner = xInitAddInt(dLampades, "owner", 0);
+	xSpecialNext = xInitAddInt(dLampades, "time", 0);
+	xSpecialStep = xInitAddInt(dLampades, "status", 0);
+	xSpecialTarget = xInitAddVector(dLampades, "target", vector(0,0,0));
+	xSpecialTargetID = xInitAddInt(dLampades, "status", 0);
+	
+	dBirds = xInitDatabase("Lampade DB");
+	xBirdID = xInitAddInt(dBirds, "id", -1);
+	xPlayerOwner = xInitAddInt(dBirds, "owner", 0);
+	xSpecialNext = xInitAddInt(dBirds, "time", 0);
+	xSpecialStep = xInitAddInt(dBirds, "status", 0);
+	xSpecialTarget = xInitAddVector(dBirds, "target", vector(0,0,0));
+	xSpecialTargetID = xInitAddInt(dBirds, "status", 0);
+	xYeebID = xInitAddInt(dBirds, "yeebid", 0);
+	xYeebAnim = xInitAddInt(dBirds, "yeebid", 0);
 	
 }
 

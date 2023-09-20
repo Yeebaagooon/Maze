@@ -354,7 +354,9 @@ inactive
 	//Medium 24 = 578
 	//GIant 30
 	ConnectingMaze((MapSize-2)/22,(MapSize-2)/22,gCellSize,gCellPadding, "CliffGreekA", "OlympusTile");
+	trPaintTerrain(0,MapSize/2,MapSize/2,MapSize/2, getTerrainType("IceA"), getTerrainSubType("IceA"));
 	refreshPassability();
+	trPaintTerrain(0,MapSize/2,MapSize/2,MapSize/2, getTerrainType("CliffGreekA"), getTerrainSubType("CliffGreekA"));
 	/*
 	Set start tile
 	All valid adjacent tiles are coloured, these are fronteir

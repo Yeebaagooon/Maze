@@ -57,6 +57,17 @@ highFrequency
 				xSetInt(dHekas, xSpecialTargetID, 0);
 				break;
 			}
+			case kbGetProtoUnitID("Lampades"):
+			{
+				xAddDatabaseBlock(dLampades, true);
+				xSetInt(dLampades, xLampadesID, id);
+				xSetInt(dLampades, xPlayerOwner, kbUnitGetOwner(id));
+				xSetInt(dLampades, xSpecialNext, 0);
+				xSetInt(dLampades, xSpecialStep, 0);
+				xSetVector(dLampades, xSpecialTarget, vector(0,0,0));
+				xSetInt(dLampades, xSpecialTargetID, 0);
+				break;
+			}
 			case kbGetProtoUnitID("Attack Revealer"):
 			{
 				if(AutoEscape){
@@ -80,8 +91,10 @@ highFrequency
 			case kbGetProtoUnitID("Sky Passage"):
 			{
 				if(AutoEscape){
-					GodPowerChance(j);
-					AI_Send_Death_Squad(j);
+					if(trTime() > 240){
+						GodPowerChance(j);
+						AI_Send_Death_Squad(j);
+					}
 				}
 				break;
 			}
@@ -125,6 +138,52 @@ highFrequency
 				trUnitSelectClear();
 				trUnitSelectByID(id);
 				trUnitDestroy();
+				break;
+			}
+			case kbGetProtoUnitID("Pegasus"):
+			{
+				xSetPointer(dPlayerData, kbUnitGetOwner(id));
+				if(xGetBool(dPlayerData, xPlayerRunner) == false){
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitChangeProtoUnit("Guardian XP");
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Stymphalian Bird"):
+			{
+				int index = xAddDatabaseBlock(dBirds, true);
+				xSetInt(dBirds, xLampadesID, id);
+				xSetInt(dBirds, xPlayerOwner, kbUnitGetOwner(id));
+				xSetInt(dBirds, xSpecialNext, 0);
+				xSetInt(dBirds, xSpecialStep, 0);
+				xSetVector(dBirds, xSpecialTarget, vector(0,0,0));
+				xSetInt(dBirds, xSpecialTargetID, 0);
+				xSetInt(dBirds, xYeebID, 0);
+				xSetInt(dBirds, xYeebAnim, 0);
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				spyEffect(kbGetProtoUnitID("Pharaoh Of Osiris XP"), 2, xsVectorSet(dBirds, xYeebID, index), vector(3,3,3));
+				spyEffect(kbGetProtoUnitID("Mist"), 2, xsVectorSet(0,0,0), vector(1,1,1));
+				spyEffect(kbGetProtoUnitID("Mist"), 2, xsVectorSet(0,0,0), vector(1,1,1));
+				spyEffect(kbGetProtoUnitID("Mist"), 2, xsVectorSet(0,0,0), vector(1,1,1));
+				spyEffect(kbGetProtoUnitID("Mist"), 2, xsVectorSet(0,0,0), vector(1,1,1));
+				spyEffect(kbGetProtoUnitID("Flying Purple Hippo"), 15, xsVectorSet(0,0,0), vector(0,0,0));
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trSetSelectedScale(0.1,0.1,0.1);
+				xUnitSelect(dBirds, xYeebID);
+				trUnitConvert(kbUnitGetOwner(id));
+				if(AutoEscape){
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, j);
+					xSetInt(dEnemies, xIdleTimeout, trTime()+1);
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trQuestVarSetFromRand("x", 0 , MapSize);
+					trQuestVarSetFromRand("z", 0 , MapSize);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+				}
 				break;
 			}
 		}
