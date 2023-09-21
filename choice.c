@@ -6,6 +6,7 @@ string NoChoiceUnitName = "Lancer";
 
 /*
 Power ideas
+No need to code beyond level 15 really
 
 RUNNER
 Great jounrey
@@ -14,7 +15,10 @@ Turn into bird
 Bolt (radial)
 Temporary towers
 Kill shockwave
+Unlock lighthouse
+Runner lightning forcefield
 
+CHANGE CHIMERA FOR MYTHIC CURSE
 
 HUNTER
 Spawn scouting raven
@@ -28,6 +32,23 @@ Catapult of doom
 BOTH
 Temporarily reveal whole map
 Temporary cliff
+
+LURE
+CARNIVORA
+DWARVEN GOLD
+SERPENTS
+ANCESTORS
+HESPERIDES
+PLENTY
+TARTARIAN
+earth dragon
+
+RAIN
+RAG
+FIMBUL
+
+gaia forest
+change myth
 
 
 */
@@ -105,7 +126,7 @@ string RewardText(int r = 0){
 		}
 		case 17:
 		{
-			reward = "Lightning storm";
+			reward = "Barrage";
 			//Change to barrage
 		}
 		case 18:
@@ -132,7 +153,7 @@ string RewardText(int r = 0){
 		case 23:
 		{
 			if(AutoEscape){
-				reward = "Vision";
+				reward = "Mythic Curse power";
 			}
 			else{
 				reward = "Flare current hunter temple positions";
@@ -480,7 +501,7 @@ inactive
 			}
 			case 17:
 			{
-				grantGodPowerNoRechargeNextPosition(p, "Lightning Storm", 1);
+				grantGodPowerNoRechargeNextPosition(p, "Barrage", 1);
 			}
 			case 18:
 			{

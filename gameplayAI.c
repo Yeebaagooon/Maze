@@ -401,18 +401,25 @@ highFrequency
 		trDamageUnitPercent(-100);
 		if (trUnitAlive() == false) {
 			xFreeDatabaseBlock(dBirds);
-		}else{
+		}
+		else{
 			anim = kbUnitGetAnimationActionType(id);
 			if(anim != xGetInt(dBirds, xYeebAnim)){
 				if (anim == 9) {
 					trUnitSelectClear();
 					xUnitSelect(dBirds, xYeebID);
 					trUnitOverrideAnimation(2,0,true,true,-1);
+					if(trUnitVisToPlayer()){
+						playSound("soopselect"+(iModulo(4,trTimeMS())+1)+".wav");
+					}
 				}
 				if ((anim == 11) || (anim == 10)) {
 					trUnitSelectClear();
 					xUnitSelect(dBirds, xYeebID);
 					trUnitOverrideAnimation(15,0,true,true,-1);
+					if(trUnitVisToPlayer()){
+						playSound("soopmove"+(iModulo(4,trTimeMS())+1)+".wav");
+					}
 				}
 				xSetInt(dBirds, xYeebAnim, anim);
 			}
@@ -432,6 +439,9 @@ highFrequency
 							trUnitOverrideAnimation(2,0,false,true,-1);
 							xUnitSelect(dBirds, xYeebID);
 							trUnitOverrideAnimation(25,0,false,true,-1);
+							if(trUnitVisToPlayer()){
+								playSound("soopattack.wav");
+							}
 							xSetInt(dBirds, xYeebAnim, anim);
 						}
 					}
@@ -467,6 +477,9 @@ highFrequency
 						xSetInt(dBirds, xSpecialStep, 2);
 						xUnitSelect(dBirds, xSpecialTargetID);
 						trDamageUnitPercent(100);
+						if(trUnitVisToPlayer()){
+							playSound("\cinematics\24_in\magic.mp3");
+						}
 					}
 					case 2:
 					{

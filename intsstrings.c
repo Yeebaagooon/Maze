@@ -19,8 +19,8 @@ to revert timeshift cost after player resigns/game ends
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
-bool ForceAutoOff = false;
-bool Visible = false;
+bool ForceAutoOff = true;
+bool Visible = true;
 
 
 bool AutoEscape = false;
@@ -110,9 +110,10 @@ void DamageBuildingCountRazes(int p = 1, vector pos = vector(0,0,0), float dista
 		}
 	}
 	xsSetContextPlayer(0);
+	debugLog("Distance: " + distance);
 }
 
-void DamageBuildingPercentCountRazes(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
+/*void DamageBuildingPercentCountRazes(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
 		xsSetContextPlayer(otherp);
 		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
@@ -138,7 +139,8 @@ void DamageBuildingPercentCountRazes(int p = 1, vector pos = vector(0,0,0), floa
 			kbUnitQueryDestroy(kbid);
 		}
 	}
-}
+	debugLog("DistancePercent: " + distance);
+}*/
 
 void DamageUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){

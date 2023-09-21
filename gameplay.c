@@ -279,7 +279,6 @@ highFrequency
 	xsEnableRule("MGSpecial");
 	xsEnableRule("HekaSpecial");
 	xsEnableRule("LampadesSpecial");
-	xsEnableRule("YeebSpecial");
 	xsEnableRule("TowerDB");
 	xsEnableRule("RunnersWin");
 	xsEnableRule("HuntersWin");
@@ -299,7 +298,6 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	/*UnitCreate(2, "Lampades", 4, 4);
 	UnitCreate(2, "Tower", 10, 12);
 	UnitCreate(2, "Tower", 10, 14);
 	UnitCreate(2, "Tower", 10, 16);
@@ -307,10 +305,11 @@ highFrequency
 	UnitCreate(2, "Tower", 12, 12);
 	UnitCreate(2, "Tower", 14, 12);
 	trTechGodPower(1, "Restoration", 4);
-	trTechGodPower(1, "SPCMeteor", 4);*/
+	trTechGodPower(1, "SPCMeteor", 4);
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+			grantGodPowerNoRechargeNextPosition(p, "Change Chimera", 1);
 		}
 	}
 	%
@@ -396,7 +395,7 @@ highFrequency
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
 				grantGodPowerNoRechargeNextPosition(p, "Restoration", 1);
 				if(trCurrentPlayer() == p){
-					trMessageSetText("Restoration = all units and buildings invulnerable", 8000);
+					trMessageSetText("Restoration = all units and buildings invulnerable for 8 seconds", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
@@ -484,6 +483,10 @@ highFrequency
 		if(AutoEscape){
 			trChatSend(0, "Firing GP");
 			xsEnableRule("AI_Force_Power");
+			trUnitSelectClear();
+			trUnitSelect("0");
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Centaur", "Sphinx", MapSize);
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Scorpion Man", "Sphinx", MapSize);
 		}
 		xsDisableSelf();
 	}
@@ -503,6 +506,12 @@ highFrequency
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
+		}
+		if(AutoEscape){
+			trUnitSelectClear();
+			trUnitSelect("0");
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Cyclops", "Sphinx", MapSize);
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Satyr", "Sphinx", MapSize);
 		}
 		xsDisableSelf();
 	}
@@ -525,6 +534,12 @@ highFrequency
 					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Eclipse", xsVectorSet(MapSize/2, 5.00, MapSize/2), vector(0,0,0));
 				}
 			}
+		}
+		if(AutoEscape){
+			trUnitSelectClear();
+			trUnitSelect("0");
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Battle Boar", "Sphinx", MapSize);
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Wadjet", "Sphinx", MapSize);
 		}
 		xsDisableSelf();
 	}
@@ -610,6 +625,11 @@ highFrequency
 				}
 			}
 		}
+		if(AutoEscape){
+			trUnitSelectClear();
+			trUnitSelect("0");
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Sphinx", "Behemoth", MapSize);
+		}
 		xsDisableSelf();
 	}
 }
@@ -656,6 +676,12 @@ highFrequency
 					playSound("ageadvance.wav");
 				}
 			}
+		}
+		if(AutoEscape){
+			trUnitSelectClear();
+			trUnitSelect("0");
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Mountain Giant", "Phoenix", MapSize);
+			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Behemoth", "Phoenix", MapSize);
 		}
 		xsDisableSelf();
 	}
@@ -724,11 +750,17 @@ highFrequency
 					playSound("ageadvance.wav");
 				}
 			}
+			if(xGetBool(dPlayerData, xPlayerRunner)){
+				if(trCurrentPlayer() == p){
+					trOverlayText("Yeebaagooon has joined the hunters! Run!", 6.0);
+				}
+			}
 		}
 		if(AutoEscape){
 			spawn = xsVectorSet(MapSize/2,0,MapSize/2);
 			UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 		}
+		xsEnableRule("YeebSpecial");
 		xsDisableSelf();
 	}
 }

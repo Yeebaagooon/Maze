@@ -94,6 +94,7 @@ highFrequency
 					if(trTime() > 240){
 						GodPowerChance(j);
 						AI_Send_Death_Squad(j);
+						debugLog("SP");
 					}
 				}
 				break;
@@ -184,6 +185,28 @@ highFrequency
 					trQuestVarSetFromRand("z", 0 , MapSize);
 					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
 				}
+				break;
+			}
+			case kbGetProtoUnitID("Chimera"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitChangeProtoUnit("Hero Death");
+				for(p = 1 ; <= cNumberNonGaiaPlayers){
+					if(trCheckGPActive("Change Chimera", p) == true){
+						trQuestVarModify("P"+p+"AddKills", "+", 1);
+					}
+				}
+				if(trUnitVisToPlayer()){
+					playSound("\cinematics\a\lostsouls.mp3");
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Barrage"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),3.0,400.0);
 				break;
 			}
 		}

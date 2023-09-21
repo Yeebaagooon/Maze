@@ -143,7 +143,7 @@ highFrequency
 		modifyProtounitAbsolute("Stymphalian Bird", p, 0, 1000000);
 		modifyProtounitAbsolute("Stymphalian Bird", p, 1, 10);
 		modifyProtounitAbsolute("Stymphalian Bird", p, 2, 47);
-		modifyProtounitAbsolute("Stymphalian Bird", p, 11, 30);
+		modifyProtounitAbsolute("Stymphalian Bird", p, 11, 20);
 		modifyProtounitAbsolute("Stymphalian Bird", p, 13, 0);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
