@@ -22,6 +22,9 @@ string MapName = "Maze Escape";
 bool ForceAutoOff = true;
 bool Visible = true;
 
+string CliffTerrain = "CliffGreekA";
+string RoadTerrain = "OlympusTile";
+
 
 bool AutoEscape = false;
 int dPlayerData = 0;
@@ -75,42 +78,36 @@ float timelast = 0.0;
 int RunnersDead = 0;
 
 
+int CountBuildings(int p = 0){
+	int count = trPlayerUnitCountSpecific(p, "Tower")+trPlayerUnitCountSpecific(p, "Sky Passage")+trPlayerUnitCountSpecific(p, "Gate")+trPlayerUnitCountSpecific(p, "Wall Connector")+trPlayerUnitCountSpecific(p, "Wall Short")+trPlayerUnitCountSpecific(p, "Wall Medium")+trPlayerUnitCountSpecific(p, "Wall Long");
+	return(count);
+}
 
 /*NOTES
 
 Put the choice area in hunter area so all have LOS
 */
 
-void DamageBuildingCountRazes(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
+void DamageBuildingCountRazes(int p = 1, int targetid = 0, float distance = 10.0, float damage = 100){
+	int count = 0;
+	int diff = 0;
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
-		xsSetContextPlayer(otherp);
 		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
-			int kbid = kbUnitQueryCreate("damagebuildabsol");
-			kbUnitQuerySetPlayerID(kbid, otherp);
-			kbUnitQuerySetPosition(kbid, pos);
-			kbUnitQuerySetUnitType(kbid, 937);
-			kbUnitQuerySetState(kbid, 2);
-			kbUnitQuerySetMaximumDistance(kbid, distance);
-			int count = kbUnitQueryExecute(kbid);
-			for(a = 0 ; < count){
-				int UnitID = kbUnitQueryGetResult(kbid, a);
-				trUnitSelectClear();
-				trUnitSelectByID(UnitID);
-				if(trUnitPercentDamaged() < 100.0){
-					trDamageUnit(damage);
-				}
-				trUnitSelectClear();
-				trUnitSelectByID(UnitID);
-				if(trUnitPercentDamaged() >= 100.0){
-					trDamageUnitPercent(100.0);
-					trQuestVarModify("P"+p+"AddKills", "+", 1);
-				}
-			}
-			kbUnitQueryDestroy(kbid);
+			//count
+			trQuestVarSet("LastAdd", p);
+			trQuestVarSet("CountAdd"+otherp, CountBuildings(otherp));
+			
+			//dmg
+			trUnitSelectClear();
+			trUnitSelect(""+targetid);
+			trDamageUnitsInArea(otherp, "Building", distance, damage);
+			
+			//count
+			trDelayedRuleActivation("CountExtras");
 		}
 	}
-	xsSetContextPlayer(0);
 	debugLog("Distance: " + distance);
+	debugLog("Damage: " + 1*damage);
 }
 
 /*void DamageBuildingPercentCountRazes(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){

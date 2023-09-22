@@ -6,6 +6,10 @@ void LevelUpChoice(int p = 0){
 	else{
 		PlayerChoice(p, "Choose a reward:", RewardTextHunter(xGetInt(dPlayerData, xLUCL)), xGetInt(dPlayerData,xLUCL), RewardTextHunter(xGetInt(dPlayerData, xLUCR)), xGetInt(dPlayerData,xLUCR));
 	}
+	if(trCurrentPlayer() == p){
+		trClearCounterDisplay();
+	}
+	gadgetRefresh("unitStatPanel");
 }
 
 void LevelUp(int p = 0){
@@ -101,7 +105,9 @@ void LevelUp(int p = 0){
 		OverlayTextPlayerColor(p);
 		trOverlayText("LEVEL UP - press space to choose a reward", 5.0, 404, 300, 3000);
 		playSound("arkantosarrive.wav");
+		trSetCounterDisplay("REWARD ACTIVE - PRESS SPACE");
 	}
+	gadgetRefresh("unitStatPanel");
 }
 
 rule Eternal_Loops
@@ -210,9 +216,12 @@ highFrequency
 		if(trPlayerUnitCountSpecific(p, "Maceman Hero") > 0){
 			trUnitSelectByQV("P"+p+"Space");
 			trUnitChangeInArea(p,p, "Maceman Hero", "Cinematic Block", MapSize);
-			if(trCurrentPlayer() == p){
+			/*			if(trCurrentPlayer() == p){
 				uiZoomToProto("Villager Atlantean Hero");
-			}
+			}*/
+			trackInsert();
+			trackAddWaypoint();
+			trackPlay(10,EVENT_REMOVE_CAM_TRACKS);
 			old = xsGetContextPlayer();
 			xsSetContextPlayer(0);
 			LevelUpChoice(p);
@@ -232,7 +241,7 @@ highFrequency
 				}
 				else{
 					xUnitSelect(dEarthquake, xEarthquakeName);
-					DamageBuildingCountRazes(xGetInt(dEarthquake, xEarthquakeOwner),kbGetBlockPosition(""+xGetInt(dEarthquake, xEarthquakeName)),30.0,0.17*timediff);
+					DamageBuildingCountRazes(xGetInt(dEarthquake, xEarthquakeOwner),xGetInt(dEarthquake, xEarthquakeName),30.0,0.17*timediff);
 					//trDamageUnitsInArea(p, "Unit", 30, 0.03*timediff);
 				}
 			}
@@ -276,9 +285,11 @@ highFrequency
 	xsEnableRule("HunterUnits18Mins");
 	xsEnableRule("HunterUnits20Mins");
 	xsEnableRule("HunterUnits22Mins");
+	xsEnableRule("TerrainResets");
 	xsEnableRule("MGSpecial");
 	xsEnableRule("HekaSpecial");
 	xsEnableRule("LampadesSpecial");
+	xsEnableRule("YeebSpecial");
 	xsEnableRule("TowerDB");
 	xsEnableRule("RunnersWin");
 	xsEnableRule("HuntersWin");
@@ -298,6 +309,7 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
+	UnitCreate(1, "Stymphalian Bird", 6, 12);
 	UnitCreate(2, "Tower", 10, 12);
 	UnitCreate(2, "Tower", 10, 14);
 	UnitCreate(2, "Tower", 10, 16);
@@ -305,7 +317,7 @@ highFrequency
 	UnitCreate(2, "Tower", 12, 12);
 	UnitCreate(2, "Tower", 14, 12);
 	trTechGodPower(1, "Restoration", 4);
-	trTechGodPower(1, "SPCMeteor", 4);
+	trTechGodPower(1, "Earth Dragon", 4);
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
@@ -760,7 +772,6 @@ highFrequency
 			spawn = xsVectorSet(MapSize/2,0,MapSize/2);
 			UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 		}
-		xsEnableRule("YeebSpecial");
 		xsDisableSelf();
 	}
 }
@@ -823,4 +834,46 @@ highFrequency
 	code("configSetInt(\"unbuildWoodCost2\", 200);");
 	code("configSetInt(\"unbuildGoldCost2\", 100);");
 	%
+}
+
+rule CountExtras
+inactive
+highFrequency
+{
+	for(p=1 ; <= cNumberNonGaiaPlayers){
+		if(1*trQuestVarGet("LastAdd") == p){
+			for(q=1 ; <= cNumberNonGaiaPlayers){
+				if(1*trQuestVarGet("CountAdd"+q) > 0){
+					trQuestVarModify("P"+p+"AddKills", "+", 1*trQuestVarGet("CountAdd"+q));
+					trQuestVarModify("P"+p+"AddKills", "-", CountBuildings(q));
+					trQuestVarSet("CountAdd"+q, 0);
+				}
+			}
+			break;
+		}
+	}
+	trQuestVarSet("LastAdd", 0);
+	xsDisableSelf();
+}
+
+rule TerrainResets
+inactive
+highFrequency
+{
+	if (xGetDatabaseCount(dTerrainResetDB) > 0) {
+		xDatabaseNext(dTerrainResetDB);
+		if(trTime() > xGetInt(dTerrainResetDB, xTimeReset)){
+			if(xGetBool(dTerrainResetDB, xXDir)){
+				trPaintTerrain(xGetInt(dTerrainResetDB, xMinX),xGetInt(dTerrainResetDB, xMinZ)+2,xGetInt(dTerrainResetDB, xMaxX),xGetInt(dTerrainResetDB, xMaxZ)-2,getTerrainType(RoadTerrain), getTerrainSubType(RoadTerrain));
+				trChangeTerrainHeight(xGetInt(dTerrainResetDB, xMinX),xGetInt(dTerrainResetDB, xMinZ)+2,xGetInt(dTerrainResetDB, xMaxX)+1,xGetInt(dTerrainResetDB, xMaxZ)-1,0);
+			}
+			else{
+				trPaintTerrain(xGetInt(dTerrainResetDB, xMinX)+2,xGetInt(dTerrainResetDB, xMinZ),xGetInt(dTerrainResetDB, xMaxX)-2,xGetInt(dTerrainResetDB, xMaxZ),getTerrainType(RoadTerrain), getTerrainSubType(RoadTerrain));
+				trChangeTerrainHeight(xGetInt(dTerrainResetDB, xMinX)+2,xGetInt(dTerrainResetDB, xMinZ),xGetInt(dTerrainResetDB, xMaxX)-1,xGetInt(dTerrainResetDB, xMaxZ)+1,0);
+			}
+			xFreeDatabaseBlock(dTerrainResetDB);
+			refreshPassability();
+			playSound("godpowerfailed.wav");
+		}
+	}
 }

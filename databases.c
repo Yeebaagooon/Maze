@@ -100,6 +100,14 @@ int xBirdID = 0;
 int xYeebID = 0;
 int xYeebAnim = 0;
 
+//terain
+int dTerrainResetDB = 0;
+int xMinX = 0;
+int xMaxX = 0;
+int xMinZ = 0;
+int xMaxZ = 0;
+int xTimeReset = 0;
+int xXDir = 0;
 
 
 rule setup_first_databases
@@ -184,6 +192,14 @@ highFrequency
 	xYeebID = xInitAddInt(dBirds, "yeebid", 0);
 	xYeebAnim = xInitAddInt(dBirds, "yeebid", 0);
 	
+	
+	dTerrainResetDB = xInitDatabase("terraindb");
+	xMinX = xInitAddInt(dTerrainResetDB, "minx", 0);
+	xMaxX = xInitAddInt(dTerrainResetDB, "maxx", 0);
+	xMinZ = xInitAddInt(dTerrainResetDB, "minz", 0);
+	xMaxZ = xInitAddInt(dTerrainResetDB, "maxz", 0);
+	xTimeReset = xInitAddInt(dTerrainResetDB, "timereset", 0);
+	xXDir = xInitAddBool(dTerrainResetDB, "xXDir", true);
 }
 
 
@@ -223,4 +239,74 @@ void spyEffect(int proto = 0, int anim = 0, vector dest = vector(0,0,0), vector 
 	//xSetInt(dSpyRequests, xSpyRequestExtra, extra, newest);
 	trTechInvokeGodPower(0, "spy", vector(0,0,0), vector(0,0,0));
 	//unitTransform("Prisoner", "Ball of fire");
+}
+
+void BuildCliff(vector target = vector(0,0,0)){
+	int TilesX = 0;
+	int TilesZ = 0;
+	target = xsVectorSet(xsVectorGetX(target)/2,5,xsVectorGetZ(target)/2);
+	int XTPlus = 0;
+	int XTNeg = 0;
+	bool HitPlus = false;
+	bool HitNegative = false;
+	while(HitPlus == false){
+		XTPlus = XTPlus+1;
+		if(trGetTerrainType(xsVectorGetX(target)+XTPlus,xsVectorGetZ(target)) == getTerrainType(CliffTerrain)){
+			HitPlus = true;
+		}
+	}
+	while(HitNegative == false){
+		XTNeg = XTNeg-1;
+		if(trGetTerrainType(xsVectorGetX(target)+XTNeg,xsVectorGetZ(target)) == getTerrainType(CliffTerrain)){
+			HitNegative = true;
+		}
+	}
+	TilesX = XTPlus-XTNeg;
+	trChatSend(0, "X tiles = " + TilesX);
+	
+	
+	int YTPlus = 0;
+	int YTNeg = 0;
+	bool YHitPlus = false;
+	bool YHitNegative = false;
+	while(YHitPlus == false){
+		YTPlus = YTPlus+1;
+		if(trGetTerrainType(xsVectorGetX(target),xsVectorGetZ(target)+YTPlus) == getTerrainType(CliffTerrain)){
+			YHitPlus = true;
+		}
+	}
+	while(YHitNegative == false){
+		YTNeg = YTNeg-1;
+		if(trGetTerrainType(xsVectorGetX(target),xsVectorGetZ(target)+YTNeg) == getTerrainType(CliffTerrain)){
+			YHitNegative = true;
+		}
+	}
+	TilesZ = YTPlus-YTNeg;
+	trChatSend(0, "Y tiles = " + TilesZ);
+	
+	if(TilesZ < TilesX){
+		//paint z
+		trPaintTerrain(xsVectorGetX(target)-1,xsVectorGetZ(target)+YTNeg-1,xsVectorGetX(target)+1,xsVectorGetZ(target)+YTPlus+1,getTerrainType(CliffTerrain), getTerrainSubType(CliffTerrain));
+		trChangeTerrainHeight(xsVectorGetX(target),xsVectorGetZ(target)+YTNeg,xsVectorGetX(target)+1,xsVectorGetZ(target)+YTPlus+1,5);
+		xAddDatabaseBlock(dTerrainResetDB, true);
+		xSetInt(dTerrainResetDB, xMinX, xsVectorGetX(target)-1);
+		xSetInt(dTerrainResetDB, xMinZ, xsVectorGetZ(target)+YTNeg-1);
+		xSetInt(dTerrainResetDB, xMaxX, xsVectorGetX(target)+1);
+		xSetInt(dTerrainResetDB, xMaxZ, xsVectorGetZ(target)+YTPlus+1);
+		xSetInt(dTerrainResetDB, xTimeReset, trTime()+10);
+		xSetBool(dTerrainResetDB, xXDir, true);
+	}
+	else{
+		//paint x
+		trPaintTerrain(xsVectorGetX(target)+XTNeg-1,xsVectorGetZ(target)-1,xsVectorGetX(target)+XTPlus+1,xsVectorGetZ(target)+1,getTerrainType(CliffTerrain), getTerrainSubType(CliffTerrain));
+		trChangeTerrainHeight(xsVectorGetX(target)+XTNeg,xsVectorGetZ(target),xsVectorGetX(target)+XTPlus+1,xsVectorGetZ(target)+1,5);
+		xAddDatabaseBlock(dTerrainResetDB, true);
+		xSetInt(dTerrainResetDB, xMinX, xsVectorGetX(target)+XTNeg-1);
+		xSetInt(dTerrainResetDB, xMinZ, xsVectorGetZ(target)-1);
+		xSetInt(dTerrainResetDB, xMaxX, xsVectorGetX(target)+XTPlus+1);
+		xSetInt(dTerrainResetDB, xMaxZ, xsVectorGetZ(target)+1);
+		xSetInt(dTerrainResetDB, xTimeReset, trTime()+10);
+		xSetBool(dTerrainResetDB, xXDir, false);
+	}
+	refreshPassability();
 }

@@ -102,13 +102,13 @@ highFrequency
 			case kbGetProtoUnitID("Meteor"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,20000.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,20000.0);
 				break;
 			}
 			case kbGetProtoUnitID("SPCMeteor"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,20000.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,20000.0);
 				trUnitSelectClear();
 				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,20000.0);
 				break;
@@ -116,7 +116,7 @@ highFrequency
 			case kbGetProtoUnitID("Lightning Sparks"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),kbGetBlockPosition(""+j),1.0,200.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,1.0,200.0);
 				break;
 			}
 			case kbGetProtoUnitID("Lightning Scorch"):
@@ -207,6 +207,14 @@ highFrequency
 				trUnitSelectClear();
 				trUnitSelectByID(id);
 				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),3.0,400.0);
+				break;
+			}
+			case kbGetProtoUnitID("Earth Dragon"):
+			{
+				BuildCliff(kbGetBlockPosition(""+j));
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitChangeProtoUnit("Undermine Building Destruction SFX");
 				break;
 			}
 		}

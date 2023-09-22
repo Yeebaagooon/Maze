@@ -243,7 +243,7 @@ highFrequency
 						trUnitSelectClear();
 						trUnitSelect(""+temp);
 						trUnitChangeProtoUnit("Wall Connector Destruction SFX");
-						DamageBuildingCountRazes(p,kbGetBlockPosition(""+xGetInt(dMountainGiants,xSpecialTargetID)),2.0,1000.0);
+						DamageBuildingCountRazes(p,xGetInt(dMountainGiants,xSpecialTargetID),2.0,1000.0);
 						xSetInt(dMountainGiants, xSpecialStep, 0);
 						xSetInt(dMountainGiants, xSpecialNext, xGetInt(dMountainGiants, xSpecialNext) + 5);
 					}
@@ -305,7 +305,7 @@ highFrequency
 				{
 					end = xGetVector(dHekas,xSpecialTarget);
 					trUnitSelectClear();
-					DamageBuildingCountRazes(p,kbGetBlockPosition(""+xGetInt(dHekas,xSpecialTargetID)),5.0,1000.0);
+					DamageBuildingCountRazes(p,xGetInt(dHekas,xSpecialTargetID),5.0,1000.0);
 					xSetInt(dHekas, xSpecialNext, trTimeMS() + 1210);
 					xSetInt(dHekas, xSpecialStep, 2);
 				}
@@ -365,7 +365,7 @@ highFrequency
 					trUnitSelectClear();
 					trUnitSelect(""+temp);
 					trUnitChangeProtoUnit("Tartarian Gate birth");
-					DamageBuildingCountRazes(p,kbGetBlockPosition(""+xGetInt(dLampades,xSpecialTargetID)),6.0,2000.0);
+					DamageBuildingCountRazes(p,xGetInt(dLampades,xSpecialTargetID),6.0,2000.0);
 					xSetInt(dLampades, xSpecialNext, trTimeMS() + 500);
 					xSetInt(dLampades, xSpecialStep, 2);
 				}
@@ -472,7 +472,7 @@ highFrequency
 						trUnitSelect(""+temp);
 						trUnitChangeProtoUnit("Arkantos God Out");
 						trUnitSelectClear();
-						DamageBuildingCountRazes(p,kbGetBlockPosition(""+xGetInt(dBirds,xSpecialTargetID)),10.0,20000.0);
+						DamageBuildingCountRazes(p,xGetInt(dBirds,xSpecialTargetID),10.0,20000.0);
 						xSetInt(dBirds, xSpecialNext, trTimeMS() + 1000);
 						xSetInt(dBirds, xSpecialStep, 2);
 						xUnitSelect(dBirds, xSpecialTargetID);
