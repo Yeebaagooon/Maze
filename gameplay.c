@@ -133,6 +133,11 @@ highFrequency
 		if(xGetBool(dPlayerData, xPlayerAlive)){
 			if(playerIsPlaying(p)){
 				if(xGetBool(dPlayerData, xPlayerRunner) == true){
+					//lavacheck
+					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) == getTerrainSubType("Hades4Passable"))){
+						xUnitSelect(dPlayerData, xPlayerUnitID);
+						trDamageUnit(0.1*timediff);
+					}
 					//runner stat checker
 					if(trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"UnitKills")){
 						trQuestVarSet("P"+p+"UnitKills", trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills"));
@@ -310,6 +315,8 @@ highFrequency
 	xsEnableRule("RunnersWin");
 	xsEnableRule("HuntersWin");
 	xsEnableRule("VolcanoLava");
+	xsEnableRule("RepaintTerrain");
+	xsEnableRule("BuildingDB");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
 	//Set GP vector to a corner
@@ -326,19 +333,19 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	UnitCreate(1, "Stymphalian Bird", 6, 12);
+	/*UnitCreate(1, "Stymphalian Bird", 6, 12);
 	UnitCreate(2, "Tower", 10, 12);
 	UnitCreate(2, "Tower", 10, 14);
 	UnitCreate(2, "Tower", 10, 16);
 	UnitCreate(2, "Tower", 10, 12);
 	UnitCreate(2, "Tower", 12, 12);
-	UnitCreate(2, "Tower", 14, 12);
+	UnitCreate(2, "Tower", 14, 12);*/
 	trTechGodPower(1, "Restoration", 4);
 	trTechGodPower(1, "create gold", 4);
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
-			grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", 1);
+			grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", 11);
 		}
 	}
 	%

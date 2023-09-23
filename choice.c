@@ -15,7 +15,7 @@ RUNNER
 Great jounrey
 Pestilence
 Turn into bird
-Bolt (radial)
+xBolt (radial)
 Temporary towers
 Kill shockwave
 Unlock lighthouse

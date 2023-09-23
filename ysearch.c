@@ -80,16 +80,41 @@ highFrequency
 			}
 			case kbGetProtoUnitID("Tower"):
 			{
-				xAddDatabaseBlock(dTowers, true);
-				xSetInt(dTowers, xTowerName, j);
-				xSetInt(dTowers, xPlayerOwner, kbUnitGetOwner(id));
-				if(AutoEscape){
-					GodPowerChance(j);
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+				}
+				else{
+					xAddDatabaseBlock(dTowers, true);
+					xSetInt(dTowers, xTowerName, j);
+					xSetInt(dTowers, xPlayerOwner, kbUnitGetOwner(id));
+					if(AutoEscape){
+						GodPowerChance(j);
+					}
 				}
 				break;
 			}
 			case kbGetProtoUnitID("Sky Passage"):
 			{
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+				}
+				else{
+					xAddDatabaseBlock(dBuildings, true);
+					xSetInt(dBuildings, xUnitName, j);
+					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				}
 				if(AutoEscape){
 					if(trTime() > 240){
 						GodPowerChance(j);
@@ -195,6 +220,7 @@ highFrequency
 				for(p = 1 ; <= cNumberNonGaiaPlayers){
 					if(trCheckGPActive("Change Chimera", p) == true){
 						trQuestVarModify("P"+p+"AddKills", "+", 1);
+						gadgetRefresh("unitStatPanel");
 					}
 				}
 				if(trUnitVisToPlayer()){
@@ -239,6 +265,7 @@ highFrequency
 				xAddDatabaseBlock(dVolcanoDB, true);
 				xSetVector(dVolcanoDB, xVolcanoPos, kbGetBlockPosition(""+j));
 				xSetVector(dVolcanoDB, xVolcanoPos, xGetVector(dVolcanoDB, xVolcanoPos)/2); //tile pos
+				xSetInt(dVolcanoDB, xVolcanoName, j);
 				xSetInt(dVolcanoDB, xVolcanoTiles, 0);
 				xSetInt(dVolcanoDB, xVolcanoTime, trTimeMS());
 				xSetInt(dVolcanoDB, xVolcanoLink, 1*trQuestVarGet("Volcanoes"));
@@ -252,15 +279,96 @@ highFrequency
 				xSetInt(dVolcanoFrontierDB, xVFLink, 1*trQuestVarGet("Volcanoes"));
 				trUnitSelectClear();
 				trUnitSelectByID(id);
-				trUnitChangeProtoUnit("Lava Bubbling");
+				trSetSelectedScale(0.5,-0.5,0.5);
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitOverrideAnimation(2,0,true,true,-1,-1);
 			}
 			case kbGetProtoUnitID("Tartarian Gate Spawn"):
 			{
 				if(Pregame == false){
 					trUnitSelectClear();
 					trUnitSelectByID(id);
-					trUnitChangeProtoUnit("Ball of fire");
+					trUnitDestroy();
 				}
+			}
+			case kbGetProtoUnitID("Bolt Strike"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitDestroy();
+			}
+			case kbGetProtoUnitID("Wall Connector"):
+			{
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+				}
+				else{
+					xAddDatabaseBlock(dBuildings, true);
+					xSetInt(dBuildings, xUnitName, j);
+					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Wall Short"):
+			{
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+				}
+				else{
+					xAddDatabaseBlock(dBuildings, true);
+					xSetInt(dBuildings, xUnitName, j);
+					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Wall Medium"):
+			{
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+				}
+				else{
+					xAddDatabaseBlock(dBuildings, true);
+					xSetInt(dBuildings, xUnitName, j);
+					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Wall Long"):
+			{
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+				}
+				else{
+					xAddDatabaseBlock(dBuildings, true);
+					xSetInt(dBuildings, xUnitName, j);
+					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				}
+				break;
 			}
 		}
 		if (xGetDatabaseCount(dSpyRequests) > 0) {

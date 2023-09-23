@@ -33,11 +33,17 @@ bool GodPowerChance(int name = 0, int override = 0){
 		}
 		if(AutoHunterLevel >= 6){
 			trQuestVarSetFromRand("temp", 1, 6);
-			if(1*trQuestVarGet("temp") < 4){
+			if(1*trQuestVarGet("temp") <= 2){
+				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tartarian Gate", MapFactor());
+				trUnitSelectClear();
+				trUnitSelect(""+name);
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
+			}
+			else if(1*trQuestVarGet("temp") <= 4){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
 				trUnitSelectClear();
 				trUnitSelect(""+name);
-				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
 			}
 			else if(1*trQuestVarGet("temp") < 6){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
@@ -523,15 +529,45 @@ highFrequency
 	//Zeno MG code
 	if (xGetDatabaseCount(dTowers) > 0) {
 		xDatabaseNext(dTowers);
-		int name = xGetInt(dTowers,xTowerName);
-		trUnitSelectClear();
-		trUnitSelect(""+name);
+		xUnitSelect(dTowers, xTowerName);
 		//p = xGetInt(dTowers,xPlayerOwner);
 		if (trUnitAlive() == false) {
 			xFreeDatabaseBlock(dTowers);
 		}
+		else{
+			int x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
+			int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
+			if((trGetTerrainType(x,z) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(x,z) == getTerrainSubType("Hades4Passable"))){
+				xUnitSelect(dTowers, xTowerName);
+				trDamageUnit(1*timediff);
+			}
+		}
 	}
 }
+
+rule BuildingDB
+inactive
+highFrequency
+{
+	//Zeno MG code
+	if (xGetDatabaseCount(dBuildings) > 0) {
+		xDatabaseNext(dBuildings);
+		xUnitSelect(dBuildings, xUnitName);
+		//p = xGetInt(dTowers,xPlayerOwner);
+		if (trUnitAlive() == false) {
+			xFreeDatabaseBlock(dBuildings);
+		}
+		else{
+			int x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dBuildings, xUnitName)))/2;
+			int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dBuildings, xUnitName)))/2;
+			if((trGetTerrainType(x,z) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(x,z) == getTerrainSubType("Hades4Passable"))){
+				xUnitSelect(dBuildings, xUnitName);
+				trDamageUnit(2*timediff);
+			}
+		}
+	}
+}
+
 
 rule VolcanoLava
 inactive
@@ -550,7 +586,7 @@ highFrequency
 			if(trTimeMS() > xGetInt(dVolcanoDB, xVolcanoNextTime)){
 				xSetInt(dVolcanoDB, xVolcanoNextTime, trTimeMS()+100);
 				//create lava
-				trQuestVarSetFromRand("temp", 1, 20);
+				trQuestVarSetFromRand("temp", 1, xGetDatabaseCount(dVolcanoFrontierDB));
 				for(a = 0; < 1*trQuestVarGet("temp")){
 					xDatabaseNext(dVolcanoFrontierDB);
 				}
@@ -568,16 +604,22 @@ highFrequency
 								}
 							}
 						}
-												break;
+						break;
 					}
 				}
 				//find valid target
 				posx = xGetInt(dVolcanoFrontierDB, xVFPosX);
 				posz = xGetInt(dVolcanoFrontierDB, xVFPosZ);
 				//paint area
-				trPaintTerrain(xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ),xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ),getTerrainType("Hades7"), getTerrainSubType("Hades7"));
+				trPaintTerrain(xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ),xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ),getTerrainType("Hades4Passable"), getTerrainSubType("Hades4Passable"));
 				xSetBool(dVolcanoFrontierDB, xVFPainted, true);
 				xSetInt(dVolcanoDB, xVolcanoTiles, xGetInt(dVolcanoDB, xVolcanoTiles)+1);
+				//add to terrain reset db
+				xAddDatabaseBlock(dTerrainRepaintDB, true);
+				xSetInt(dTerrainRepaintDB,xTileX,posx);
+				xSetInt(dTerrainRepaintDB,xTileZ,posz);
+				xSetInt(dTerrainRepaintDB,xTime,trTimeMS()+45000);
+				
 				//check frontier and add to db if valid target
 				if((trGetTerrainType(xGetInt(dVolcanoFrontierDB, xVFPosX)+1,xGetInt(dVolcanoFrontierDB, xVFPosZ)) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xGetInt(dVolcanoFrontierDB, xVFPosX)+1,xGetInt(dVolcanoFrontierDB, xVFPosZ)) == getTerrainSubType(RoadTerrain))){
 					xAddDatabaseBlock(dVolcanoFrontierDB, true);
@@ -625,7 +667,9 @@ highFrequency
 		}
 		else{
 			//timeout, remove
-			debugLog("Lava limit reached");
+			//debugLog("Lava limit reached");
+			xUnitSelect(dVolcanoDB, xVolcanoName);
+			trUnitDestroy();
 			xFreeDatabaseBlock(dVolcanoDB);
 			if (xGetDatabaseCount(dVolcanoFrontierDB) > 0) {
 				for(a = xGetDatabaseCount(dVolcanoFrontierDB); > 0){
@@ -635,6 +679,24 @@ highFrequency
 					}
 				}
 			}
+		}
+	}
+}
+
+rule RepaintTerrain
+inactive
+highFrequency
+{
+	if (xGetDatabaseCount(dTerrainRepaintDB) > 0) {
+		xDatabaseNext(dTerrainRepaintDB);
+		if(xGetInt(dTerrainRepaintDB, xTime) < trTimeMS()){
+			//repaint
+			trPaintTerrain(xGetInt(dTerrainRepaintDB, xTileX),xGetInt(dTerrainRepaintDB, xTileZ),xGetInt(dTerrainRepaintDB, xTileX),xGetInt(dTerrainRepaintDB, xTileZ),getTerrainType(RoadTerrain), getTerrainSubType(RoadTerrain));
+			xFreeDatabaseBlock(dTerrainRepaintDB);
+		}
+		if (xGetDatabaseCount(dTerrainRepaintDB) == 0) {
+			refreshPassability();
+			playSound("godpowerfailed.wav");
 		}
 	}
 }

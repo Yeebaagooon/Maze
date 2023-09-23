@@ -111,6 +111,7 @@ int xXDir = 0;
 
 //volcano
 int dVolcanoDB = 0;
+int xVolcanoName = 0;
 int xVolcanoPos = 0;
 int xVolcanoTiles = 0;
 int xVolcanoTime = 0;
@@ -123,6 +124,13 @@ int xVFPosZ = 0;
 int xVFTime = 0;
 int xVFPainted = 0;
 int xVFLink = 0;
+
+int dTerrainRepaintDB = 0;
+int xTileX = 0;
+int xTileZ = 0;
+int xTime = 0;
+
+int dBuildings = 0;
 
 
 rule setup_first_databases
@@ -224,11 +232,21 @@ highFrequency
 	xVolcanoNextTime = xInitAddInt(dVolcanoDB, "nextlava", 0);
 	
 	dVolcanoFrontierDB = xInitDatabase("volcanofrontDB");
+	xVolcanoName = xInitAddInt(dVolcanoDB, "name", -1);
 	xVFPosX = xInitAddInt(dVolcanoFrontierDB, "posxvf", 0);
 	xVFPosZ = xInitAddInt(dVolcanoFrontierDB, "poszvf", 0);
 	xVFTime = xInitAddInt(dVolcanoFrontierDB, "timemade", 0);
 	xVFPainted = xInitAddBool(dVolcanoFrontierDB, "painted", false);
 	xVFLink = xInitAddInt(dVolcanoFrontierDB, "linkint", 0);
+	
+	dTerrainRepaintDB = xInitDatabase("terrainreset");
+	xTileX = xInitAddInt(dTerrainRepaintDB, "x", 0);
+	xTileZ = xInitAddInt(dTerrainRepaintDB, "z", 0);
+	xTime = xInitAddInt(dTerrainRepaintDB, "time", 0);
+	
+	dBuildings = xInitDatabase("buildingdb");
+	xUnitName = xInitAddInt(dBuildings, "name", -1);
+	xPlayerOwner = xInitAddInt(dBuildings, "owner", 0);
 }
 
 
