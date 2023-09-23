@@ -115,12 +115,13 @@ int xVolcanoPos = 0;
 int xVolcanoTiles = 0;
 int xVolcanoTime = 0;
 int xVolcanoLink = 0;
+int xVolcanoNextTime = 0;
 
 int dVolcanoFrontierDB = 0;
 int xVFPosX = 0;
 int xVFPosZ = 0;
 int xVFTime = 0;
-int xVFDirection = 0;
+int xVFPainted = 0;
 int xVFLink = 0;
 
 
@@ -216,16 +217,17 @@ highFrequency
 	xXDir = xInitAddBool(dTerrainResetDB, "xXDir", true);
 	
 	dVolcanoDB = xInitDatabase("volcanoDB");
-	xVolcanoPos = xInitAddInt(dVolcanoDB, "startpos", 0);
+	xVolcanoPos = xInitAddVector(dVolcanoDB, "startpos", vector(0,0,0));
 	xVolcanoTiles = xInitAddInt(dVolcanoDB, "tilecount", 0);
 	xVolcanoTime = xInitAddInt(dVolcanoDB, "timesinceinvoke", 0);
 	xVolcanoLink = xInitAddInt(dVolcanoDB, "linkint", 0);
+	xVolcanoNextTime = xInitAddInt(dVolcanoDB, "nextlava", 0);
 	
 	dVolcanoFrontierDB = xInitDatabase("volcanofrontDB");
 	xVFPosX = xInitAddInt(dVolcanoFrontierDB, "posxvf", 0);
 	xVFPosZ = xInitAddInt(dVolcanoFrontierDB, "poszvf", 0);
 	xVFTime = xInitAddInt(dVolcanoFrontierDB, "timemade", 0);
-	xVFDirection = xInitAddString(dVolcanoFrontierDB, "direction", "null");
+	xVFPainted = xInitAddBool(dVolcanoFrontierDB, "painted", false);
 	xVFLink = xInitAddInt(dVolcanoFrontierDB, "linkint", 0);
 }
 
@@ -289,8 +291,6 @@ void BuildCliff(vector target = vector(0,0,0)){
 		}
 	}
 	TilesX = XTPlus-XTNeg;
-	trChatSend(0, "X tiles = " + TilesX);
-	
 	
 	int YTPlus = 0;
 	int YTNeg = 0;
@@ -309,7 +309,6 @@ void BuildCliff(vector target = vector(0,0,0)){
 		}
 	}
 	TilesZ = YTPlus-YTNeg;
-	trChatSend(0, "Y tiles = " + TilesZ);
 	
 	if(TilesZ < TilesX){
 		//paint z

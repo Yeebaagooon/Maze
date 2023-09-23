@@ -532,3 +532,109 @@ highFrequency
 		}
 	}
 }
+
+rule VolcanoLava
+inactive
+highFrequency
+{
+	if (xGetDatabaseCount(dVolcanoDB) > 0) {
+		int linkid = 0; //a pointer to link the volcanodb with the frontier db
+		int Safety = 0;
+		int posx = 0;
+		int posz = 0;
+		xDatabaseNext(dVolcanoDB);
+		//Select the volcano source
+		linkid = xGetInt(dVolcanoDB, xVolcanoLink);
+		if((xGetInt(dVolcanoDB, xVolcanoTiles) < 200) && (xGetInt(dVolcanoDB, xVolcanoTime) < trTimeMS()+50000)){
+			//can produce lava
+			if(trTimeMS() > xGetInt(dVolcanoDB, xVolcanoNextTime)){
+				xSetInt(dVolcanoDB, xVolcanoNextTime, trTimeMS()+100);
+				//create lava
+				trQuestVarSetFromRand("temp", 1, 20);
+				for(a = 0; < 1*trQuestVarGet("temp")){
+					xDatabaseNext(dVolcanoFrontierDB);
+				}
+				while((xGetInt(dVolcanoFrontierDB, xVFLink) != linkid) && (xGetBool(dVolcanoFrontierDB, xVFPainted) == false)){
+					xDatabaseNext(dVolcanoFrontierDB);
+					Safety = Safety+1;
+					if(Safety > 100){
+						debugLog("Break Volcanolava");
+						xFreeDatabaseBlock(dVolcanoDB);
+						if (xGetDatabaseCount(dVolcanoFrontierDB) > 0) {
+							for(a = xGetDatabaseCount(dVolcanoFrontierDB); > 0){
+								xDatabaseNext(dVolcanoFrontierDB);
+								if(xGetInt(dVolcanoFrontierDB, xVFLink) == linkid){
+									xFreeDatabaseBlock(dVolcanoFrontierDB);
+								}
+							}
+						}
+												break;
+					}
+				}
+				//find valid target
+				posx = xGetInt(dVolcanoFrontierDB, xVFPosX);
+				posz = xGetInt(dVolcanoFrontierDB, xVFPosZ);
+				//paint area
+				trPaintTerrain(xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ),xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ),getTerrainType("Hades7"), getTerrainSubType("Hades7"));
+				xSetBool(dVolcanoFrontierDB, xVFPainted, true);
+				xSetInt(dVolcanoDB, xVolcanoTiles, xGetInt(dVolcanoDB, xVolcanoTiles)+1);
+				//check frontier and add to db if valid target
+				if((trGetTerrainType(xGetInt(dVolcanoFrontierDB, xVFPosX)+1,xGetInt(dVolcanoFrontierDB, xVFPosZ)) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xGetInt(dVolcanoFrontierDB, xVFPosX)+1,xGetInt(dVolcanoFrontierDB, xVFPosZ)) == getTerrainSubType(RoadTerrain))){
+					xAddDatabaseBlock(dVolcanoFrontierDB, true);
+					xSetInt(dVolcanoFrontierDB, xVFPosX, posx+1);
+					xSetInt(dVolcanoFrontierDB, xVFPosZ, posz);
+					xSetInt(dVolcanoFrontierDB, xVFTime, trTimeMS());
+					xSetBool(dVolcanoFrontierDB, xVFPainted, false);
+					xSetInt(dVolcanoFrontierDB, xVFLink, linkid);
+				}
+				if((trGetTerrainType(xGetInt(dVolcanoFrontierDB, xVFPosX)-1,xGetInt(dVolcanoFrontierDB, xVFPosZ)) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xGetInt(dVolcanoFrontierDB, xVFPosX)-1,xGetInt(dVolcanoFrontierDB, xVFPosZ)) == getTerrainSubType(RoadTerrain))){
+					xAddDatabaseBlock(dVolcanoFrontierDB, true);
+					xSetInt(dVolcanoFrontierDB, xVFPosX, posx-1);
+					xSetInt(dVolcanoFrontierDB, xVFPosZ, posz);
+					xSetInt(dVolcanoFrontierDB, xVFTime, trTimeMS());
+					xSetBool(dVolcanoFrontierDB, xVFPainted, false);
+					xSetInt(dVolcanoFrontierDB, xVFLink, linkid);
+				}
+				if((trGetTerrainType(xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ)-1) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ)-1) == getTerrainSubType(RoadTerrain))){
+					xAddDatabaseBlock(dVolcanoFrontierDB, true);
+					xSetInt(dVolcanoFrontierDB, xVFPosX, posx);
+					xSetInt(dVolcanoFrontierDB, xVFPosZ, posz-1);
+					xSetInt(dVolcanoFrontierDB, xVFTime, trTimeMS());
+					xSetBool(dVolcanoFrontierDB, xVFPainted, false);
+					xSetInt(dVolcanoFrontierDB, xVFLink, linkid);
+				}
+				if((trGetTerrainType(xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ)+1) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xGetInt(dVolcanoFrontierDB, xVFPosX),xGetInt(dVolcanoFrontierDB, xVFPosZ)+1) == getTerrainSubType(RoadTerrain))){
+					xAddDatabaseBlock(dVolcanoFrontierDB, true);
+					xSetInt(dVolcanoFrontierDB, xVFPosX, posx);
+					xSetInt(dVolcanoFrontierDB, xVFPosZ, posz+1);
+					xSetInt(dVolcanoFrontierDB, xVFTime, trTimeMS());
+					xSetBool(dVolcanoFrontierDB, xVFPainted, false);
+					xSetInt(dVolcanoFrontierDB, xVFLink, linkid);
+				}
+				//now remove painted tiles from the frontiet bd
+				if (xGetDatabaseCount(dVolcanoFrontierDB) > 0) {
+					for(a = xGetDatabaseCount(dVolcanoFrontierDB); > 0){
+						xDatabaseNext(dVolcanoFrontierDB);
+						if((xGetInt(dVolcanoFrontierDB, xVFLink) == linkid) && (xGetBool(dVolcanoFrontierDB, xVFPainted) == true)){
+							xFreeDatabaseBlock(dVolcanoFrontierDB);
+						}
+					}
+				}
+			}
+			
+		}
+		else{
+			//timeout, remove
+			debugLog("Lava limit reached");
+			xFreeDatabaseBlock(dVolcanoDB);
+			if (xGetDatabaseCount(dVolcanoFrontierDB) > 0) {
+				for(a = xGetDatabaseCount(dVolcanoFrontierDB); > 0){
+					xDatabaseNext(dVolcanoFrontierDB);
+					if(xGetInt(dVolcanoFrontierDB, xVFLink) == linkid){
+						xFreeDatabaseBlock(dVolcanoFrontierDB);
+					}
+				}
+			}
+		}
+	}
+}

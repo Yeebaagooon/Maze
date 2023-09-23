@@ -233,6 +233,35 @@ highFrequency
 				BoltUnitCountKills(kbUnitGetOwner(id), kbGetBlockPosition(""+j), 24.0, 1000);
 				break;
 			}
+			case kbGetProtoUnitID("Tartarian Gate"):
+			{
+				trQuestVarModify("Volcanoes", "+", 1);
+				xAddDatabaseBlock(dVolcanoDB, true);
+				xSetVector(dVolcanoDB, xVolcanoPos, kbGetBlockPosition(""+j));
+				xSetVector(dVolcanoDB, xVolcanoPos, xGetVector(dVolcanoDB, xVolcanoPos)/2); //tile pos
+				xSetInt(dVolcanoDB, xVolcanoTiles, 0);
+				xSetInt(dVolcanoDB, xVolcanoTime, trTimeMS());
+				xSetInt(dVolcanoDB, xVolcanoLink, 1*trQuestVarGet("Volcanoes"));
+				xSetInt(dVolcanoDB, xVolcanoNextTime, trTimeMS());
+				//Link frontier
+				xAddDatabaseBlock(dVolcanoFrontierDB, true);
+				xSetInt(dVolcanoFrontierDB, xVFPosX, xsVectorGetX(xGetVector(dVolcanoDB, xVolcanoPos)));
+				xSetInt(dVolcanoFrontierDB, xVFPosZ, xsVectorGetZ(xGetVector(dVolcanoDB, xVolcanoPos)));
+				xSetInt(dVolcanoFrontierDB, xVFTime, trTimeMS());
+				xSetBool(dVolcanoFrontierDB, xVFPainted, false);
+				xSetInt(dVolcanoFrontierDB, xVFLink, 1*trQuestVarGet("Volcanoes"));
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitChangeProtoUnit("Lava Bubbling");
+			}
+			case kbGetProtoUnitID("Tartarian Gate Spawn"):
+			{
+				if(Pregame == false){
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitChangeProtoUnit("Ball of fire");
+				}
+			}
 		}
 		if (xGetDatabaseCount(dSpyRequests) > 0) {
 			spyreset = spyreset + 1;

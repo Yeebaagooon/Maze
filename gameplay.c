@@ -309,6 +309,7 @@ highFrequency
 	xsEnableRule("TowerDB");
 	xsEnableRule("RunnersWin");
 	xsEnableRule("HuntersWin");
+	xsEnableRule("VolcanoLava");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
 	//Set GP vector to a corner
@@ -337,7 +338,7 @@ highFrequency
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
-			grantGodPowerNoRechargeNextPosition(p, "Change Chimera", 1);
+			grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", 1);
 		}
 	}
 	%
