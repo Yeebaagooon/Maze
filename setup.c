@@ -37,7 +37,7 @@ runImmediately
 	if(QuickStart == 0){
 	}
 	trBlockAllSounds(true);
-	trArmyDispatch("0,0", "Cinematic Block", 1, MapSize/2, 0, MapSize/2, 0, false);
+	trArmyDispatch("0,0", "Revealer To Player", 1, MapSize/2, 0, MapSize/2, 0, false);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		deployLocHeading(0, p*2, "Victory Marker", p, 180);
 	}

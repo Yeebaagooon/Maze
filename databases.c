@@ -109,6 +109,20 @@ int xMaxZ = 0;
 int xTimeReset = 0;
 int xXDir = 0;
 
+//volcano
+int dVolcanoDB = 0;
+int xVolcanoPos = 0;
+int xVolcanoTiles = 0;
+int xVolcanoTime = 0;
+int xVolcanoLink = 0;
+
+int dVolcanoFrontierDB = 0;
+int xVFPosX = 0;
+int xVFPosZ = 0;
+int xVFTime = 0;
+int xVFDirection = 0;
+int xVFLink = 0;
+
 
 rule setup_first_databases
 active
@@ -200,6 +214,19 @@ highFrequency
 	xMaxZ = xInitAddInt(dTerrainResetDB, "maxz", 0);
 	xTimeReset = xInitAddInt(dTerrainResetDB, "timereset", 0);
 	xXDir = xInitAddBool(dTerrainResetDB, "xXDir", true);
+	
+	dVolcanoDB = xInitDatabase("volcanoDB");
+	xVolcanoPos = xInitAddInt(dVolcanoDB, "startpos", 0);
+	xVolcanoTiles = xInitAddInt(dVolcanoDB, "tilecount", 0);
+	xVolcanoTime = xInitAddInt(dVolcanoDB, "timesinceinvoke", 0);
+	xVolcanoLink = xInitAddInt(dVolcanoDB, "linkint", 0);
+	
+	dVolcanoFrontierDB = xInitDatabase("volcanofrontDB");
+	xVFPosX = xInitAddInt(dVolcanoFrontierDB, "posxvf", 0);
+	xVFPosZ = xInitAddInt(dVolcanoFrontierDB, "poszvf", 0);
+	xVFTime = xInitAddInt(dVolcanoFrontierDB, "timemade", 0);
+	xVFDirection = xInitAddString(dVolcanoFrontierDB, "direction", "null");
+	xVFLink = xInitAddInt(dVolcanoFrontierDB, "linkint", 0);
 }
 
 

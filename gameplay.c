@@ -144,7 +144,7 @@ highFrequency
 							LevelUp(p);
 						}
 					}
-					if(trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0){
+					if((trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0) && (trPlayerUnitCountSpecific(p, "Hero Ragnorok") == 0)){
 						//Defeated
 						EvilLaugh();
 						PlayerLighting(p, 4.0);
@@ -254,6 +254,21 @@ highFrequency
 	}
 }
 
+rule Loops_1_Second
+inactive
+highFrequency
+{
+	if(1*trQuestVarGet("LoopTimer") < trTime()){
+		trQuestVarSet("LoopTimer", trTime()+1);
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(1*trQuestVarGet("P"+p+"RagTime") > trTime()){
+				BoltUnitCountKills(p, kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)), 24.0, 1000);
+			}
+		}
+	}
+}
+
 rule GameEvents
 inactive
 highFrequency
@@ -269,6 +284,7 @@ highFrequency
 	}
 	xsDisableSelf();
 	xsEnableRule("TimeShiftMsg");
+	xsEnableRule("Loops_1_Second");
 	xsEnableRule("HunterPower1Mins");
 	xsEnableRule("HunterUnits2Mins");
 	xsEnableRule("HunterPower3Mins");
@@ -317,7 +333,7 @@ highFrequency
 	UnitCreate(2, "Tower", 12, 12);
 	UnitCreate(2, "Tower", 14, 12);
 	trTechGodPower(1, "Restoration", 4);
-	trTechGodPower(1, "Earth Dragon", 4);
+	trTechGodPower(1, "create gold", 4);
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
@@ -876,4 +892,12 @@ highFrequency
 			playSound("godpowerfailed.wav");
 		}
 	}
+}
+
+rule EnableChat
+inactive
+highFrequency
+{
+	trChatSetStatus(false);
+	xsDisableSelf();
 }

@@ -209,12 +209,28 @@ highFrequency
 				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),3.0,400.0);
 				break;
 			}
-			case kbGetProtoUnitID("Earth Dragon"):
+			case kbGetProtoUnitID("Gold Mine Dwarven"):
 			{
 				BuildCliff(kbGetBlockPosition(""+j));
 				trUnitSelectClear();
 				trUnitSelectByID(id);
 				trUnitChangeProtoUnit("Undermine Building Destruction SFX");
+				break;
+			}
+			case kbGetProtoUnitID("Earth Dragon Hole"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitChangeProtoUnit("Dust Large");
+				break;
+			}
+			case kbGetProtoUnitID("Hero Ragnorok"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitChangeProtoUnit("Villager Atlantean Hero");
+				//trQuestVarSet("P"+kbUnitGetOwner(id)+"RagTime", trTime()+20);
+				BoltUnitCountKills(kbUnitGetOwner(id), kbGetBlockPosition(""+j), 24.0, 1000);
 				break;
 			}
 		}

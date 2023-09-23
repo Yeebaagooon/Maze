@@ -99,6 +99,7 @@ highFrequency
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 5);
 		modifyProtounitAbsolute("Cinematic Block", p, 2, 0);
 		modifyProtounitAbsolute("Temple", p, 0, 1000000);
+		modifyProtounitAbsolute("TUnnel", p, 0, 5000);
 		modifyProtounitAbsolute("Temple", p, 4, 40);
 		modifyProtounitAbsolute("Temple", p, 24, 1);
 		modifyProtounitAbsolute("Temple", p, 25, 1);
@@ -212,7 +213,14 @@ highFrequency
 		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 17, -9999999999999999999.0);
 		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 18, -9999999999999999999.0);
 		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 19, -9999999999999999999.0);
+		modifyProtounitAbsolute("Bolt Strike", p, 27, 0.0);
+		modifyProtounitAbsolute("Bolt Strike", p, 28, 0.0);
+		modifyProtounitAbsolute("Bolt Strike", p, 29, 0.0);
 	}
+	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
+	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);
+	modifyProtounitAbsolute("Bolt Strike", 0, 29, 0.0);
+	trModifyProtounit("Revealer to Player", 0, 2, MapSize+50);
 	xsDisableSelf();
 }
 

@@ -8,6 +8,9 @@ string NoChoiceUnitName = "Lancer";
 Power ideas
 No need to code beyond level 15 really
 
+--MADE--
+create gold = create wall
+
 RUNNER
 Great jounrey
 Pestilence
@@ -17,8 +20,6 @@ Temporary towers
 Kill shockwave
 Unlock lighthouse
 Runner lightning forcefield
-
-CHANGE CHIMERA FOR MYTHIC CURSE
 
 HUNTER
 Spawn scouting raven

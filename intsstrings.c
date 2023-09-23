@@ -2,7 +2,6 @@
 BUG
 
 Camera post level reward
-IceC in top corner for choice units? also other corner for hunters
 AI unit pop increase
 
 
@@ -19,7 +18,7 @@ to revert timeshift cost after player resigns/game ends
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
-bool ForceAutoOff = true;
+bool ForceAutoOff = false;
 bool Visible = true;
 
 string CliffTerrain = "CliffGreekA";
@@ -168,6 +167,40 @@ void DamageUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance 
 		}
 	}
 	xsSetContextPlayer(0);
+}
+
+void BoltUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
+	trChatSetStatus(false);
+	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
+		xsSetContextPlayer(otherp);
+		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+			int kbid = kbUnitQueryCreate("damageunitabs");
+			kbUnitQuerySetPlayerID(kbid, otherp);
+			kbUnitQuerySetPosition(kbid, pos);
+			kbUnitQuerySetUnitType(kbid, 935);
+			kbUnitQuerySetState(kbid, 2);
+			kbUnitQuerySetMaximumDistance(kbid, distance);
+			int count = kbUnitQueryExecute(kbid);
+			for(a = 0 ; < count){
+				int UnitID = kbUnitQueryGetResult(kbid, a);
+				trUnitSelectClear();
+				trUnitSelectByID(UnitID);
+				trTechInvokeGodPower(0, "bolt", vector(0,0,0), vector(0,0,0));
+				if(trUnitPercentDamaged() < 100.0){
+					trDamageUnit(damage);
+				}
+				trUnitSelectClear();
+				trUnitSelectByID(UnitID);
+				if(trUnitPercentDamaged() >= 100.0){
+					trDamageUnitPercent(100.0);
+					trQuestVarModify("P"+p+"AddKills", "+", 1);
+				}
+			}
+			kbUnitQueryDestroy(kbid);
+		}
+	}
+	xsSetContextPlayer(0);
+	trDelayedRuleActivation("EnableChat");
 }
 
 void DamageUnitPercentCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
