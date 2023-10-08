@@ -89,6 +89,17 @@ highFrequency
 					}
 					trUnitDestroy();
 				}
+				if(AutoEscape){
+					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("HadesBuildable1")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("HadesBuildable1"))){
+						trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build here in autoe scape mode");
+						trUnitSelectClear();
+						trUnitSelectByID(id);
+						if(trCurrentPlayer() == kbUnitGetOwner(id)){
+							playSound("cantdothat.wav");
+						}
+						trUnitDestroy();
+					}
+				}
 				else{
 					xAddDatabaseBlock(dTowers, true);
 					xSetInt(dTowers, xTowerName, j);
@@ -119,7 +130,7 @@ highFrequency
 					if(trTime() > 240){
 						GodPowerChance(j);
 						AI_Send_Death_Squad(j);
-						debugLog("SP");
+						//debugLog("SP");
 					}
 				}
 				break;
@@ -127,15 +138,15 @@ highFrequency
 			case kbGetProtoUnitID("Meteor"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,20000.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,5.0,1000.0);
 				break;
 			}
 			case kbGetProtoUnitID("SPCMeteor"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,20000.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,2000.0);
 				trUnitSelectClear();
-				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,20000.0);
+				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,500.0);
 				break;
 			}
 			case kbGetProtoUnitID("Lightning Sparks"):
@@ -156,6 +167,13 @@ highFrequency
 				xSetInt(dEarthquake, xEarthquakeName, j);
 				xSetInt(dEarthquake, xEarthquakeOwner, kbUnitGetOwner(id));
 				xSetInt(dEarthquake, xEarthquakeTimeout, trTimeMS()+12000);
+				break;
+			}
+			case kbGetProtoUnitID("Tornado"):
+			{
+				xAddDatabaseBlock(dTornado, true);
+				xSetInt(dTornado, xTornadoName, j);
+				xSetInt(dTornado, xTornadoOwner, kbUnitGetOwner(id));
 				break;
 			}
 			case kbGetProtoUnitID("Healing SFX"):
@@ -195,6 +213,7 @@ highFrequency
 				spyEffect(kbGetProtoUnitID("Mist"), 2, xsVectorSet(0,0,0), vector(1,1,1));
 				spyEffect(kbGetProtoUnitID("Mist"), 2, xsVectorSet(0,0,0), vector(1,1,1));
 				spyEffect(kbGetProtoUnitID("Flying Purple Hippo"), 15, xsVectorSet(0,0,0), vector(0,0,0));
+				spyEffect(kbGetProtoUnitID("Revealer"), 0, xsVectorSet(0,0,0), vector(0,0,0));
 				trUnitSelectClear();
 				trUnitSelectByID(id);
 				trSetSelectedScale(0.1,0.1,0.1);
@@ -277,6 +296,12 @@ highFrequency
 				xSetInt(dVolcanoFrontierDB, xVFTime, trTimeMS());
 				xSetBool(dVolcanoFrontierDB, xVFPainted, false);
 				xSetInt(dVolcanoFrontierDB, xVFLink, 1*trQuestVarGet("Volcanoes"));
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitChangeProtoUnit("Spy Eye");
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trMutateSelected(kbGetProtoUnitID("Tartarian Gate"));
 				trUnitSelectClear();
 				trUnitSelectByID(id);
 				trSetSelectedScale(0.5,-0.5,0.5);

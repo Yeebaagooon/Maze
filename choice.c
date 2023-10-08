@@ -10,6 +10,7 @@ No need to code beyond level 15 really
 
 --MADE--
 create gold = create wall
+tartarian gate = volcano
 
 RUNNER
 Great jounrey
@@ -31,6 +32,7 @@ Catapult of doom
 
 
 BOTH
+Tunnel
 Temporarily reveal whole map
 Temporary cliff
 
@@ -57,13 +59,13 @@ Regen
 
 const int RunnerRewardL1 = 4;
 const int RunnerRewardL2 = 11;
-const int RunnerRewardL3 = 18;
-const int RunnerRewardL4 = 18;
-
-
-const int HunterRewardL1 = 3;
-const int HunterRewardL2 = 14;
-const int HunterRewardL3 = 26;
+const int RunnerRewardL3 = 19;
+const int RunnerRewardL4 = 24;
+const int RunnerRewardL5 = 34;
+const int RunnerRewardL6 = 38;
+const int RunnerRewardL7 = 43;
+const int RunnerRewardL8 = 45;
+const int RunnerRewardL9 = 49;
 
 string RewardText(int r = 0){
 	string reward = "error";
@@ -104,11 +106,11 @@ string RewardText(int r = 0){
 		//NEXT LEVEL
 		case 11:
 		{
-			reward = "+250 citizen hp";
+			reward = "+200 citizen hp";
 		}
 		case 12:
 		{
-			reward = "+1 citizen speed";
+			reward = "+0.75 citizen speed";
 		}
 		case 13:
 		{
@@ -129,7 +131,6 @@ string RewardText(int r = 0){
 		case 17:
 		{
 			reward = "Barrage";
-			//Change to barrage
 		}
 		case 18:
 		{
@@ -146,7 +147,7 @@ string RewardText(int r = 0){
 		}
 		case 21:
 		{
-			reward = "+400 citizen hp";
+			reward = "+300 citizen hp";
 		}
 		case 22:
 		{
@@ -161,9 +162,132 @@ string RewardText(int r = 0){
 				reward = "Flare current hunter temple positions";
 			}
 		}
+		//NEXT LEVEL
+		case 24:
+		{
+			reward = "+150 tower hp";
+		}
+		case 25:
+		{
+			reward = "+300 citizen hp";
+		}
+		case 26:
+		{
+			reward = "Mythic Curse power";
+		}
+		case 27:
+		{
+			reward = "Temporary Wall power";
+		}
+		case 28:
+		{
+			reward = "Vision";
+		}
+		case 29:
+		{
+			reward = "Lightning Storm power";
+		}
+		case 30:
+		{
+			reward = "+2 tower range";
+		}
+		case 31:
+		{
+			reward = "+4 tower attack";
+		}
+		case 32:
+		{
+			reward = "+4 tower LOS";
+		}
+		case 33:
+		{
+			reward = "Towers build 15 percent faster";
+		}
+		//NEXT LEVEL
+		//prisoner to reveal map layout
+		case 34:
+		{
+			reward = "Reveal maze layout";
+		}
+		case 35:
+		{
+			reward = "+2 hp/s citizen regen";
+		}
+		case 36:
+		{
+			reward = "+6 citizen LOS";
+		}
+		case 37:
+		{
+			reward = "+1 citizen speed";
+		}
+		//NEXT LEVEL
+		case 38:
+		{
+			reward = "+2 tower range";
+		}
+		case 39:
+		{
+			reward = "+5 tower attack";
+		}
+		case 40:
+		{
+			reward = "+4 tower LOS";
+		}
+		case 41:
+		{
+			reward = "+250 tower hp";
+		}
+		case 42:
+		{
+			reward = "Towers build 20 percent faster";
+		}
+		//NEXT LEVEL
+		case 43:
+		{
+			reward = "Secondary citizen";
+		}
+		case 44:
+		{
+			reward = "+500 tower hp";
+		}
+		//NEXT LEVEL
+		case 45:
+		{
+			reward = "2x Lightning Storm power";
+		}
+		case 46:
+		{
+			reward = "2x Temporary Wall power";
+		}
+		case 47:
+		{
+			reward = "3x Vision";
+		}
+		case 48:
+		{
+			reward = "2x Temporary invulnerability power";
+		}
+		//NEXT LEVEL
+		case 49:
+		{
+			reward = "+1000 sky passage hp";
+		}
+		case 50:
+		{
+			reward = "+8 tower attack";
+		}
 	}
 	return(reward);
 }
+
+
+const int HunterRewardL1 = 3;
+const int HunterRewardL2 = 14;
+const int HunterRewardL3 = 27;
+const int HunterRewardL4 = 37;
+const int HunterRewardL5 = 40;
+const int HunterRewardL6 = 50;
 
 string RewardTextHunter(int r = 0){
 	string reward = "error";
@@ -257,11 +381,11 @@ string RewardTextHunter(int r = 0){
 		}
 		case 23:
 		{
-			reward = ""+MapFactor() + "x Earthquake power";
+			reward = ""+MapFactor() + "x Volcano power";
 		}
 		case 24:
 		{
-			reward = ""+MapFactor() + "x Meteor power";
+			reward = ""+MapFactor() + "x SPC Meteor power";
 		}
 		case 25:
 		{
@@ -272,7 +396,103 @@ string RewardTextHunter(int r = 0){
 			reward = "+400 " + handunit + " hp";
 		}
 		//Next Level
-		//vision
+		case 27:
+		{
+			reward = "+250 " + rangedunit + " hp";
+		}
+		case 28:
+		{
+			reward = "+500 " + handunit + " hp";
+		}
+		case 29:
+		{
+			reward = "+1 " + handunit + " speed";
+		}
+		case 30:
+		{
+			reward = "+1 " + rangedunit + " speed";
+		}
+		case 31:
+		{
+			reward = "+20 " + handunit + " crush attack";
+		}
+		case 32:
+		{
+			reward = "Reveal maze layout";
+		}
+		case 33:
+		{
+			reward = "+15 " + rangedunit + " crush attack";
+		}
+		case 34:
+		{
+			reward = ""+MapFactor() + "x Volcano power";
+		}
+		case 35:
+		{
+			reward = ""+MapFactor() + "x Meteor power";
+		}
+		case 36:
+		{
+			reward = ""+MapFactor() + "x Tornado power";
+		}
+		//level up
+		case 37:
+		{
+			reward = ""+MapFactor() + "x vision power";
+		}
+		case 38:
+		{
+			reward = "Flare current runner positions";
+		}
+		case 39:
+		{
+			reward = "Heka Gigantes unit (tower smash ability)";
+		}
+		case 40:
+		{
+			reward = "Temple timeshift 25 percent faster";
+		}
+		//level up
+		case 41:
+		{
+			reward = "+300 " + rangedunit + " hp";
+		}
+		case 42:
+		{
+			reward = "+600 " + handunit + " hp";
+		}
+		case 43:
+		{
+			reward = "+1.5 " + handunit + " speed";
+		}
+		case 44:
+		{
+			reward = "+1.5 " + rangedunit + " speed";
+		}
+		case 45:
+		{
+			reward = "+30 " + handunit + " crush attack";
+		}
+		case 46:
+		{
+			reward = "+20 " + rangedunit + " crush attack";
+		}
+		case 47:
+		{
+			reward = ""+MapFactor() + "x Volcano power";
+		}
+		case 48:
+		{
+			reward = ""+MapFactor() + "x Meteor power";
+		}
+		case 49:
+		{
+			reward = "Raven scout unit (10,000 hp)";
+		}
+		//Next level
+		//Have vortex and EQ here and lampades
+		
 	}
 	return(reward);
 }
@@ -284,13 +504,11 @@ int PlayerChoice(int p = 0, string prompt = "Question", string answerone = "Answ
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(p, "Cinematic Block", p*3, 1, 0);
 		trQuestVarSet("P"+p+"Yes", temp);
-		debugLog("Choice selector dead");
 	}
 	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"No")) == -1){
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(p, "Cinematic Block", p*3, 1, 0);
 		trQuestVarSet("P"+p+"No", temp);
-		debugLog("Choice selector dead");
 	}
 	trUnitSelectByQV("P"+p+"No");
 	trUnitChangeProtoUnit(""+NoChoiceUnitName);
@@ -380,8 +598,10 @@ inactive
 	//xsSetContextPlayer(0);
 	//[REMEMBER THIS IS OPEN AND MAY NEED PLAYER SPECIFIC TAG]
 	if(ActionChoice != 0){
+		int id = 0;
 		int p = ActionChoice;
 		xSetPointer(dPlayerData, p);
+		trQuestVarSet("qv", 0);
 		switch(ChoiceEffect)
 		{
 			case 0:
@@ -415,11 +635,16 @@ inactive
 				else if(xGetInt(dPlayerData, xPlayerWallLevel) == 2){
 					trTechSetStatus(p, 411, 4);
 					xSetInt(dPlayerData, xPlayerWallLevel, xGetInt(dPlayerData, xPlayerWallLevel)+1);
-					trModifyProtounit("Wall Connector", p, 0, 1000);
-					trModifyProtounit("Wall Short", p, 0, 1000);
-					trModifyProtounit("Wall Medium", p, 0, 1000);
-					trModifyProtounit("Wall Long", p, 0, 1000);
-					trModifyProtounit("Gate", p, 0, 1000);
+					trModifyProtounit("Wall Connector", p, 0, 1100);
+					trModifyProtounit("Wall Short", p, 0, 1100);
+					trModifyProtounit("Wall Medium", p, 0, 1100);
+					trModifyProtounit("Wall Long", p, 0, 1100);
+					trModifyProtounit("Gate", p, 0, 1200);
+					trModifyProtounit("Wall Connector", p, 26, 0.05);
+					trModifyProtounit("Wall Short", p, 26, 0.05);
+					trModifyProtounit("Wall Medium", p, 26, 0.05);
+					trModifyProtounit("Wall Long", p, 26, 0.05);
+					trModifyProtounit("Gate", p, 26, 0.05);
 				}
 				else if(xGetInt(dPlayerData, xPlayerWallLevel) == 3){
 					trTechSetStatus(p, 412, 4);
@@ -429,6 +654,11 @@ inactive
 					trModifyProtounit("Wall Medium", p, 0, 2500);
 					trModifyProtounit("Wall Long", p, 0, 2500);
 					trModifyProtounit("Gate", p, 0, 2500);
+					trModifyProtounit("Wall Connector", p, 26, 0.05);
+					trModifyProtounit("Wall Short", p, 26, 0.05);
+					trModifyProtounit("Wall Medium", p, 26, 0.05);
+					trModifyProtounit("Wall Long", p, 26, 0.05);
+					trModifyProtounit("Gate", p, 26, 0.05);
 				}
 				else if(xGetInt(dPlayerData, xPlayerWallLevel) == 4){
 					trTechSetStatus(p, 413, 4);
@@ -438,6 +668,27 @@ inactive
 					trModifyProtounit("Wall Medium", p, 0, 5000);
 					trModifyProtounit("Wall Long", p, 0, 5000);
 					trModifyProtounit("Gate", p, 0, 5000);
+					trModifyProtounit("Wall Connector", p, 26, 0.05);
+					trModifyProtounit("Wall Short", p, 26, 0.05);
+					trModifyProtounit("Wall Medium", p, 26, 0.05);
+					trModifyProtounit("Wall Long", p, 26, 0.05);
+					trModifyProtounit("Gate", p, 26, 0.05);
+				}
+				else if(xGetInt(dPlayerData, xPlayerWallLevel) == 5){
+					//atlantis
+					xSetInt(dPlayerData, xPlayerWallLevel, xGetInt(dPlayerData, xPlayerWallLevel)+1);
+					trModifyProtounit("Atlantis Wall Connector", p, 0, 16700);
+					trModifyProtounit("Wall Connector", p, 0, 10000);
+					trModifyProtounit("Wall Short", p, 0, 10000);
+					trModifyProtounit("Wall Medium", p, 0, 10000);
+					trModifyProtounit("Wall Long", p, 0, 10000);
+					trModifyProtounit("Gate", p, 0, 10000);
+					trModifyProtounit("Wall Connector", p, 26, 0.05);
+					trModifyProtounit("Wall Atlantis Connector", p, 26, 0.25);
+					trModifyProtounit("Wall Short", p, 26, 0.05);
+					trModifyProtounit("Wall Medium", p, 26, 0.05);
+					trModifyProtounit("Wall Long", p, 26, 0.05);
+					trModifyProtounit("Gate", p, 26, 0.05);
 				}
 				/*trUnitSelectClear();
 				trUnitSelectByID(0);
@@ -479,11 +730,11 @@ inactive
 			//NEXT LEVEL
 			case 11:
 			{
-				trModifyProtounit("Villager Atlantean Hero", p, 0, 250);
+				trModifyProtounit("Villager Atlantean Hero", p, 0, 200);
 			}
 			case 12:
 			{
-				trModifyProtounit("Villager Atlantean Hero", p, 1, 1);
+				trModifyProtounit("Villager Atlantean Hero", p, 1, 0.75);
 			}
 			case 13:
 			{
@@ -507,7 +758,147 @@ inactive
 			}
 			case 18:
 			{
-				UnitCreate(p, "Pegasus", xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID))),xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID))));
+				xSetPointer(dPlayerData, p);
+				id = yFindLatest("qv", "Villager Atlantean Hero", p);
+				UnitCreate(p, "Pegasus", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet(""))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet(""))));
+			}
+			case 19:
+			{
+				trModifyProtounit("Tower", p, 0, 100);
+			}
+			case 20:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Restoration", 1);
+			}
+			case 21:
+			{
+				trModifyProtounit("Villager Atlantean Hero", p, 0, 300);
+			}
+			case 22:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Journey", 1);
+			}
+			case 23:
+			{
+				if(AutoEscape){
+					grantGodPowerNoRechargeNextPosition(p, "Change Chimera", 1);
+				}
+				else{
+					for(a = 1; <= HunterNumber){
+						trMinimapFlare(p, 10.0, kbGetBlockPosition(""+1*trQuestVarGet("Temple"+a)), false);
+					}
+				}
+			}
+			case 24:
+			{
+				trModifyProtounit("Tower", p, 0, 150);
+			}
+			case 25:
+			{
+				trModifyProtounit("Villager Atlantean Hero", p, 0, 300);
+			}
+			case 26:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Change Chimera", 1);
+			}
+			case 27:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "create gold", 1);
+			}
+			case 28:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+			}
+			case 29:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Lightning Storm", 1);
+			}
+			case 30:
+			{
+				trModifyProtounit("Tower", p, 11, 2);
+			}
+			case 31:
+			{
+				trModifyProtounit("Tower", p, 31, 4);
+			}
+			case 32:
+			{
+				trModifyProtounit("Tower", p, 2, 4);
+			}
+			case 33:
+			{
+				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.85);
+				modifyProtounitAbsolute("Tower", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+			}
+			case 34:
+			{
+				xSetPointer(dPlayerData, p);
+				yFindLatest("qv", "Villager Atlantean Hero", p);
+				id = 1*trQuestVarGet("qv");
+				UnitCreate(p, "Prisoner", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+			}
+			case 35:
+			{
+				xSetFloat(dPlayerData,xCitizenRegen,xGetFloat(dPlayerData, xCitizenRegen)+2.0);
+			}
+			case 36:
+			{
+				trModifyProtounit("Villager Atlantean Hero", p, 2, 6);
+			}
+			case 37:
+			{
+				trModifyProtounit("Villager Atlantean Hero", p, 1, 1);
+			}
+			//NEXT LEVEL
+			case 38:
+			{
+				trModifyProtounit("Tower", p, 11, 2);
+			}
+			case 39:
+			{
+				trModifyProtounit("Tower", p, 31, 5);
+			}
+			case 40:
+			{
+				trModifyProtounit("Tower", p, 2, 4);
+			}
+			case 41:
+			{
+				trModifyProtounit("Tower", p, 0, 250);
+			}
+			case 42:
+			{
+				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.8);
+				modifyProtounitAbsolute("Tower", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+			}
+			//NEXT LEVEL
+			case 43:
+			{
+				xSetPointer(dPlayerData, p);
+				yFindLatest("qv", "Villager Atlantean Hero", p);
+				id = 1*trQuestVarGet("qv");
+				UnitCreate(p, "Villager Atlantean", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+			}
+			case 44:
+			{
+				trModifyProtounit("Tower", p, 0, 500);
+			}
+			//NEXT LEVEL
+			case 45:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Lightning Storm", 2);
+			}
+			case 46:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "create gold", 2);
+			}
+			case 47:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Vision", 3);
+			}
+			case 48:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Restoration", 2);
 			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);
@@ -516,8 +907,10 @@ inactive
 		//Safety
 		unitTransform(""+YesChoiceUnitName + " Hero", "Cinematic Block");
 		unitTransform(""+NoChoiceUnitName + " Hero", "Cinematic Block");
-		if(xGetBool(dPlayerData, xPlayerRunner) == true){
-			uiZoomToProto("Villager Atlantean Hero");
+		if(trCurrentPlayer() == p){
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				uiZoomToProto("Villager Atlantean Hero");
+			}
 		}
 		xsDisableSelf();
 	}
@@ -532,6 +925,8 @@ inactive
 	if(ActionChoice != 0){
 		int p = ActionChoice;
 		xSetPointer(dPlayerData, p);
+		int temp = 0;
+		trQuestVarSet("qv", 0);
 		switch(ChoiceEffect)
 		{
 			case 0:
@@ -636,14 +1031,14 @@ inactive
 			}
 			case 23:
 			{
-				grantGodPowerNoRechargeNextPosition(p, "Earthquake", MapFactor());
+				grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", MapFactor());
 				if(AutoEscape){
 					xsEnableRule("AI_Force_Power");
 				}
 			}
 			case 24:
 			{
-				grantGodPowerNoRechargeNextPosition(p, "Meteor", MapFactor());
+				grantGodPowerNoRechargeNextPosition(p, "SPCMeteor", MapFactor());
 				if(AutoEscape){
 					xsEnableRule("AI_Force_Power");
 				}
@@ -655,6 +1050,149 @@ inactive
 			case 26:
 			{
 				trModifyProtounit(handunit, p, 0, 400);
+			}
+			case 27:
+			{
+				trModifyProtounit(rangedunit, p, 0, 250);
+			}
+			case 28:
+			{
+				trModifyProtounit(handunit, p, 0, 500);
+			}
+			case 29:
+			{
+				trModifyProtounit(handunit, p, 1, 1);
+			}
+			case 30:
+			{
+				trModifyProtounit(rangedunit, p, 1, 1);
+			}
+			case 31:
+			{
+				trModifyProtounit(handunit, p, 29, 20);
+			}
+			case 32:
+			{
+				UnitCreate(p, "Prisoner", MapSize, MapSize);
+			}
+			case 33:
+			{
+				trModifyProtounit(handunit, p, 32, 15);
+			}
+			case 34:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", MapFactor());
+				if(AutoEscape){
+					xsEnableRule("AI_Force_Power");
+				}
+			}
+			case 35:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Meteor", MapFactor());
+				if(AutoEscape){
+					xsEnableRule("AI_Force_Power");
+				}
+			}
+			case 36:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Tornado", MapFactor());
+				if(AutoEscape){
+					xsEnableRule("AI_Force_Power");
+				}
+			}
+			case 37:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Vision", MapFactor());
+			}
+			case 38:
+			{
+				if(AutoEscape == false){
+					for(a = 1; <= cNumberNonGaiaPlayers){
+						xSetPointer(dPlayerData, a);
+						if(xGetBool(dPlayerData, xPlayerRunner)){
+							trMinimapFlare(p, 10.0, kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)), false);
+						}
+					}
+				}
+			}
+			case 39:
+			{
+				if(AutoEscape){
+					temp = UnitCreate(cNumberNonGaiaPlayers, "Heka Gigantes",(MapSize/2)+5,(MapSize/2)+5);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, temp);
+					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+					trQuestVarSetFromRand("x", 0 , MapSize);
+					trQuestVarSetFromRand("z", 0 , MapSize);
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+				}
+				else{
+					temp = yFindLatest("qv", "Temple", p);
+					UnitCreate(p, "Heka Gigantes", xsVectorGetX(kbGetBlockPosition(""+temp)),xsVectorGetZ(kbGetBlockPosition(""+temp)));
+				}
+			}
+			case 40:
+			{
+				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.75);
+				modifyProtounitAbsolute("Temple", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+			}
+			case 41:
+			{
+				trModifyProtounit(rangedunit, p, 0, 300);
+			}
+			case 42:
+			{
+				trModifyProtounit(handunit, p, 0, 600);
+			}
+			case 43:
+			{
+				trModifyProtounit(handunit, p, 1, 1.5);
+			}
+			case 44:
+			{
+				trModifyProtounit(rangedunit, p, 1, 1.5);
+			}
+			case 45:
+			{
+				trModifyProtounit(handunit, p, 29, 30);
+			}
+			case 46:
+			{
+				trModifyProtounit(handunit, p, 32, 20);
+			}
+			case 47:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", MapFactor());
+				if(AutoEscape){
+					xsEnableRule("AI_Force_Power");
+				}
+			}
+			case 48:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Meteor", MapFactor());
+				if(AutoEscape){
+					xsEnableRule("AI_Force_Power");
+				}
+			}
+			case 49:
+			{
+				if(AutoEscape){
+					temp = UnitCreate(cNumberNonGaiaPlayers, "Heka Gigantes",(MapSize/2)+5,(MapSize/2)+5);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, temp);
+					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+					trQuestVarSetFromRand("x", 0 , MapSize);
+					trQuestVarSetFromRand("z", 0 , MapSize);
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+				}
+				else{
+					temp = yFindLatest("qv", "Temple", p);
+					UnitCreate(p, "Raven", xsVectorGetX(kbGetBlockPosition(""+temp)),xsVectorGetZ(kbGetBlockPosition(""+temp)));
+				}
 			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);

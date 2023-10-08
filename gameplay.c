@@ -17,7 +17,7 @@ void LevelUp(int p = 0){
 		int temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(p, "Cinematic Block", p*20, MapSize, 0);
 		trQuestVarSet("P"+p+"Space", temp);
-		debugLog("Space selector dead");
+		//	debugLog("Space selector dead");
 	}
 	if((AutoEscape == false) || (p != cNumberNonGaiaPlayers)){
 		trUnitSelectByQV("P"+p+"Space");
@@ -28,9 +28,9 @@ void LevelUp(int p = 0){
 	xSetPointer(dPlayerData, p);
 	//RUNNER REWARDS
 	if(xGetBool(dPlayerData, xPlayerRunner)){
-		trChatSend(0, "<color=1,1,0>P" + p + " Level " + xGetInt(dPlayerData, xPlayerLevel));
+		//	trChatSend(0, "<color=1,1,0>P" + p + " Level " + xGetInt(dPlayerData, xPlayerLevel));
 		//Level 0-5 rewards
-		if(xGetInt(dPlayerData, xPlayerLevel) < 5){
+		if(Between(xGetInt(dPlayerData, xPlayerLevel), 0, 2)){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL1, (RunnerRewardL2-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -46,7 +46,7 @@ void LevelUp(int p = 0){
 			}
 		}
 		//Level 5-10rewards
-		else if(xGetInt(dPlayerData, xPlayerLevel) >= 5){
+		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 3, 5)){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL2, (RunnerRewardL3-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -61,11 +61,102 @@ void LevelUp(int p = 0){
 				}
 			}
 		}
+		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 6, 7)){
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL3, (RunnerRewardL4-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL3, RunnerRewardL4);
+				if(1*trQuestVarGet("CR"+p) == RunnerRewardL4){
+					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
+						trQuestVarSet("CR"+p, 3);
+					}
+					else{
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL3, RunnerRewardL4-1);
+					}
+				}
+			}
+		}
+		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 8, 9)){
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL4, (RunnerRewardL5-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL4, RunnerRewardL5);
+				if(1*trQuestVarGet("CR"+p) == RunnerRewardL5){
+					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
+						trQuestVarSet("CR"+p, 3);
+					}
+					else{
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL4, RunnerRewardL5-1);
+					}
+				}
+			}
+		}
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 10){
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL5, (RunnerRewardL6-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL6);
+				if(1*trQuestVarGet("CR"+p) == RunnerRewardL6){
+					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
+						trQuestVarSet("CR"+p, 3);
+					}
+					else{
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL6-1);
+					}
+				}
+			}
+		}
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 11){
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL6, (RunnerRewardL7-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL6, RunnerRewardL7);
+				if(1*trQuestVarGet("CR"+p) == RunnerRewardL7){
+					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
+						trQuestVarSet("CR"+p, 3);
+					}
+					else{
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL6, RunnerRewardL7-1);
+					}
+				}
+			}
+		}
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 12){
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL7, (RunnerRewardL8-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL8);
+				if(1*trQuestVarGet("CR"+p) == RunnerRewardL8){
+					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
+						trQuestVarSet("CR"+p, 3);
+					}
+					else{
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL8-1);
+					}
+				}
+			}
+		}
+		//high
+		else if(xGetInt(dPlayerData, xPlayerLevel) > 12){
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL5, (RunnerRewardL8-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL8);
+				if(1*trQuestVarGet("CR"+p) == RunnerRewardL8){
+					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
+						trQuestVarSet("CR"+p, 3);
+					}
+					else{
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL8-1);
+					}
+				}
+			}
+		}
 	}
 	else{
 		//HUNTER REWARDS
 		//Level 0-5 rewards
-		if(xGetInt(dPlayerData, xPlayerLevel) < 5){
+		if(Between(xGetInt(dPlayerData, xPlayerLevel), 0, 4)){
 			trQuestVarSetFromRand("CL"+p, HunterRewardL1, (HunterRewardL2-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -78,10 +169,10 @@ void LevelUp(int p = 0){
 				ActionChoice = p;
 				xsEnableRule("HunterConsequences");
 				AutoHunterLevel=AutoHunterLevel+1;
-				trChatSend(0, "Hunter level" + AutoHunterLevel);
+				//trChatSend(0, "Hunter level" + AutoHunterLevel);
 			}
 		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) >= 5){
+		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 5, 8)){
 			trQuestVarSetFromRand("CL"+p, HunterRewardL2, (HunterRewardL3-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -94,7 +185,72 @@ void LevelUp(int p = 0){
 				ActionChoice = p;
 				xsEnableRule("HunterConsequences");
 				AutoHunterLevel=AutoHunterLevel+1;
-				trChatSend(0, "Hunter level" + AutoHunterLevel);
+				//trChatSend(0, "Hunter level" + AutoHunterLevel);
+			}
+		}
+		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 9, 10)){
+			trQuestVarSetFromRand("CL"+p, HunterRewardL3, (HunterRewardL4-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, HunterRewardL3, (HunterRewardL4-1));
+			}
+			if(AutoEscape){
+				//Auto reward for hunter CPU AI
+				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+				ActionChoice = p;
+				xsEnableRule("HunterConsequences");
+				AutoHunterLevel=AutoHunterLevel+1;
+				//trChatSend(0, "Hunter level" + AutoHunterLevel);
+			}
+		}
+		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 11, 12)){
+			trQuestVarSetFromRand("CL"+p, HunterRewardL4, (HunterRewardL5-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, HunterRewardL4, (HunterRewardL5-1));
+			}
+			if(AutoEscape){
+				//Auto reward for hunter CPU AI
+				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+				ActionChoice = p;
+				xsEnableRule("HunterConsequences");
+				AutoHunterLevel=AutoHunterLevel+1;
+				//trChatSend(0, "Hunter level" + AutoHunterLevel);
+			}
+		}
+		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 12, 13)){
+			trQuestVarSetFromRand("CL"+p, HunterRewardL5, (HunterRewardL6-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, HunterRewardL5, (HunterRewardL6-1));
+			}
+			if(AutoEscape){
+				//Auto reward for hunter CPU AI
+				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+				ActionChoice = p;
+				xsEnableRule("HunterConsequences");
+				AutoHunterLevel=AutoHunterLevel+1;
+				//trChatSend(0, "Hunter level" + AutoHunterLevel);
+			}
+		}
+		else{
+			//high
+			trQuestVarSetFromRand("CL"+p, HunterRewardL3, (HunterRewardL5-1));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, HunterRewardL3, (HunterRewardL5-1));
+			}
+			if(AutoEscape){
+				//Auto reward for hunter CPU AI
+				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+				ActionChoice = p;
+				xsEnableRule("HunterConsequences");
+				AutoHunterLevel=AutoHunterLevel+1;
+				//trChatSend(0, "Hunter level" + AutoHunterLevel);
 			}
 		}
 	}
@@ -162,6 +318,11 @@ highFrequency
 						xSetBool(dPlayerData, xPlayerAlive, false);
 						RunnersDead = RunnersDead+1;
 					}
+					if(xGetInt(dPlayerData,xPlayerWallLevel) == 5){
+						trUnitSelectClear();
+						trUnitSelectByID(0);
+						trUnitChangeInArea(p,p, "Wall Connector", "Atlantis Wall Connector", MapSize);
+					}
 				}
 			}
 			else{
@@ -186,7 +347,7 @@ highFrequency
 				//trPlayerGrantResources(p, "Wood", 5);
 				//hunter stats
 				if(trGetStatValue(p, 3)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"BuildingKills")){
-					trQuestVarSet("P"+p+"BuildingKills", trGetStatValue(p, 3)+trQuestVarGet("P"+p+"BuildingKills"));
+					trQuestVarSet("P"+p+"BuildingKills", trGetStatValue(p, 3)+trQuestVarGet("P"+p+"AddKills"));
 					trSetCivilizationNameOverride(p, "Razes: " + 1*trQuestVarGet("P"+p+"BuildingKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 					gadgetRefresh("unitStatPanel");
 					if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"BuildingKills")){
@@ -224,9 +385,11 @@ highFrequency
 			/*			if(trCurrentPlayer() == p){
 				uiZoomToProto("Villager Atlantean Hero");
 			}*/
-			trackInsert();
-			trackAddWaypoint();
-			trackPlay(10,EVENT_REMOVE_CAM_TRACKS);
+			if(trCurrentPlayer() == p){
+				trackInsert();
+				trackAddWaypoint();
+				trackPlay(10,EVENT_REMOVE_CAM_TRACKS);
+			}
 			old = xsGetContextPlayer();
 			xsSetContextPlayer(0);
 			LevelUpChoice(p);
@@ -251,10 +414,32 @@ highFrequency
 				}
 			}
 		}
+		if(xGetDatabaseCount(dTornado) > 0){
+			for(a = xGetDatabaseCount(dTornado); > 0){
+				xDatabaseNext(dTornado);
+				xUnitSelect(dTornado, xTornadoName);
+				if(trUnitDead()){
+					xFreeDatabaseBlock(dTornado);
+				}
+				else{
+					DamageBuildingCountRazes(xGetInt(dTornado, xTornadoOwner),xGetInt(dTornado, xTornadoName),8.0,0.12*timediff);
+					//trDamageUnitsInArea(p, "Unit", 30, 0.03*timediff);
+				}
+			}
+		}
 		if(trCheckGPActive("Restoration", p)){
 			trUnitSelectClear();
 			trUnitSelect("0");
 			trDamageUnitsInArea(p, "All", MapSize, -10000);
+		}
+		if(xGetDatabaseCount(dHawks) > 0){
+			xDatabaseNext(dHawks);
+			if(trTime() >= xGetInt(dHawks, xHawkTime)){
+				xUnitSelect(dHawks, xHawkID);
+				trUnitConvert(xGetInt(dHawks, xPlayerOwner));
+				xUnitSelect(dHawks, xHawkID);
+				trUnitChangeProtoUnit("Tower");
+			}
 		}
 	}
 }
@@ -269,6 +454,35 @@ highFrequency
 			xSetPointer(dPlayerData, p);
 			if(1*trQuestVarGet("P"+p+"RagTime") > trTime()){
 				BoltUnitCountKills(p, kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)), 24.0, 1000);
+			}
+		}
+	}
+}
+
+rule RainCheck
+inactive
+highFrequency
+{
+	for(p = 1; <= cNumberNonGaiaPlayers){
+		if(trCheckGPActive("Rain", p) == true){
+			if(trTime() > 1*trQuestVarGet("P"+p+"RainTime")){
+				//rain
+				trQuestVarSet("P"+p+"RainTime", trTime()+10);
+				for(a = xGetDatabaseCount(dTowers); > 0){
+					xDatabaseNext(dTowers);
+					debugLog("P"+xGetInt(dTowers, xPlayerOwner));
+					if(xGetInt(dTowers, xPlayerOwner) == p){
+						//change towers to birds
+						debugLog("R");
+						xUnitSelect(dTowers, xTowerName);
+						trUnitChangeProtoUnit("Hawk");
+						xAddDatabaseBlock(dHawks, true);
+						xSetInt(dHawks, xHawkID, xGetInt(dTowers, xTowerName));
+						xSetInt(dHawks, xPlayerOwner, xGetInt(dTowers, xPlayerOwner));
+						xSetInt(dHawks, xHawkTime, trTime()+10);
+						xFreeDatabaseBlock(dTowers);
+					}
+				}
 			}
 		}
 	}
@@ -317,6 +531,8 @@ highFrequency
 	xsEnableRule("VolcanoLava");
 	xsEnableRule("RepaintTerrain");
 	xsEnableRule("BuildingDB");
+	xsEnableRule("Help_Chat");
+	xsEnableRule("RainCheck");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
 	//Set GP vector to a corner
@@ -333,19 +549,19 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	/*UnitCreate(1, "Stymphalian Bird", 6, 12);
-	UnitCreate(2, "Tower", 10, 12);
-	UnitCreate(2, "Tower", 10, 14);
-	UnitCreate(2, "Tower", 10, 16);
-	UnitCreate(2, "Tower", 10, 12);
-	UnitCreate(2, "Tower", 12, 12);
-	UnitCreate(2, "Tower", 14, 12);*/
-	trTechGodPower(1, "Restoration", 4);
-	trTechGodPower(1, "create gold", 4);
+	//UnitCreate(2, "Stymphalian Bird", 6, 12);
+	/*UnitCreate(2, "Tower", 310, 312);
+	UnitCreate(2, "Tower", 310, 314);
+	UnitCreate(2, "Tower", 310, 316);
+	UnitCreate(2, "Tower", 310, 312);
+	UnitCreate(2, "Tower", 312, 312);
+	UnitCreate(2, "Tower", 314, 312);*/
+	//trTechGodPower(1, "Restoration", 4);
+	//trTechGodPower(1, "create gold", 4);
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
-			grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", 11);
+			//grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", 1);
 		}
 	}
 	%
@@ -381,8 +597,8 @@ highFrequency
 				}
 			}
 		}
-		xsDisableSelf();
 	}
+	xsDisableSelf();
 }
 
 rule HunterUnits2Mins
@@ -407,7 +623,7 @@ highFrequency
 			}
 		}
 		if(AutoEscape){
-			trChatSend(0, "Firing GP");
+			//trChatSend(0, "Firing GP");
 			xsEnableRule("AI_Force_Power");
 		}
 		xsDisableSelf();
@@ -517,7 +733,7 @@ highFrequency
 		}
 		trChatSend(0, "Watch out for mountain giants special attack!");
 		if(AutoEscape){
-			trChatSend(0, "Firing GP");
+			//trChatSend(0, "Firing GP");
 			xsEnableRule("AI_Force_Power");
 			trUnitSelectClear();
 			trUnitSelect("0");
@@ -541,6 +757,18 @@ highFrequency
 					trMessageSetText("Eclipse granted.", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
+				if(AutoEscape){
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Eclipse", xsVectorSet(MapSize,0,MapSize), vector(0,0,0));
+				}
+			}
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				if(AutoEscape){
+					grantGodPowerNoRechargeNextPosition(p, "create gold", 1);
+					if(trCurrentPlayer() == p){
+						trMessageSetText("Gold mine = 30s temporary cliff wall", 8000);
+						playSound("\cinematics\17_in\weirdthing.mp3");
+					}
+				}
 			}
 		}
 		if(AutoEscape){
@@ -548,6 +776,7 @@ highFrequency
 			trUnitSelect("0");
 			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Cyclops", "Sphinx", MapSize);
 			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Satyr", "Sphinx", MapSize);
+			
 		}
 		xsDisableSelf();
 	}
@@ -561,9 +790,9 @@ highFrequency
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				grantGodPowerNoRechargeNextPosition(p, "Meteor", MapFactor());
+				grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", MapFactor());
 				if(trCurrentPlayer() == p){
-					trMessageSetText("Meteor granted.", 8000);
+					trMessageSetText("Volcano granted (tartarian gate). Will spew damaging lava.", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 				if(AutoEscape){
@@ -589,9 +818,9 @@ highFrequency
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				grantGodPowerNoRechargeNextPosition(p, "SPC Meteor", MapFactor());
+				grantGodPowerNoRechargeNextPosition(p, "Meteor", MapFactor());
 				if(trCurrentPlayer() == p){
-					trMessageSetText("SPC Meteor granted.", 8000);
+					trMessageSetText("Meteor granted.", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
@@ -632,7 +861,7 @@ highFrequency
 			}
 		}
 		if(AutoEscape){
-			trChatSend(0, "Firing GP");
+			//	trChatSend(0, "Firing GP");
 			xsEnableRule("AI_Force_Power");
 		}
 		xsDisableSelf();
@@ -688,7 +917,7 @@ highFrequency
 			}
 		}
 		if(AutoEscape){
-			trChatSend(0, "Firing GP");
+			//trChatSend(0, "Firing GP");
 			xsEnableRule("AI_Force_Power");
 		}
 		xsDisableSelf();
@@ -795,6 +1024,7 @@ highFrequency
 		if(AutoEscape){
 			spawn = xsVectorSet(MapSize/2,0,MapSize/2);
 			UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
+			modifyProtounitAbsolute("Stymphalian Bird", cNumberNonGaiaPlayers, 2, MapSize);
 		}
 		xsDisableSelf();
 	}

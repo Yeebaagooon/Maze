@@ -79,12 +79,18 @@ int xSpecialTargetID = 0;
 //Towers
 int dTowers = 0;
 int xTowerName = 0;
+int xLastCheck = 0;
 
 //EQ
 int dEarthquake = 0;
 int xEarthquakeName = 0;
 int xEarthquakeOwner = 0;
 int xEarthquakeTimeout = 0;
+
+//Tornado
+int dTornado = 0;
+int xTornadoName = 0;
+int xTornadoOwner = 0;
 
 //Hekas giants
 int dHekas = 0;
@@ -131,6 +137,11 @@ int xTileZ = 0;
 int xTime = 0;
 
 int dBuildings = 0;
+int xCitizenRegen = 0;
+
+int dHawks = 0;
+int xHawkID = 0;
+int xHawkTime = 0;
 
 
 rule setup_first_databases
@@ -148,6 +159,8 @@ highFrequency
 	xPlayerLevel = xInitAddInt(dPlayerData, "level", 1);
 	xPlayerNextLevel = xInitAddInt(dPlayerData, "k to next l", 5);
 	xPlayerWallLevel = xInitAddInt(dPlayerData, "wall level", 1);
+	xCitizenRegen = xInitAddFloat(dPlayerData, "citizen regen", 0.0);
+	
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);
@@ -183,6 +196,7 @@ highFrequency
 	dTowers = xInitDatabase("towerdb");
 	xTowerName = xInitAddInt(dTowers, "name", -1);
 	xPlayerOwner = xInitAddInt(dTowers, "owner", 0);
+	xLastCheck = xInitAddInt(dTowers, "lastcheck", 1);
 	
 	dEarthquake = xInitDatabase("eqdb");
 	xEarthquakeName = xInitAddInt(dEarthquake, "name", -1);
@@ -247,6 +261,16 @@ highFrequency
 	dBuildings = xInitDatabase("buildingdb");
 	xUnitName = xInitAddInt(dBuildings, "name", -1);
 	xPlayerOwner = xInitAddInt(dBuildings, "owner", 0);
+	
+	dTornado = xInitDatabase("tndb");
+	xTornadoName = xInitAddInt(dTornado, "name", -1);
+	xTornadoOwner = xInitAddInt(dTornado, "owner", -1);
+	
+	dHawks = xInitDatabase("birddb");
+	xHawkID = xInitAddInt(dHawks, "id", 0);
+	xPlayerOwner = xInitAddInt(dHawks, "owner", 0);
+	xHawkTime = xInitAddInt(dHawks, "time", 0);
+	
 }
 
 
@@ -337,7 +361,7 @@ void BuildCliff(vector target = vector(0,0,0)){
 		xSetInt(dTerrainResetDB, xMinZ, xsVectorGetZ(target)+YTNeg-1);
 		xSetInt(dTerrainResetDB, xMaxX, xsVectorGetX(target)+1);
 		xSetInt(dTerrainResetDB, xMaxZ, xsVectorGetZ(target)+YTPlus+1);
-		xSetInt(dTerrainResetDB, xTimeReset, trTime()+10);
+		xSetInt(dTerrainResetDB, xTimeReset, trTime()+30);
 		xSetBool(dTerrainResetDB, xXDir, true);
 	}
 	else{
@@ -349,7 +373,7 @@ void BuildCliff(vector target = vector(0,0,0)){
 		xSetInt(dTerrainResetDB, xMinZ, xsVectorGetZ(target)-1);
 		xSetInt(dTerrainResetDB, xMaxX, xsVectorGetX(target)+XTPlus+1);
 		xSetInt(dTerrainResetDB, xMaxZ, xsVectorGetZ(target)+1);
-		xSetInt(dTerrainResetDB, xTimeReset, trTime()+10);
+		xSetInt(dTerrainResetDB, xTimeReset, trTime()+30);
 		xSetBool(dTerrainResetDB, xXDir, false);
 	}
 	refreshPassability();

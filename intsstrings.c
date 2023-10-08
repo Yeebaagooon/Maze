@@ -3,13 +3,64 @@ BUG
 
 Camera post level reward
 AI unit pop increase
+restor on kb building dmg
 
+pegasus spawn wrong
+breaker for gps
 
 
 
 g("configSetInt(\"unbuildWoodCost2\", 200);");
 g("configSetInt(\"unbuildGoldCost2\", 100);");
 to revert timeshift cost after player resigns/game ends
+
+TEMPLE SHIT
+<train row="0" page="1" column="0">Hero Norse</train>
+<train row="0" page="1" column="0">Oracle Scout</train>
+<train row="0" page="1" column="0">Pegasus</train>
+<train row="0" page="1" column="0">Priest</train>
+---
+<train row="0" page="1" column="1">Anubite</train>
+<train row="0" page="1" column="1">Automaton</train>
+<train row="0" page="1" column="1">Centaur</train>
+<train row="0" page="1" column="1">Cyclops</train>
+<train row="0" page="1" column="1">Einheriar</train>
+<train row="0" page="1" column="1">Flying Medic</train>
+<train row="0" page="1" column="1">Minotaur</train>
+<train row="0" page="1" column="1">Promethean</train>
+<train row="0" page="1" column="1">Sphinx</train>
+<train row="0" page="1" column="1">Troll</train>
+<train row="0" page="1" column="1">Valkyrie</train>
+<train row="0" page="1" column="1">Wadjet</train>
+---
+<train row="0" page="1" column="2">Battle Boar</train>
+<train row="0" page="1" column="2">Behemoth</train>
+<train row="0" page="1" column="2">Hydra</train>
+<train row="0" page="1" column="2">Manticore</train>
+<train row="0" page="1" column="2">Nemean Lion</train>
+<train row="0" page="1" column="2">Petsuchos</train>
+<train row="0" page="1" column="2">Satyr</train>
+<train row="0" page="1" column="2">Scarab</train>
+<train row="0" page="1" column="2">Scorpion Man</train>
+<train row="0" page="1" column="2">Stymphalian Bird</train>
+---
+<train row="0" page="1" column="3">Argus</train>
+<train row="0" page="1" column="3">Colossus</train>
+<train row="0" page="1" column="3">Heka Gigantes</train>
+<train row="0" page="1" column="3">Lampades</train>
+<train row="0" page="1" column="3">Medusa</train>
+<train row="0" page="1" column="3">Mountain Giant</train>
+<train row="0" page="1" column="3">Roc</train>
+---
+<train row="0" page="1" column="4">Avenger</train>
+<train row="0" page="1" column="4">Chimera</train>
+<train row="0" page="1" column="4">Frost Giant</train>
+<train row="0" page="1" column="4">Mummy</train>
+<train row="0" page="1" column="4">Phoenix</train>
+---
+<train row="0" page="1" column="5">Fenris Wolf</train>
+<train row="0" page="1" column="5">Fire Giant</train>
+
 */
 
 
@@ -19,13 +70,13 @@ int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
 bool ForceAutoOff = false;
-bool Visible = true;
+bool Visible = false;
 
 string CliffTerrain = "CliffGreekA";
 string RoadTerrain = "OlympusTile";
 
 
-bool AutoEscape = false;
+bool AutoEscape = true;
 int dPlayerData = 0;
 int xSpyID = 0;
 int xOldAnim = 0;
@@ -91,7 +142,7 @@ void DamageBuildingCountRazes(int p = 1, int targetid = 0, float distance = 10.0
 	int count = 0;
 	int diff = 0;
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
-		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+		if((otherp != p && kbIsPlayerAlly(p) == false) && (trCheckGPActive("Restoration", otherp) == false)){
 			//count
 			trQuestVarSet("LastAdd", p);
 			trQuestVarSet("CountAdd"+otherp, CountBuildings(otherp));
@@ -105,8 +156,6 @@ void DamageBuildingCountRazes(int p = 1, int targetid = 0, float distance = 10.0
 			trDelayedRuleActivation("CountExtras");
 		}
 	}
-	debugLog("Distance: " + distance);
-	debugLog("Damage: " + 1*damage);
 }
 
 /*void DamageBuildingPercentCountRazes(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){

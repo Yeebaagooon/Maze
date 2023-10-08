@@ -43,7 +43,7 @@ runImmediately
 	}
 	trSetFogAndBlackmap(false, false);
 	%
-	code("map(\"space\",\"game\",\"uiFindType("+k+"Maceman"+k+"); uiTransformSelectedUnit("+k+"Maceman Hero"+k+")\");");
+	code("map(\"space\",\"game\",\"uiFindType("+k+"Maceman"+k+");uiTransformSelectedUnit("+k+"Maceman Hero"+k+")\");");
 	%
 	xsDisableSelf();
 }

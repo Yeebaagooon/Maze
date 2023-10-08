@@ -96,6 +96,7 @@ highFrequency
 	SetBuildPoints(10);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		modifyProtounitAbsolute("Old Man", p, 1, 10);
+		modifyProtounitAbsolute("Prisoner", p, 8, 0.1);
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 5);
 		modifyProtounitAbsolute("Cinematic Block", p, 2, 0);
 		modifyProtounitAbsolute("Temple", p, 0, 1000000);
@@ -146,6 +147,8 @@ highFrequency
 		modifyProtounitAbsolute("Stymphalian Bird", p, 2, 47);
 		modifyProtounitAbsolute("Stymphalian Bird", p, 11, 20);
 		modifyProtounitAbsolute("Stymphalian Bird", p, 13, 0);
+		modifyProtounitAbsolute("Raven", p, 0, 10000);
+		modifyProtounitAbsolute("Raven", p, 1, 10);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);
@@ -216,6 +219,7 @@ highFrequency
 		modifyProtounitAbsolute("Bolt Strike", p, 27, 0.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 28, 0.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 29, 0.0);
+		trModifyProtounit("Prisoner", p, 2, MapSize*2);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);

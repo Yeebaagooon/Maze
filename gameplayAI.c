@@ -7,51 +7,57 @@ bool GodPowerChance(int name = 0, int override = 0){
 		trQuestVarSet("temp", 0);
 	}
 	if(1*trQuestVarGet("temp") < MapFactor()){
-		if(AutoHunterLevel == 2){
+		if(Between(AutoHunterLevel,2,4)){
 			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Undermine", MapFactor());
 			trUnitSelectClear();
 			trUnitSelect(""+name);
 			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Undermine", kbGetBlockPosition(""+name), vector(0,0,0));
 		}
-		if(AutoHunterLevel == 3){
+		if(Between(AutoHunterLevel,5,6)){
 			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Lightning Storm", MapFactor());
 			trUnitSelectClear();
 			trUnitSelect(""+name);
 			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Lightning Storm", kbGetBlockPosition(""+name), vector(0,0,0));
 		}
-		if(AutoHunterLevel == 4){
-			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "SPC Meteor", MapFactor());
+		if(Between(AutoHunterLevel,7,8)){
+			if(trCheckGPActive("Tornado", cNumberNonGaiaPlayers) == false){
+				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tornado", MapFactor());
+				trUnitSelectClear();
+				trUnitSelect(""+name);
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tornado", kbGetBlockPosition(""+name), vector(0,0,0));
+			}
+		}
+		if(Between(AutoHunterLevel,9,10)){
+			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tartarian Gate", MapFactor());
 			trUnitSelectClear();
 			trUnitSelect(""+name);
-			trTechInvokeGodPower(cNumberNonGaiaPlayers, "SPC Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
+			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
 		}
-		if(AutoHunterLevel == 5){
-			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
-			trUnitSelectClear();
-			trUnitSelect(""+name);
-			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
-		}
-		if(AutoHunterLevel >= 6){
-			trQuestVarSetFromRand("temp", 1, 6);
+		if(AutoHunterLevel > 10){
+			trQuestVarSetFromRand("temp", 1, AutoHunterLevel);
 			if(1*trQuestVarGet("temp") <= 2){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tartarian Gate", MapFactor());
 				trUnitSelectClear();
 				trUnitSelect(""+name);
 				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
 			}
-			else if(1*trQuestVarGet("temp") <= 4){
-				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
-				trUnitSelectClear();
-				trUnitSelect(""+name);
-				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
+			else if(1*trQuestVarGet("temp") <= 6){
+				if(trCheckGPActive("Meteor", cNumberNonGaiaPlayers) == false){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
+					trUnitSelectClear();
+					trUnitSelect(""+name);
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
+				}
 			}
-			else if(1*trQuestVarGet("temp") < 6){
-				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
-				trUnitSelectClear();
-				trUnitSelect(""+name);
-				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+			else if(1*trQuestVarGet("temp") < 9){
+				if(trCheckGPActive("Earthquake", cNumberNonGaiaPlayers) == false){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
+					trUnitSelectClear();
+					trUnitSelect(""+name);
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+				}
 			}
-			else if(1*trQuestVarGet("temp") == 6){
+			else if(1*trQuestVarGet("temp") > 9){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Vortex", MapFactor());
 				trUnitSelectClear();
 				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Vortex", kbGetBlockPosition(""+name), vector(0,0,0));
@@ -179,7 +185,7 @@ highFrequency
 	if(1*trQuestVarGet("SpawnTime") < trTime()){
 		trQuestVarSet("SpawnTime", trTime()+1);
 		int temp = -1;
-		if(trPlayerGetPopulation(cNumberNonGaiaPlayers) < 100){
+		if(trPlayerGetPopulation(cNumberNonGaiaPlayers) < (90+20*cNumberNonGaiaPlayers)){
 			//spawn
 			temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
 			xAddDatabaseBlock(dEnemies, true);
@@ -199,7 +205,6 @@ highFrequency
 			trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
 		}
 	}
-	
 }
 
 rule MGSpecial
@@ -512,6 +517,37 @@ highFrequency
 		Safety = Safety+1;
 		if(kbUnitVisible(kbGetBlockID(""+xGetInt(dTowers, xTowerName)))){
 			if(GodPowerChance(xGetInt(dTowers, xTowerName), 1)){
+				trQuestVarSetFromRand("temp", 1, AutoHunterLevel);
+				int name = xGetInt(dTowers, xTowerName);
+				if(1*trQuestVarGet("temp") <= 5){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tartarian Gate", MapFactor());
+					trUnitSelectClear();
+					trUnitSelect(""+name);
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
+				}
+				else if(1*trQuestVarGet("temp") <= 7){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tornado", MapFactor());
+					trUnitSelectClear();
+					trUnitSelect(""+name);
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tornado", kbGetBlockPosition(""+name), vector(0,0,0));
+				}
+				else if(1*trQuestVarGet("temp") < 10){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
+					trUnitSelectClear();
+					trUnitSelect(""+name);
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
+				}
+				else if(1*trQuestVarGet("temp") < 13){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
+					trUnitSelectClear();
+					trUnitSelect(""+name);
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+				}
+				else if(1*trQuestVarGet("temp") >= 13){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Vortex", MapFactor());
+					trUnitSelectClear();
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Vortex", kbGetBlockPosition(""+name), vector(0,0,0));
+				}
 				Done = true;
 			}
 		}
@@ -526,20 +562,24 @@ rule TowerDB
 inactive
 highFrequency
 {
-	//Zeno MG code
+	//DAMAGE BECAUSE NOT EVERY LOOP, NEED EACH ONE TO HAVE A TIME LAST CHECKED
+	//so the damage would be like trTimeMS() - xGetVar(lava, xPreviousTime)
 	if (xGetDatabaseCount(dTowers) > 0) {
 		xDatabaseNext(dTowers);
 		xUnitSelect(dTowers, xTowerName);
-		//p = xGetInt(dTowers,xPlayerOwner);
+		int p = xGetInt(dTowers,xPlayerOwner);
 		if (trUnitAlive() == false) {
 			xFreeDatabaseBlock(dTowers);
 		}
 		else{
-			int x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
-			int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
-			if((trGetTerrainType(x,z) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(x,z) == getTerrainSubType("Hades4Passable"))){
-				xUnitSelect(dTowers, xTowerName);
-				trDamageUnit(1*timediff);
+			if(trCheckGPActive("Restoration", p) == false){
+				int x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
+				int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
+				if((trGetTerrainType(x,z) == 5) && (trGetTerrainSubType(x,z) == 7)){
+					//Hades4Passable
+					xUnitSelect(dTowers, xTowerName);
+					trDamageUnit(1.001*timediff);
+				}
 			}
 		}
 	}
@@ -553,18 +593,22 @@ highFrequency
 	if (xGetDatabaseCount(dBuildings) > 0) {
 		xDatabaseNext(dBuildings);
 		xUnitSelect(dBuildings, xUnitName);
-		//p = xGetInt(dTowers,xPlayerOwner);
+		int p = xGetInt(dTowers,xPlayerOwner);
 		if (trUnitAlive() == false) {
 			xFreeDatabaseBlock(dBuildings);
 		}
 		else{
-			int x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dBuildings, xUnitName)))/2;
-			int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dBuildings, xUnitName)))/2;
-			if((trGetTerrainType(x,z) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(x,z) == getTerrainSubType("Hades4Passable"))){
-				xUnitSelect(dBuildings, xUnitName);
-				trDamageUnit(2*timediff);
+			if(trCheckGPActive("Restoration", p) == false){
+				int x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dBuildings, xUnitName)))/2;
+				int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dBuildings, xUnitName)))/2;
+				if((trGetTerrainType(x,z) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(x,z) == getTerrainSubType("Hades4Passable"))){
+					xUnitSelect(dBuildings, xUnitName);
+					trDamageUnit(trTimeMS()-xGetInt(dTowers, xLastCheck)*0.01);
+					
+				}
 			}
 		}
+		xSetInt(dTowers, xLastCheck, trTimeMS());
 	}
 }
 

@@ -1525,3 +1525,12 @@ string DeadText(){
 		return(lestring);
 	}
 }
+
+bool Between(int value = 0, int first = 0, int second = 0){
+	if((value >= first) && (value <= second)){
+		return(true);
+	}
+	else{
+		return(false);
+	}
+}
