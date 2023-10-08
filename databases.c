@@ -115,6 +115,8 @@ int xMaxZ = 0;
 int xTimeReset = 0;
 int xXDir = 0;
 
+int xTowerOwner = 0;
+
 //volcano
 int dVolcanoDB = 0;
 int xVolcanoName = 0;
@@ -195,7 +197,7 @@ highFrequency
 	
 	dTowers = xInitDatabase("towerdb");
 	xTowerName = xInitAddInt(dTowers, "name", -1);
-	xPlayerOwner = xInitAddInt(dTowers, "owner", 0);
+	xTowerOwner = xInitAddInt(dTowers, "owner", 0);
 	xLastCheck = xInitAddInt(dTowers, "lastcheck", 1);
 	
 	dEarthquake = xInitDatabase("eqdb");

@@ -286,6 +286,7 @@ highFrequency
 		trUnitSelectClear();
 		trUnitSelectByID(0);
 		trUnitChangeInArea(p,p, "Wall Long", "Gate", MapSize);
+		trUnitChangeInArea(0,1, "Chicken Exploding", "Tower", MapSize);
 		if(xGetBool(dPlayerData, xPlayerAlive)){
 			if(playerIsPlaying(p)){
 				if(xGetBool(dPlayerData, xPlayerRunner) == true){
@@ -436,9 +437,16 @@ highFrequency
 			xDatabaseNext(dHawks);
 			if(trTime() >= xGetInt(dHawks, xHawkTime)){
 				xUnitSelect(dHawks, xHawkID);
-				trUnitConvert(xGetInt(dHawks, xPlayerOwner));
-				xUnitSelect(dHawks, xHawkID);
-				trUnitChangeProtoUnit("Tower");
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dHawks, xHawkID))/2),xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dHawks, xHawkID))/2)) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dHawks, xHawkID))/2),xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dHawks, xHawkID))/2)) == getTerrainSubType(RoadTerrain))){
+					trUnitConvert(xGetInt(dHawks, xPlayerOwner));
+					xUnitSelect(dHawks, xHawkID);
+					trUnitChangeProtoUnit("Tower");
+					trUnitSelectClear();
+					xAddDatabaseBlock(dTowers, true);
+					xSetInt(dTowers, xTowerName, xGetInt(dHawks, xHawkID));
+					xSetInt(dTowers, xTowerOwner, xGetInt(dHawks, xPlayerOwner));
+					xFreeDatabaseBlock(dHawks);
+				}
 			}
 		}
 	}
@@ -470,19 +478,24 @@ highFrequency
 				trQuestVarSet("P"+p+"RainTime", trTime()+10);
 				for(a = xGetDatabaseCount(dTowers); > 0){
 					xDatabaseNext(dTowers);
-					debugLog("P"+xGetInt(dTowers, xPlayerOwner));
-					if(xGetInt(dTowers, xPlayerOwner) == p){
-						//change towers to birds
-						debugLog("R");
+					if(xGetInt(dTowers, xTowerOwner) == p){
 						xUnitSelect(dTowers, xTowerName);
-						trUnitChangeProtoUnit("Hawk");
-						xAddDatabaseBlock(dHawks, true);
-						xSetInt(dHawks, xHawkID, xGetInt(dTowers, xTowerName));
-						xSetInt(dHawks, xPlayerOwner, xGetInt(dTowers, xPlayerOwner));
-						xSetInt(dHawks, xHawkTime, trTime()+10);
-						xFreeDatabaseBlock(dTowers);
+						if(trUnitPercentComplete() == 100){
+							xUnitSelect(dTowers, xTowerName);
+							trUnitChangeProtoUnit("Hawk");
+							xAddDatabaseBlock(dHawks, true);
+							xSetInt(dHawks, xHawkID, xGetInt(dTowers, xTowerName));
+							xSetInt(dHawks, xPlayerOwner, xGetInt(dTowers, xTowerOwner));
+							xSetInt(dHawks, xHawkTime, trTime()+10);
+							xFreeDatabaseBlock(dTowers);
+						}
 					}
 				}
+			}
+			else{
+				//recharge
+				grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
+				trChatSendToPlayer(0, p, "<color=1,0,0>You cannot use rain yet!");
 			}
 		}
 	}
@@ -561,6 +574,7 @@ highFrequency
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+			grantGodPowerNoRechargeNextPosition(p, "Rain", 2);
 			//grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", 1);
 		}
 	}
@@ -939,6 +953,15 @@ highFrequency
 				if(trCurrentPlayer() == p){
 					trMessageSetText("You can now train phoenixes. They take less population room later.", 8000);
 					playSound("ageadvance.wav");
+				}
+			}
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				if(AutoEscape){
+					grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
+					if(trCurrentPlayer() == p){
+						trMessageSetText("Rain = Towers turn into birds that fly for 10s before changing back", 8000);
+						playSound("\cinematics\17_in\weirdthing.mp3");
+					}
 				}
 			}
 		}

@@ -88,6 +88,7 @@ highFrequency
 						playSound("cantdothat.wav");
 					}
 					trUnitDestroy();
+					break;
 				}
 				if(AutoEscape){
 					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("HadesBuildable1")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("HadesBuildable1"))){
@@ -98,15 +99,14 @@ highFrequency
 							playSound("cantdothat.wav");
 						}
 						trUnitDestroy();
+						break;
 					}
 				}
-				else{
-					xAddDatabaseBlock(dTowers, true);
-					xSetInt(dTowers, xTowerName, j);
-					xSetInt(dTowers, xPlayerOwner, kbUnitGetOwner(id));
-					if(AutoEscape){
-						GodPowerChance(j);
-					}
+				xAddDatabaseBlock(dTowers, true);
+				xSetInt(dTowers, xTowerName, j);
+				xSetInt(dTowers, xTowerOwner, kbUnitGetOwner(id));
+				if(AutoEscape){
+					GodPowerChance(j);
 				}
 				break;
 			}
