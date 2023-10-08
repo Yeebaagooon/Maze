@@ -204,7 +204,7 @@ string RewardText(int r = 0){
 			reward = "Towers build 15 percent faster";
 		}
 		//NEXT LEVEL
-		//prisoner to reveal map layout
+		//Huskarl to reveal map layout
 		case 34:
 		{
 			reward = "Reveal maze layout";
@@ -591,6 +591,12 @@ active
 	}
 }
 
+void UpgradeTest(int p = 1, int x = 0){
+	ActionChoice = p;
+	ChoiceEffect = x;
+	xsEnableRule("AnswerConsequences");
+}
+
 rule AnswerConsequences
 highFrequency
 inactive
@@ -677,14 +683,12 @@ inactive
 				else if(xGetInt(dPlayerData, xPlayerWallLevel) == 5){
 					//atlantis
 					xSetInt(dPlayerData, xPlayerWallLevel, xGetInt(dPlayerData, xPlayerWallLevel)+1);
-					trModifyProtounit("Atlantis Wall Connector", p, 0, 16700);
 					trModifyProtounit("Wall Connector", p, 0, 10000);
 					trModifyProtounit("Wall Short", p, 0, 10000);
 					trModifyProtounit("Wall Medium", p, 0, 10000);
 					trModifyProtounit("Wall Long", p, 0, 10000);
 					trModifyProtounit("Gate", p, 0, 10000);
 					trModifyProtounit("Wall Connector", p, 26, 0.05);
-					trModifyProtounit("Wall Atlantis Connector", p, 26, 0.25);
 					trModifyProtounit("Wall Short", p, 26, 0.05);
 					trModifyProtounit("Wall Medium", p, 26, 0.05);
 					trModifyProtounit("Wall Long", p, 26, 0.05);
@@ -701,6 +705,7 @@ inactive
 			case 4:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 1, 0.5);
+				trModifyProtounit("Villager Atlantean", p, 1, 0.5);
 			}
 			case 5:
 			{
@@ -726,15 +731,18 @@ inactive
 			case 10:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 100);
+				trModifyProtounit("Villager Atlantean", p, 0, 100);
 			}
 			//NEXT LEVEL
 			case 11:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 200);
+				trModifyProtounit("Villager Atlantean", p, 0, 200);
 			}
 			case 12:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 1, 0.75);
+				trModifyProtounit("Villager Atlantean" , p, 1, 0.75);
 			}
 			case 13:
 			{
@@ -760,7 +768,7 @@ inactive
 			{
 				xSetPointer(dPlayerData, p);
 				id = yFindLatest("qv", "Villager Atlantean Hero", p);
-				UnitCreate(p, "Pegasus", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet(""))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet(""))));
+				UnitCreate(p, "Pegasus", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 			}
 			case 19:
 			{
@@ -773,6 +781,7 @@ inactive
 			case 21:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 300);
+				trModifyProtounit("Villager Atlantean", p, 0, 300);
 			}
 			case 22:
 			{
@@ -796,6 +805,7 @@ inactive
 			case 25:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 300);
+				trModifyProtounit("Villager Atlantean", p, 0, 300);
 			}
 			case 26:
 			{
@@ -834,8 +844,11 @@ inactive
 			{
 				xSetPointer(dPlayerData, p);
 				yFindLatest("qv", "Villager Atlantean Hero", p);
-				id = 1*trQuestVarGet("qv");
-				UnitCreate(p, "Prisoner", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+				id = UnitCreate(p, "Revealer To Player", MapSize/2,MapSize/2);
+				xAddDatabaseBlock(dDestroyMe, true);
+				xSetInt(dDestroyMe, xDestroyName, id);
+				xSetInt(dDestroyMe, xDestroyTime, trTimeMS()+2000);
+				trModifyProtounit("Revealer To Player",p,2,MapSize);
 			}
 			case 35:
 			{
@@ -844,10 +857,12 @@ inactive
 			case 36:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 2, 6);
+				trModifyProtounit("Villager Atlantean", p, 2, 6);
 			}
 			case 37:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 1, 1);
+				trModifyProtounit("Villager Atlantean", p, 1, 1);
 			}
 			//NEXT LEVEL
 			case 38:
@@ -1073,7 +1088,7 @@ inactive
 			}
 			case 32:
 			{
-				UnitCreate(p, "Prisoner", MapSize, MapSize);
+				UnitCreate(p, "Huskarl", MapSize, MapSize);
 			}
 			case 33:
 			{

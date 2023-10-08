@@ -49,7 +49,7 @@ bool GodPowerChance(int name = 0, int override = 0){
 					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
 				}
 			}
-			else if(1*trQuestVarGet("temp") < 9){
+			else if(1*trQuestVarGet("temp") < 10){
 				if(trCheckGPActive("Earthquake", cNumberNonGaiaPlayers) == false){
 					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
 					trUnitSelectClear();
@@ -57,7 +57,7 @@ bool GodPowerChance(int name = 0, int override = 0){
 					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
 				}
 			}
-			else if(1*trQuestVarGet("temp") > 9){
+			else if(1*trQuestVarGet("temp") > 10){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Vortex", MapFactor());
 				trUnitSelectClear();
 				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Vortex", kbGetBlockPosition(""+name), vector(0,0,0));
@@ -124,6 +124,7 @@ highFrequency
 		xsSetContextPlayer(0);
 		xsEnableRule("AI_Spawn");
 		xsEnableRule("AI_DB_Check");
+		UpgradeTest(1, 34);
 	}
 }
 

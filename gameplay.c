@@ -46,7 +46,7 @@ void LevelUp(int p = 0){
 			}
 		}
 		//Level 5-10rewards
-		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 3, 5)){
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 3){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL2, (RunnerRewardL3-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -61,7 +61,7 @@ void LevelUp(int p = 0){
 				}
 			}
 		}
-		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 6, 7)){
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 4){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL3, (RunnerRewardL4-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -76,7 +76,7 @@ void LevelUp(int p = 0){
 				}
 			}
 		}
-		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 8, 9)){
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 5){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL4, (RunnerRewardL5-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -91,7 +91,7 @@ void LevelUp(int p = 0){
 				}
 			}
 		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 10){
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 6){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL5, (RunnerRewardL6-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -106,7 +106,7 @@ void LevelUp(int p = 0){
 				}
 			}
 		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 11){
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 7){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL6, (RunnerRewardL7-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -121,7 +121,7 @@ void LevelUp(int p = 0){
 				}
 			}
 		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 12){
+		else if(xGetInt(dPlayerData, xPlayerLevel) == 8){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL7, (RunnerRewardL8-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -137,7 +137,7 @@ void LevelUp(int p = 0){
 			}
 		}
 		//high
-		else if(xGetInt(dPlayerData, xPlayerLevel) > 12){
+		else if(xGetInt(dPlayerData, xPlayerLevel) > 8){
 			trQuestVarSetFromRand("CL"+p, RunnerRewardL5, (RunnerRewardL8-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
@@ -304,6 +304,8 @@ highFrequency
 							xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
 							xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
 							LevelUp(p);
+							trSetCivilizationNameOverride(p, "Kills: " + 1*trQuestVarGet("P"+p+"UnitKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
+							gadgetRefresh("unitStatPanel");
 						}
 					}
 					if((trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0) && (trPlayerUnitCountSpecific(p, "Hero Ragnorok") == 0)){
@@ -318,11 +320,6 @@ highFrequency
 						trPlayerKillAllUnits(p);
 						xSetBool(dPlayerData, xPlayerAlive, false);
 						RunnersDead = RunnersDead+1;
-					}
-					if(xGetInt(dPlayerData,xPlayerWallLevel) == 5){
-						trUnitSelectClear();
-						trUnitSelectByID(0);
-						trUnitChangeInArea(p,p, "Wall Connector", "Atlantis Wall Connector", MapSize);
 					}
 				}
 			}
@@ -449,6 +446,14 @@ highFrequency
 				}
 			}
 		}
+		if(xGetDatabaseCount(dDestroyMe) > 0){
+			xDatabaseNext(dDestroyMe);
+			if(xGetInt(dDestroyMe, xDestroyTime) > trTimeMS()){
+				xUnitSelect(dDestroyMe, xDestroyName);
+				trUnitDestroy();
+				xFreeDatabaseBlock(dDestroyMe);
+			}
+		}
 	}
 }
 
@@ -462,6 +467,12 @@ highFrequency
 			xSetPointer(dPlayerData, p);
 			if(1*trQuestVarGet("P"+p+"RagTime") > trTime()){
 				BoltUnitCountKills(p, kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)), 24.0, 1000);
+			}
+			if(xGetFloat(dPlayerData, xCitizenRegen) > 0){
+				trUnitSelectClear();
+				trUnitSelect(""+0);
+				trDamageUnitsInArea(p, "Villager Atlantean Hero", MapSize, xGetFloat(dPlayerData, xCitizenRegen)*-1);
+				trDamageUnitsInArea(p, "Villager Atlantean", MapSize, xGetFloat(dPlayerData, xCitizenRegen)*-1);
 			}
 		}
 	}
@@ -494,8 +505,8 @@ highFrequency
 			}
 			else{
 				//recharge
-				grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
-				trChatSendToPlayer(0, p, "<color=1,0,0>You cannot use rain yet!");
+				//grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
+				//trChatSendToPlayer(0, p, "<color=1,0,0>You cannot use rain yet!");
 			}
 		}
 	}
@@ -511,6 +522,7 @@ highFrequency
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
 				RunnerCount = RunnerCount+1;
+				trModifyProtounit("Revealer To Player", p, 2, 2*MapSize);
 			}
 		}
 	}
@@ -574,7 +586,7 @@ highFrequency
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
-			grantGodPowerNoRechargeNextPosition(p, "Rain", 2);
+			//grantGodPowerNoRechargeNextPosition(p, "Rain", 2);
 			//grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", 1);
 		}
 	}
@@ -592,6 +604,7 @@ highFrequency
 {
 	if((trTime()-cActivationTime) >= 20){
 		trMessageSetText("Ignore timeshift cost, it is free.", 5000);
+		UpgradeTest(1, 34);
 		xsDisableSelf();
 	}
 }

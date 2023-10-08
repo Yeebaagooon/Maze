@@ -96,8 +96,9 @@ highFrequency
 	SetBuildPoints(10);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		modifyProtounitAbsolute("Old Man", p, 1, 10);
-		modifyProtounitAbsolute("Prisoner", p, 8, 0.1);
+		modifyProtounitAbsolute("Huskarl", p, 8, 0.1);
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 5);
+		modifyProtounitAbsolute("Villager Atlantean", p, 1, 5);
 		modifyProtounitAbsolute("Cinematic Block", p, 2, 0);
 		modifyProtounitAbsolute("Temple", p, 0, 1000000);
 		modifyProtounitAbsolute("TUnnel", p, 0, 5000);
@@ -219,7 +220,6 @@ highFrequency
 		modifyProtounitAbsolute("Bolt Strike", p, 27, 0.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 28, 0.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 29, 0.0);
-		trModifyProtounit("Prisoner", p, 2, MapSize*2);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);

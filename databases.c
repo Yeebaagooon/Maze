@@ -200,6 +200,10 @@ highFrequency
 	xTowerOwner = xInitAddInt(dTowers, "owner", 0);
 	xLastCheck = xInitAddInt(dTowers, "lastcheck", 1);
 	
+	dDestroyMe = xInitDatabase("destroydb");
+	xDestroyName = xInitAddInt(dDestroyMe, "id", -1);
+	xDestroyTime = xInitAddInt(dDestroyMe, "id", 0);
+	
 	dEarthquake = xInitDatabase("eqdb");
 	xEarthquakeName = xInitAddInt(dEarthquake, "name", -1);
 	xEarthquakeOwner = xInitAddInt(dEarthquake, "owner", -1);
@@ -311,7 +315,7 @@ void spyEffect(int proto = 0, int anim = 0, vector dest = vector(0,0,0), vector 
 	xSetInt(dSpyRequests, xSpyRequestEvent, event, newest);
 	//xSetInt(dSpyRequests, xSpyRequestExtra, extra, newest);
 	trTechInvokeGodPower(0, "spy", vector(0,0,0), vector(0,0,0));
-	//unitTransform("Prisoner", "Ball of fire");
+	//unitTransform("Huskarl", "Ball of fire");
 }
 
 void BuildCliff(vector target = vector(0,0,0)){

@@ -31,7 +31,7 @@ highFrequency
 runImmediately
 {
 	characterDialog("Waiting for everyone to connect.", " ", "icons\special e son of osiris icon 64");
-	trUIFadeToColor(0, 0, 0, 0, 10000, false);
+	trUIFadeToColor(0, 0, 0, 10000, 10000, false);
 	trFadeOutAllSounds(0.1);
 	trFadeOutMusic(0.1);
 	if(QuickStart == 0){

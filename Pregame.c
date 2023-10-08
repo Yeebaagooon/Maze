@@ -273,7 +273,7 @@ highFrequency
 	xsEnableRule("Removepregamestuff");
 	xsEnableRule("SetGameDiplomacy");
 	trLetterBox(true);
-	trUIFadeToColor(0,0,0,750,100,true);
+	trUIFadeToColor(0,0,0,10000,100000,false);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		xSetBool(dPlayerData, xRoleDefined, true);
