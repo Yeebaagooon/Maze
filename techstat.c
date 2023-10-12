@@ -151,6 +151,8 @@ highFrequency
 		modifyProtounitAbsolute("Raven", p, 0, 10000);
 		modifyProtounitAbsolute("Raven", p, 1, 10);
 		MakeUnitFree("Tower", p);
+		MakeUnitFree("Troll", p);
+		MakeUnitFree("Behemoth", p);
 		MakeUnitFree("Sky Passage", p);
 		MakeUnitFree("Gate", p);
 		MakeUnitFree("Wall Connector", p);

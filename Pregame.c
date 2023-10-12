@@ -69,7 +69,7 @@ highFrequency
 		}
 	}
 	UnitCreate(0, "Villager Atlantean Hero", 34,50,90);
-	UnitCreate(0, "Tartarian Gate Spawn", 66,50,270);
+	UnitCreate(0, "Statue of Major God", 66,50,270);
 	trMessageSetText("Move your old man to your desired team", 6000);
 	ChoiceTimeout = trTime()+25;
 	trCounterAddTime("cdchoicehunt", 25,0, "Players randomised", -1);
@@ -500,6 +500,7 @@ highFrequency
 			else{
 				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",MapSize-12,1*trQuestVarGet("pos")*22+10);
 			}
+			xSetPointer(dPlayerData, 1*trQuestVarGet("Runner"+a));
 			xSetInt(dPlayerData, xPlayerUnitID, temp);
 			trUnitSelectClear();
 			trUnitSelect(""+temp);
@@ -568,6 +569,7 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelectByID(0);
 			trUnitChangeInArea(p,p, "Temple", "Temple", MapSize);
+			modifyProtounitAbsolute("Temple", p, 7, 125); //temple pop limit
 		}
 		if(AutoEscape){
 			xsEnableRule("AI_Activate");

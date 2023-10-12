@@ -92,7 +92,7 @@ highFrequency
 				}
 				if(AutoEscape){
 					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("HadesBuildable1")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("HadesBuildable1"))){
-						trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build here in autoe scape mode");
+						trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build here in auto escape mode");
 						trUnitSelectClear();
 						trUnitSelectByID(id);
 						if(trCurrentPlayer() == kbUnitGetOwner(id)){

@@ -19,6 +19,7 @@ int xTowerBuild = 0;
 int xPlayerLevel = 0;
 int xPlayerNextLevel = 0;
 int xPlayerWallLevel = 0;
+int xJourneyOn = 0;
 
 int dEnemies = 0;
 int xUnitID = 0;
@@ -162,6 +163,7 @@ highFrequency
 	xPlayerNextLevel = xInitAddInt(dPlayerData, "k to next l", 5);
 	xPlayerWallLevel = xInitAddInt(dPlayerData, "wall level", 1);
 	xCitizenRegen = xInitAddFloat(dPlayerData, "citizen regen", 0.0);
+	xJourneyOn = xInitAddBool(dPlayerData, "journey", false);
 	
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {

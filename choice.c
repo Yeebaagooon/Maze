@@ -151,7 +151,7 @@ string RewardText(int r = 0){
 		}
 		case 22:
 		{
-			reward = "Great Journey power";
+			reward = "Great Journey power (walk over cliff)";
 		}
 		case 23:
 		{
@@ -591,10 +591,15 @@ active
 	}
 }
 
-void UpgradeTest(int p = 1, int x = 0){
+void UpgradeTest(int p = 1, int x = 0, bool Hunter = false){
 	ActionChoice = p;
 	ChoiceEffect = x;
-	xsEnableRule("AnswerConsequences");
+	if(Hunter){
+		xsEnableRule("HunterConsequences");
+	}
+	else{
+		xsEnableRule("AnswerConsequences");
+	}
 }
 
 rule AnswerConsequences
@@ -1145,7 +1150,10 @@ inactive
 				}
 				else{
 					temp = yFindLatest("qv", "Temple", p);
-					UnitCreate(p, "Heka Gigantes", xsVectorGetX(kbGetBlockPosition(""+temp)),xsVectorGetZ(kbGetBlockPosition(""+temp)));
+					UnitCreate(p, "Heka Gigantes", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					if(trCurrentPlayer() == p){
+						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
+					}
 				}
 			}
 			case 40:
@@ -1206,7 +1214,10 @@ inactive
 				}
 				else{
 					temp = yFindLatest("qv", "Temple", p);
-					UnitCreate(p, "Raven", xsVectorGetX(kbGetBlockPosition(""+temp)),xsVectorGetZ(kbGetBlockPosition(""+temp)));
+					UnitCreate(p, "Raven", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					if(trCurrentPlayer() == p){
+						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
+					}
 				}
 			}
 		}

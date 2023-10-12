@@ -430,6 +430,22 @@ highFrequency
 			trUnitSelect("0");
 			trDamageUnitsInArea(p, "All", MapSize, -10000);
 		}
+		if(xGetBool(dPlayerData, xJourneyOn)){
+			if(trCheckGPActive("journey", p) == false){
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) != getTerrainType(CliffTerrain)) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) != getTerrainSubType(CliffTerrain))){
+					trModifyProtounit("Villager Atlantean Hero", p, 55, 1);
+					trModifyProtounit("Villager Atlantean", p, 55, 1);
+					xSetBool(dPlayerData, xJourneyOn, false);
+				}
+			}
+		}
+		else if(xGetBool(dPlayerData, xJourneyOn) == false){
+			if(trCheckGPActive("journey", p) == true){
+				trModifyProtounit("Villager Atlantean Hero", p, 55, 4);
+				trModifyProtounit("Villager Atlantean", p, 55, 4);
+				xSetBool(dPlayerData, xJourneyOn, true);
+			}
+		}
 		if(xGetDatabaseCount(dHawks) > 0){
 			xDatabaseNext(dHawks);
 			if(trTime() >= xGetInt(dHawks, xHawkTime)){
@@ -523,6 +539,8 @@ highFrequency
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
 				RunnerCount = RunnerCount+1;
 				trModifyProtounit("Revealer To Player", p, 2, 2*MapSize);
+				//trQuestVarSet("qv", 0);
+				//xSetInt(dPlayerData, xPlayerUnitID, yFindLatest("qv", "Villager Atlantean Hero", p));
 			}
 		}
 	}
@@ -542,6 +560,7 @@ highFrequency
 	xsEnableRule("HunterPower11Mins");
 	xsEnableRule("HunterUnits13Mins");
 	xsEnableRule("HunterUnits15Mins");
+	xsEnableRule("HunterUnits17Mins");
 	xsEnableRule("HunterUnits18Mins");
 	xsEnableRule("HunterUnits20Mins");
 	xsEnableRule("HunterUnits22Mins");
@@ -604,7 +623,7 @@ highFrequency
 {
 	if((trTime()-cActivationTime) >= 20){
 		trMessageSetText("Ignore timeshift cost, it is free.", 5000);
-		UpgradeTest(1, 34);
+		UpgradeTest(1, 22, false);
 		xsDisableSelf();
 	}
 }
@@ -961,20 +980,20 @@ highFrequency
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				trUnforbidProtounit(p, "Phoenix");
-				trUnforbidProtounit(p, "Phoenix From Egg");
-				if(trCurrentPlayer() == p){
-					trMessageSetText("You can now train phoenixes. They take less population room later.", 8000);
-					playSound("ageadvance.wav");
+				if(AutoEscape){
+					trUnforbidProtounit(p, "Phoenix");
+					trUnforbidProtounit(p, "Phoenix From Egg");
+					if(trCurrentPlayer() == p){
+						trMessageSetText("You can now train phoenixes. They take less population room later.", 8000);
+						playSound("ageadvance.wav");
+					}
 				}
 			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
-				if(AutoEscape){
-					grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
-					if(trCurrentPlayer() == p){
-						trMessageSetText("Rain = Towers turn into birds that fly for 10s before changing back", 8000);
-						playSound("\cinematics\17_in\weirdthing.mp3");
-					}
+				grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Rain = Towers turn into birds that fly for 10s before changing back", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
 		}
@@ -985,6 +1004,29 @@ highFrequency
 			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Behemoth", "Phoenix", MapSize);
 		}
 		xsDisableSelf();
+	}
+}
+
+rule HunterUnits17Mins
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 60*17){
+		rangedunit = "Phoenix";
+		handunit = "Heka Gigantes";
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				if(AutoEscape == false){
+					trUnforbidProtounit(p, "Phoenix");
+					trUnforbidProtounit(p, "Phoenix From Egg");
+					if(trCurrentPlayer() == p){
+						trMessageSetText("You can now train phoenixes.", 7000);
+						playSound("ageadvance.wav");
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -1030,6 +1072,14 @@ highFrequency
 					playSound("ageadvance.wav");
 				}
 			}
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				trModifyProtounit("Tower", p, 13, 1);
+				grantGodPowerNoRechargeNextPosition(p, "create gold", 1);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Extra tower projectile and wall power granted.", 8000);
+					playSound("ageadvance.wav");
+				}
+			}
 		}
 		xsDisableSelf();
 	}
@@ -1050,6 +1100,7 @@ highFrequency
 					trMessageSetText("Yeebaagooon has joined you for the final hunt!", 8000);
 					playSound("ageadvance.wav");
 				}
+				trMinimapFlare(p, 10.0, spawn, false);
 			}
 			if(xGetBool(dPlayerData, xPlayerRunner)){
 				if(trCurrentPlayer() == p){
@@ -1079,6 +1130,7 @@ highFrequency
 			else{
 				trSetPlayerDefeated(p);
 			}
+			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + xGetInt(dPlayerData, xPlayerLevel));
 		}
 		xsEnableRule("GameEnd");
 		trShowWinLose("The runners have won!");
@@ -1098,6 +1150,7 @@ highFrequency
 			else{
 				trSetPlayerWon(p);
 			}
+			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + xGetInt(dPlayerData, xPlayerLevel));
 		}
 		xsEnableRule("GameEnd");
 		trShowWinLose("The hunters have won!");

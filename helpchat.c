@@ -30,6 +30,10 @@ highFrequency
 						ColouredIconChat("1,0.5,0", "icons\god power tartarian gate icons 64", " - Volcano");
 						trChatSend(0, "<color=1,1,1>Spews lava that lasts for one minute and cannot be built on");
 					}
+					if(trGetGPData(p,0,x) == 548){
+						ColouredIconChat("1,0.5,0", "icons\god power journey icon", " - Great Journey");
+						trChatSend(0, "<color=1,1,1>Increases villager speed and allows them to walk on cliff");
+					}
 				}
 			}
 			if(trChatHistoryContains("Upgrade", p)){

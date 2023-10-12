@@ -124,7 +124,6 @@ highFrequency
 		xsSetContextPlayer(0);
 		xsEnableRule("AI_Spawn");
 		xsEnableRule("AI_DB_Check");
-		UpgradeTest(1, 34);
 	}
 }
 

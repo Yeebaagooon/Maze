@@ -1,17 +1,51 @@
 /*
 BUG
 
-Camera post level reward
 AI unit pop increase
 restor on kb building dmg
 
 multi level
+vortex too strong for humans especially with multi yeebs
 
 
 
 g("configSetInt(\"unbuildWoodCost2\", 200);");
 g("configSetInt(\"unbuildGoldCost2\", 100);");
 to revert timeshift cost after player resigns/game ends
+
+AUTO RELIC THOUGHT:
+Split by time, use databsase to store characteristics etc
+
+tower hp
+tower attack
+citizen hp
+citizen speed
+tower build time
+mythic curse
+
+wall level up
+sky passage stat
+sky passage stat
+lightning storm
+citizen regen
+pegasus
+
+10-15
+insta wall
+tower range
+great journey
+
+
+15-20
+temp invuln
+tower projectile
+
+
+20+
+bird power
+
+
+
 
 TEMPLE SHIT
 <train row="0" page="1" column="0">Hero Norse</train>
@@ -68,14 +102,14 @@ TEMPLE SHIT
 int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
-bool ForceAutoOff = false;
+bool ForceAutoOff = true;
 bool Visible = false;
 
 string CliffTerrain = "CliffGreekA";
 string RoadTerrain = "OlympusTile";
 
 
-bool AutoEscape = true;
+bool AutoEscape = false;
 int dPlayerData = 0;
 int xSpyID = 0;
 int xOldAnim = 0;
