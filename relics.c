@@ -26,10 +26,10 @@ citizen hp
 citizen speed
 tower build time
 Lighthouse
+wall level up
 mythic curse
 
 5-10
-wall level up
 sky passage stat
 sky passage stat
 lightning storm
@@ -55,11 +55,17 @@ bird power
 const int RELIC_ATTACK_5 = 0;
 const int RELIC_HP_200 = 1;
 const int RELIC_SKY_HP = 2;
+const int RELIC_LIGHTHOUSE = 3;
+const int RELIC_CITIZEN_SPEED_1 = 4;
+const int RELIC_CITIZEN_HP_300 = 5;
+const int RELIC_WALLS = 6;
+const int RELIC_MYTHIC_CURSE = 7;
 
-const int MAX_RELIC_CLASS = 2;
+const int MAX_RELIC_CLASS = 7;
 
 void RelicEffect(int p = 0, int effect = 0){
-	debugLog(""+effect);
+	trQuestVarSet("qv", 0);
+	int temp = 0;
 	switch(effect){
 		case 0:
 		{
@@ -69,20 +75,47 @@ void RelicEffect(int p = 0, int effect = 0){
 		{
 			trModifyProtounit("Tower", p, 0, 200);
 		}
-		case 2:
+		case RELIC_SKY_HP:
 		{
 			trModifyProtounit("Sky Passage", p, 0, 500);
+		}
+		case RELIC_LIGHTHOUSE:
+		{
+			xSetPointer(dPlayerData, p);
+			yFindLatest("qv", "Villager Atlantean Hero", p);
+			temp = UnitCreate(p, "Lighthouse", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+			trUnitSelectClear();
+			trUnitSelectByQV("qv");
+			trImmediateUnitGarrison(""+temp);
+			trUnitSelectClear();
+			trUnitSelect(""+temp);
+			trUnitChangeProtoUnit("Lighthouse");
+		}
+		case RELIC_CITIZEN_SPEED_1:
+		{
+			trModifyProtounit("Villager Atlantean Hero", p, 1, 1);
+		}
+		case RELIC_CITIZEN_HP_300:
+		{
+			trModifyProtounit("Villager Atlantean Hero", p, 0, 300);
+		}
+		case RELIC_WALLS:
+		{
+			UpgradeTest(p, 3);
+		}
+		case RELIC_MYTHIC_CURSE:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "Change Chimera", 1);
 		}
 	}
 }
 
-void RelicDecor(string proto = "" ,string path = "0,0,0,0,0,0", vector size = vector(1,1,1), int anim = 2, bool refreshing = false){
+void RelicDecor(string proto = "" ,string path = "0,0,0,0,0,0", vector size = vector(1,1,1), int anim = 2, bool statusofrefresh = false){
 	xSetString(dRelicTypes, xRelicDecor, proto);
-	debugLog(""+proto);
 	xSetString(dRelicTypes, xRelicDecorAnimPath, path);
 	xSetVector(dRelicTypes, xRelicDecorScale, size);
 	xSetInt(dRelicTypes, xRelicDecorAnim, anim);
-	xSetBool(dRelicTypes, xRelicDecorRefresh, refreshing);
+	//xSetBool(dRelicTypes, xRelicDecor, statusofrefresh);
 }
 
 void RelicSetName(string desc = "error"){
@@ -125,6 +158,7 @@ void CreateRelic(int type = 0){
 	xSetInt(dRelics, xRelicProperty, type);
 	xSetInt(dRelics, xFreeRelicPointer, index);
 	xSetInt(dRelics, xRelicSFXID, temp+2);
+	xSetInt(dRelics, xRelicLastRefresh, trTimeMS());
 	
 	xUnitSelect(dRelics, xRelicSFXID);
 	trUnitChangeProtoUnit("Spy Eye");
@@ -137,7 +171,6 @@ void CreateRelic(int type = 0){
 	}
 	xUnitSelect(dRelics, xRelicSFXID);
 	trUnitOverrideAnimation(xGetInt(dRelicTypes, xRelicDecorAnim),0, true,true,-1);
-	debugLog(""+xGetInt(dRelicTypes, xRelicDecorAnim));
 	xSetPointer(dRelicTypes, old);
 }
 
@@ -157,13 +190,44 @@ highFrequency
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_HP_200);
 	RelicSetName("+200 tower hitpoints");
-	RelicDecor("Medusa", "no path", vector(0,0,0),18,false);
-	//--BUILD RELIC --- 1
+	RelicDecor("Trojan Horse", "no path", vector(0.1,0.1,0.1),18,false);
+	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_SKY_HP);
 	RelicSetName("+500 sky passage hitpoints");
-	RelicDecor("Automaton", "no path", vector(0,0,0),18,false);
+	RelicDecor("Sky Passage", "no path", vector(0,0,0),2,false);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_LIGHTHOUSE);
+	RelicSetName("Creates a lighthouse");
+	RelicDecor("Lighthouse", "0,1,0,1,0,0", vector(0.1,0.1,0.1),2,false);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_CITIZEN_SPEED_1);
+	RelicSetName("+1 citizen speed");
+	RelicDecor("Villager Atlantean", "no path", vector(1,1,1),15,false);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_CITIZEN_HP_300);
+	RelicSetName("+300 citizen hp");
+	RelicDecor("Flying Purple Hippo", "no path", vector(0,0,0),1,false); //12 if fail
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_WALLS);
+	RelicSetName("Walls level up");
+	RelicDecor("Wall Connector", "3,2,0,0,0,0", vector(1,0.01,1),2,false);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_MYTHIC_CURSE);
+	RelicSetName("Mythic curse god power");
+	RelicDecor("Curse SFX", "no path", vector(1,1,1),2,true);
+	
 	xsDisableSelf();
 }
 
@@ -175,6 +239,12 @@ highFrequency
 		int old = 0;
 		xDatabaseNext(dRelics);
 		xUnitSelect(dRelics, xRelicID);
+		/*if(xGetBool(dRelics, xRelicDecorRefresh) == true){
+			if(trTimeMS() > xGetInt(dRelics, xRelicLastRefresh)){
+				xSetInt(dRelics, xRelicLastRefresh, trTimeMS()+3000);
+				trUnitOverrideAnimation(xGetInt(dRelicTypes, xRelicDecorAnim),0, true,true,-1);
+			}
+		}*/
 		if(trUnitIsSelected()){
 			uiClearSelection();
 			old = xGetPointer(dRelicTypes);

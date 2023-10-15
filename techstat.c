@@ -73,6 +73,7 @@ void SetBuildPoints(int a = 10){
 		modifyProtounitAbsolute("Wall Medium", p, 4, a/5);
 		modifyProtounitAbsolute("Wall Long", p, 4, a/5);
 		modifyProtounitAbsolute("Sky Passage", p, 4, a);
+		modifyProtounitAbsolute("Lighthouse", p, 4, a*3);
 	}
 }
 
@@ -84,6 +85,7 @@ void SetBuildPointsPlayer(int a = 10, int p =0){
 	modifyProtounitAbsolute("Wall Medium", p, 4, a/5);
 	modifyProtounitAbsolute("Wall Long", p, 4, a/5);
 	modifyProtounitAbsolute("Sky Passage", p, 4, a);
+	modifyProtounitAbsolute("Lighthouse", p, 4, a*3);
 }
 
 rule Stats
@@ -95,6 +97,7 @@ highFrequency
 	modifyProtounitAbsolute("Stymphalian Bird", 0, 2, 47);
 	SetBuildPoints(10);
 	for(p = 1; <= cNumberNonGaiaPlayers){
+		trModifyProtounit("Lighthouse", 0, 2, 20);
 		modifyProtounitAbsolute("Old Man", p, 1, 10);
 		modifyProtounitAbsolute("Huskarl", p, 8, 0.1);
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 5);
@@ -227,6 +230,8 @@ highFrequency
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 29, 0.0);
 	trModifyProtounit("Revealer to Player", 0, 2, MapSize+50);
+	modifyProtounitAbsolute("Titan Atlantean", 0, 2, 0.0);
+	modifyProtounitAbsolute("Titan Gate Dead", 0, 2, 0.0);
 	xsDisableSelf();
 }
 

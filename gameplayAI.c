@@ -593,7 +593,7 @@ highFrequency
 	if (xGetDatabaseCount(dBuildings) > 0) {
 		xDatabaseNext(dBuildings);
 		xUnitSelect(dBuildings, xUnitName);
-		int p = xGetInt(dTowers,xPlayerOwner);
+		int p = xGetInt(dBuildings,xPlayerOwner);
 		if (trUnitAlive() == false) {
 			xFreeDatabaseBlock(dBuildings);
 		}
@@ -603,12 +603,12 @@ highFrequency
 				int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dBuildings, xUnitName)))/2;
 				if((trGetTerrainType(x,z) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(x,z) == getTerrainSubType("Hades4Passable"))){
 					xUnitSelect(dBuildings, xUnitName);
-					trDamageUnit(trTimeMS()-xGetInt(dTowers, xLastCheck)*0.01);
+					trDamageUnit(trTimeMS()-xGetInt(dBuildings, xLastCheckBuilding)*0.01);
 					
 				}
 			}
 		}
-		xSetInt(dTowers, xLastCheck, trTimeMS());
+		xSetInt(dBuildings, xLastCheckBuilding, trTimeMS());
 	}
 }
 

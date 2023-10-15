@@ -112,25 +112,27 @@ highFrequency
 			}
 			case kbGetProtoUnitID("Sky Passage"):
 			{
-				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
-					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
-					trUnitSelectClear();
-					trUnitSelectByID(id);
-					if(trCurrentPlayer() == kbUnitGetOwner(id)){
-						playSound("cantdothat.wav");
+				if(kbUnitGetOwner(id) != 0){
+					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+						trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+						trUnitSelectClear();
+						trUnitSelectByID(id);
+						if(trCurrentPlayer() == kbUnitGetOwner(id)){
+							playSound("cantdothat.wav");
+						}
+						trUnitDestroy();
 					}
-					trUnitDestroy();
-				}
-				else{
-					xAddDatabaseBlock(dBuildings, true);
-					xSetInt(dBuildings, xUnitName, j);
-					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
-				}
-				if(AutoEscape){
-					if(trTime() > 240){
-						GodPowerChance(j);
-						AI_Send_Death_Squad(j);
-						//debugLog("SP");
+					else{
+						xAddDatabaseBlock(dBuildings, true);
+						xSetInt(dBuildings, xUnitName, j);
+						xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+					}
+					if(AutoEscape){
+						if(trTime() > 240){
+							GodPowerChance(j);
+							AI_Send_Death_Squad(j);
+							//debugLog("SP");
+						}
 					}
 				}
 				break;
@@ -325,19 +327,21 @@ highFrequency
 			}
 			case kbGetProtoUnitID("Wall Connector"):
 			{
-				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
-					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
-					trUnitSelectClear();
-					trUnitSelectByID(id);
-					if(trCurrentPlayer() == kbUnitGetOwner(id)){
-						playSound("cantdothat.wav");
+				if(kbUnitGetOwner(id) != 0){
+					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+						trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+						trUnitSelectClear();
+						trUnitSelectByID(id);
+						if(trCurrentPlayer() == kbUnitGetOwner(id)){
+							playSound("cantdothat.wav");
+						}
+						trUnitDestroy();
 					}
-					trUnitDestroy();
-				}
-				else{
-					xAddDatabaseBlock(dBuildings, true);
-					xSetInt(dBuildings, xUnitName, j);
-					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+					else{
+						xAddDatabaseBlock(dBuildings, true);
+						xSetInt(dBuildings, xUnitName, j);
+						xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+					}
 				}
 				break;
 			}

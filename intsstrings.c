@@ -69,7 +69,7 @@ int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
 bool ForceAutoOff = false;
-bool Visible = true;
+bool Visible = false;
 int MaxRelics = 5;
 
 string CliffTerrain = "CliffGreekA";

@@ -140,6 +140,7 @@ int xTileZ = 0;
 int xTime = 0;
 
 int dBuildings = 0;
+int xLastCheckBuilding = 0;
 int xCitizenRegen = 0;
 
 int dHawks = 0;
@@ -163,6 +164,7 @@ int xRelicID = 0;
 int xRelicSFXID = 0;
 int xRelicProperty = 0;
 int xFreeRelicPointer = 0;
+int xRelicLastRefresh = 0;
 
 rule setup_first_databases
 active
@@ -286,6 +288,7 @@ highFrequency
 	dBuildings = xInitDatabase("buildingdb");
 	xUnitName = xInitAddInt(dBuildings, "name", -1);
 	xPlayerOwner = xInitAddInt(dBuildings, "owner", 0);
+	xLastCheckBuilding = xInitAddInt(dBuildings, "lastcheck", 1);
 	
 	dTornado = xInitDatabase("tndb");
 	xTornadoName = xInitAddInt(dTornado, "name", -1);
@@ -303,7 +306,7 @@ highFrequency
 	xRelicDecorScale = xInitAddVector(dRelicTypes, "scale", vector(1,1,1));
 	xRelicDecorAnim = xInitAddInt(dRelicTypes, "anim", 0);
 	xRelicDecorAnimPath = xInitAddString(dRelicTypes, "path", "1");
-	xRelicDecorRefresh = xInitAddBool(dRelicTypes, "refreshanim", false);
+	//xRelicDecorRefresh = xInitAddBool(dRelicTypes, "refreshanim", false);
 	xRelicDescription = xInitAddString(dRelicTypes, "desc", "error");
 	
 	dRelics = xInitDatabase("freerelics");
@@ -311,6 +314,7 @@ highFrequency
 	xRelicSFXID = xInitAddInt(dRelics, "sfxid", 0);
 	xFreeRelicPointer = xInitAddInt(dRelics, "pointer", 0);
 	xRelicProperty = xInitAddInt(dRelics, "property", 0);
+	xRelicLastRefresh = xInitAddInt(dRelics, "refreshtime", 0);
 	
 }
 

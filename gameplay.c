@@ -624,11 +624,11 @@ highFrequency
 	if((trTime()-cActivationTime) >= 2){
 		//20
 		trMessageSetText("Ignore timeshift cost, it is free.", 5000);
-		UpgradeTest(1, 22, false);
+		grantGodPowerNoRechargeNextPosition(1, "Sandstorm",1);
 		xsDisableSelf();
-		CreateRelic(0);
-		CreateRelic(1);
-		CreateRelic(2);
+		for(a = 2; < 8){
+			CreateRelic(a);
+		}
 	}
 }
 
