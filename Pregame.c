@@ -573,6 +573,9 @@ highFrequency
 		}
 		if(AutoEscape){
 			xsEnableRule("AI_Activate");
+			xsEnableRule("Make_Relic_Types");
+			xsEnableRule("RelicsExist");
+			MaxRelics = 5;
 		}
 		xsEnableRule("GameEvents");
 		//xsEnableRule("ysearch");

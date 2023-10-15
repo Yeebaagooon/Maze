@@ -146,6 +146,23 @@ int dHawks = 0;
 int xHawkID = 0;
 int xHawkTime = 0;
 
+//relics types
+int dRelicTypes = 0;
+int xRelicPointer = 0;
+int xRelicType = 0;
+int xRelicDecor = 0;
+int xRelicDecorScale = 0;
+int xRelicDecorAnim = 0;
+int xRelicDecorAnimPath = 0;
+int xRelicDecorRefresh = 0;
+int xRelicDescription = 0;
+
+//actual relics
+int dRelics = 0;
+int xRelicID = 0;
+int xRelicSFXID = 0;
+int xRelicProperty = 0;
+int xFreeRelicPointer = 0;
 
 rule setup_first_databases
 active
@@ -278,6 +295,22 @@ highFrequency
 	xHawkID = xInitAddInt(dHawks, "id", 0);
 	xPlayerOwner = xInitAddInt(dHawks, "owner", 0);
 	xHawkTime = xInitAddInt(dHawks, "time", 0);
+	
+	dRelicTypes = xInitDatabase("relicdb");
+	xRelicPointer = xInitAddInt(dRelicTypes, "pointer", 0);
+	xRelicType = xInitAddInt(dRelicTypes, "type", 0);
+	xRelicDecor = xInitAddString(dRelicTypes, "protoname", "error");
+	xRelicDecorScale = xInitAddVector(dRelicTypes, "scale", vector(1,1,1));
+	xRelicDecorAnim = xInitAddInt(dRelicTypes, "anim", 0);
+	xRelicDecorAnimPath = xInitAddString(dRelicTypes, "path", "1");
+	xRelicDecorRefresh = xInitAddBool(dRelicTypes, "refreshanim", false);
+	xRelicDescription = xInitAddString(dRelicTypes, "desc", "error");
+	
+	dRelics = xInitDatabase("freerelics");
+	xRelicID = xInitAddInt(dRelics, "unitid", 0);
+	xRelicSFXID = xInitAddInt(dRelics, "sfxid", 0);
+	xFreeRelicPointer = xInitAddInt(dRelics, "pointer", 0);
+	xRelicProperty = xInitAddInt(dRelics, "property", 0);
 	
 }
 

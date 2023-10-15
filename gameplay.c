@@ -621,10 +621,14 @@ rule TimeShiftMsg
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 20){
+	if((trTime()-cActivationTime) >= 2){
+		//20
 		trMessageSetText("Ignore timeshift cost, it is free.", 5000);
 		UpgradeTest(1, 22, false);
 		xsDisableSelf();
+		CreateRelic(0);
+		CreateRelic(1);
+		CreateRelic(2);
 	}
 }
 
