@@ -314,6 +314,62 @@ highFrequency
 				trUnitChangeProtoUnit("Dust Large");
 				break;
 			}
+			case kbGetProtoUnitID("Frost Drift"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitChangeProtoUnit("Curse SFX");
+				for(p = 1 ; <= cNumberNonGaiaPlayers){
+					if(trCheckGPActive("Frost", p) == true){
+						DamageUnitCountKills(p,kbGetBlockPosition(""+j),6.0,5000.0);
+					}
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Ice Sheet"):
+			{
+				trUnitSelectClear();
+				xAddDatabaseBlock(dDestroyMe, true);
+				xSetInt(dDestroyMe, xDestroyName, j);
+				xSetInt(dDestroyMe, xDestroyTime, trTimeMS()+9000);
+				break;
+			}
+			case kbGetProtoUnitID("Ice Block"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				for(p = 1 ; <= cNumberNonGaiaPlayers){
+					if(trCheckGPActive("Frost", p) == true){
+						DamageUnitCountKills(p,kbGetBlockPosition(""+j),1.0,5000.0);
+					}
+				}
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitChangeProtoUnit("Ragnorok SFX");
+				break;
+			}
+			case kbGetProtoUnitID("Chicken Exploding"):
+			{
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType(RoadTerrain))){
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitChangeProtoUnit("Tower");
+					for(p = 1 ; < cNumberNonGaiaPlayers){
+						if(trCheckGPActive("Chicken Storm", p) == true){
+							trUnitSelectClear();
+							trUnitSelectByID(id);
+							trUnitConvert(p);
+						}
+					}
+				}
+				else{
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitChangeProtoUnit("Dust Medium");
+				}
+				
+				break;
+			}
 			case kbGetProtoUnitID("Hero Ragnorok"):
 			{
 				trUnitSelectClear();

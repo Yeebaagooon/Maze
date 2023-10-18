@@ -165,6 +165,7 @@ int xRelicSFXID = 0;
 int xRelicProperty = 0;
 int xFreeRelicPointer = 0;
 int xRelicLastRefresh = 0;
+int xRelicRefreshBool = 0;
 
 //mirror towers
 int dMirrorTower = 0;
@@ -323,6 +324,7 @@ highFrequency
 	xFreeRelicPointer = xInitAddInt(dRelics, "pointer", 0);
 	xRelicProperty = xInitAddInt(dRelics, "property", 0);
 	xRelicLastRefresh = xInitAddInt(dRelics, "refreshtime", 0);
+	xRelicRefreshBool = xInitAddInt(dRelics, "refresh", 0);
 	
 	dMirrorTower = xInitDatabase("mirrors");
 	xMirrorTowerID = xInitAddInt(dMirrorTower, "name", 0);

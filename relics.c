@@ -191,12 +191,12 @@ void RelicEffect(int p = 0, int effect = 0){
 	}
 }
 
-void RelicDecor(string proto = "" ,string path = "0,0,0,0,0,0", vector size = vector(1,1,1), int anim = 2, int statusofrefresh = 0){
+void RelicDecor(string proto = "" ,string path = "0,0,0,0,0,0", vector size = vector(1,1,1), int anim = 2, int THISISANINT = 0){
 	xSetString(dRelicTypes, xRelicDecor, proto);
 	xSetString(dRelicTypes, xRelicDecorAnimPath, path);
 	xSetVector(dRelicTypes, xRelicDecorScale, size);
 	xSetInt(dRelicTypes, xRelicDecorAnim, anim);
-	xSetInt(dRelicTypes, xRelicDecorRefresh, statusofrefresh);
+	//xSetInt(dRelicTypes, xRelicRefreshBool, THISISANINT);
 }
 
 void RelicSetName(string desc = "error"){
@@ -231,10 +231,10 @@ void CreateRelic(int type = 0){
 			}
 			if(inLOS == false){
 				//UNIT CREATED - SET TARGET
-				if(trCountUnitsInArea(""+temp, 0, "Relic", 20) == 0){
-					trUnitDestroy();
-					Allow = true;
-				}
+				//if(trCountUnitsInArea(""+temp, 0, "Relic", 20) == 0){
+				trUnitDestroy();
+				Allow = true;
+				//}
 				trUnitDestroy();
 			}
 		}
@@ -395,13 +395,13 @@ highFrequency
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_RANGE_5);
 	RelicSetName("+5 tower range and LOS");
-	RelicDecor("Gate Ram", "no path", vector(0.05,0.01,0.05),2,0);
+	RelicDecor("Arrow Signal", "no path", vector(1,1,1),2,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_POWER_RESTORATION);
 	RelicSetName("Temporary invulnerability power");
-	RelicDecor("Heavenlight", "no path", vector(1,1,1),2,1);
+	RelicDecor("Increase Prosperity Small", "no path", vector(1,1,1),2,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
@@ -419,13 +419,13 @@ highFrequency
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_ARMOUR_10);
 	RelicSetName("+10 tower crush armour");
-	RelicDecor("Weapons", "no path", vector(2,2,2),2,0);
+	RelicDecor("Weapons", "no path", vector(1.5,1.5,1.5),2,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_POWER_FROST);
 	RelicSetName("Insta kill large area power");
-	RelicDecor("Hero Death", "no path", vector(1,1,1),2,1);
+	RelicDecor("Snow Drift Tower", "no path", vector(1,1,1),2,0);
 	
 	xsDisableSelf();
 }
@@ -438,12 +438,13 @@ highFrequency
 		int old = 0;
 		xDatabaseNext(dRelics);
 		xUnitSelect(dRelics, xRelicID);
-		/*if(xGetInt(dRelics, xRelicDecorRefresh) == 1){
+		/*if(xGetInt(dRelics, xRelicRefreshBool) == 1){
 			if(trTimeMS() > xGetInt(dRelics, xRelicLastRefresh)){
 				xSetInt(dRelics, xRelicLastRefresh, trTimeMS()+3000);
 				trUnitOverrideAnimation(xGetInt(dRelicTypes, xRelicDecorAnim),0, true,true,-1);
 			}
 		}*/
+		//Dunno wtf is going on here, says its a string but is not!!
 		if(trUnitIsSelected()){
 			uiClearSelection();
 			old = xGetPointer(dRelicTypes);

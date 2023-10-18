@@ -286,7 +286,7 @@ highFrequency
 		trUnitSelectClear();
 		trUnitSelectByID(0);
 		trUnitChangeInArea(p,p, "Wall Long", "Gate", MapSize);
-		trUnitChangeInArea(0,1, "Chicken Exploding", "Tower", MapSize);
+		//	trUnitChangeInArea(0,1, "Chicken Exploding", "Tower", MapSize);
 		if(xGetBool(dPlayerData, xPlayerAlive)){
 			if(playerIsPlaying(p)){
 				if(xGetBool(dPlayerData, xPlayerRunner) == true){
@@ -595,7 +595,7 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	UnitCreate(1, "Tower Mirror", 6, 12);
+	//UnitCreate(1, "Tower Mirror", 6, 12);
 	/*UnitCreate(2, "Tower", 310, 312);
 	UnitCreate(2, "Tower", 310, 314);
 	UnitCreate(2, "Tower", 310, 316);
@@ -624,9 +624,8 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 2){
-		for(a = 14; <= 21){
-			//trQuestVarSetFromRand("temp",0,7);
-			//CreateRelic(1*trQuestVarGet("temp"));
+		for(a = 15; <= 21){
+			trQuestVarSetFromRand("temp",0,7); //0,7
 			CreateRelic(a);
 		}
 		xsDisableSelf();
@@ -1162,9 +1161,6 @@ highFrequency
 				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 			}
 			if(trGetWorldDifficulty() == 3){
-				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
-			}
-			if(getMapSize() == 662){
 				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 			}
 		}

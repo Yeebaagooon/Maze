@@ -34,6 +34,14 @@ highFrequency
 						ColouredIconChat("1,0.5,0", "icons\god power shifting sand icon 64", " - Sandy Towers");
 						trChatSend(0, "<color=1,1,1>Creates 9 towers at each cast point");
 					}
+					if(trGetGPData(p,0,x) == 388){
+						ColouredIconChat("1,0.5,0", "icons\animal chicken icon 64", " - Tower Spam");
+						trChatSend(0, "<color=1,1,1>Creates a huge number of towers");
+					}
+					if(trGetGPData(p,0,x) == 57){
+						ColouredIconChat("1,0.5,0", "icons\god power frost icon 64", " - Insta-kill large");
+						trChatSend(0, "<color=1,1,1>Kills enemies in a large area");
+					}
 					if(trGetGPData(p,0,x) == 548){
 						ColouredIconChat("1,0.5,0", "icons\god power journey icon", " - Great Journey");
 						trChatSend(0, "<color=1,1,1>Increases villager speed and allows them to walk on cliff");
