@@ -137,10 +137,51 @@ highFrequency
 				}
 				break;
 			}
+			case kbGetProtoUnitID("Shifting Sands Out"):
+			{
+				if(kbUnitGetOwner(id) != 0){
+					for(n = 0 ; < 9){
+						UnitCreate(kbUnitGetOwner(id), "Tower", xsVectorGetX(kbGetBlockPosition(""+j)), xsVectorGetZ(kbGetBlockPosition(""+j)));
+					}
+					trUnitSelectClear();
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Shifting Sands In"):
+			{
+				if(kbUnitGetOwner(id) != 0){
+					for(n = 0 ; < 9){
+						UnitCreate(kbUnitGetOwner(id), "Tower", xsVectorGetX(kbGetBlockPosition(""+j)), xsVectorGetZ(kbGetBlockPosition(""+j)));
+					}
+					trUnitSelectClear();
+				}
+				break;
+			}
 			case kbGetProtoUnitID("Meteor"):
 			{
 				trUnitSelectClear();
 				DamageBuildingCountRazes(kbUnitGetOwner(id),j,5.0,1000.0);
+				break;
+			}
+			case kbGetProtoUnitID("Tower Mirror"):
+			{
+				xAddDatabaseBlock(dMirrorTower, true);
+				xSetInt(dMirrorTower, xMirrorTowerID, id);
+				xSetInt(dMirrorTower, xMirrorTowerOwner, kbUnitGetOwner(id));
+				xSetInt(dMirrorTower, xMTLastShot, trTimeMS()-6000);
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trSetSelectedScale(1,2,1);
+				trUnitSelectClear();
+				xAddDatabaseBlock(dBuildings, true);
+				xSetInt(dBuildings, xUnitName, j);
+				xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				/*xSetInt(dMirrorTower, xMTDecorID,UnitCreate(0, "Dwarf", 1,1));
+				xUnitSelect(dMirrorTower, xMTDecorID);
+				trImmediateUnitGarrison(""+j);
+				xUnitSelect(dMirrorTower, xMTDecorID);
+				trUnitChangeProtoUnit("Vortex landing");*/
+				//
 				break;
 			}
 			case kbGetProtoUnitID("SPCMeteor"):
@@ -178,21 +219,23 @@ highFrequency
 				xSetInt(dTornado, xTornadoOwner, kbUnitGetOwner(id));
 				break;
 			}
-			case kbGetProtoUnitID("Healing SFX"):
+			/*case kbGetProtoUnitID("Healing SFX"):
 			{
 				//8s
 				trUnitSelectClear();
 				trUnitSelectByID(id);
 				trUnitDestroy();
 				break;
-			}
+			}*/
 			case kbGetProtoUnitID("Pegasus"):
 			{
-				xSetPointer(dPlayerData, kbUnitGetOwner(id));
-				if(xGetBool(dPlayerData, xPlayerRunner) == false){
-					trUnitSelectClear();
-					trUnitSelectByID(id);
-					trUnitChangeProtoUnit("Guardian XP");
+				if(kbUnitGetOwner(id) != 0){
+					xSetPointer(dPlayerData, kbUnitGetOwner(id));
+					if(xGetBool(dPlayerData, xPlayerRunner) == false){
+						trUnitSelectClear();
+						trUnitSelectByID(id);
+						trUnitChangeProtoUnit("Guardian XP");
+					}
 				}
 				break;
 			}

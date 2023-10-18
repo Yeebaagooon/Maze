@@ -166,6 +166,14 @@ int xRelicProperty = 0;
 int xFreeRelicPointer = 0;
 int xRelicLastRefresh = 0;
 
+//mirror towers
+int dMirrorTower = 0;
+int xMirrorTowerID = 0;
+int xMirrorTowerOwner = 0;
+int xMirrorTowerTarget = 0;
+int xMTDecorID = 0;
+int xMTLastShot = 0;
+
 rule setup_first_databases
 active
 highFrequency
@@ -306,7 +314,7 @@ highFrequency
 	xRelicDecorScale = xInitAddVector(dRelicTypes, "scale", vector(1,1,1));
 	xRelicDecorAnim = xInitAddInt(dRelicTypes, "anim", 0);
 	xRelicDecorAnimPath = xInitAddString(dRelicTypes, "path", "1");
-	//xRelicDecorRefresh = xInitAddBool(dRelicTypes, "refreshanim", false);
+	xRelicDecorRefresh = xInitAddInt(dRelicTypes, "refreshanim", 0);
 	xRelicDescription = xInitAddString(dRelicTypes, "desc", "error");
 	
 	dRelics = xInitDatabase("freerelics");
@@ -315,6 +323,13 @@ highFrequency
 	xFreeRelicPointer = xInitAddInt(dRelics, "pointer", 0);
 	xRelicProperty = xInitAddInt(dRelics, "property", 0);
 	xRelicLastRefresh = xInitAddInt(dRelics, "refreshtime", 0);
+	
+	dMirrorTower = xInitDatabase("mirrors");
+	xMirrorTowerID = xInitAddInt(dMirrorTower, "name", 0);
+	xMirrorTowerOwner = xInitAddInt(dMirrorTower, "owner", 0);
+	xMirrorTowerTarget = xInitAddInt(dMirrorTower, "target", -1);
+	xMTDecorID = xInitAddInt(dMirrorTower, "decor", -1);
+	xMTLastShot = xInitAddInt(dMirrorTower, "last shot", 0);
 	
 }
 

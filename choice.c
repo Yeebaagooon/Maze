@@ -491,7 +491,11 @@ string RewardTextHunter(int r = 0){
 			reward = "Raven scout unit (10,000 hp)";
 		}
 		//Next level
-		//Have vortex and EQ here and lampades
+		case 50:
+		{
+			reward = ""+MapFactor() + "x Earthquake power";
+		}
+		//Have EQ here and lampades
 		
 	}
 	return(reward);
@@ -1218,6 +1222,13 @@ inactive
 					if(trCurrentPlayer() == p){
 						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
 					}
+				}
+			}
+			case 50:
+			{
+				grantGodPowerNoRechargeNextPosition(p, "Earthquake", MapFactor());
+				if(AutoEscape){
+					xsEnableRule("AI_Force_Power");
 				}
 			}
 		}

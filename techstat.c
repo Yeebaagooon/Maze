@@ -74,6 +74,7 @@ void SetBuildPoints(int a = 10){
 		modifyProtounitAbsolute("Wall Long", p, 4, a/5);
 		modifyProtounitAbsolute("Sky Passage", p, 4, a);
 		modifyProtounitAbsolute("Lighthouse", p, 4, a*3);
+		modifyProtounitAbsolute("Tower Mirror", p, 4, a/3);
 	}
 }
 

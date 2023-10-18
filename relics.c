@@ -37,14 +37,18 @@ citizen regen
 pegasus
 
 10-15
-insta wall
+2nd citizen
 tower range
-great journey
-
+temp invuln
+50 build time
+CHicken storm tower
+10 crush armour
+Kill in area GP (frost)
 
 15-20
 temp invuln
 tower projectile
+mirror tower
 
 
 20+
@@ -59,12 +63,31 @@ const int RELIC_LIGHTHOUSE = 3;
 const int RELIC_CITIZEN_SPEED_1 = 4;
 const int RELIC_CITIZEN_HP_300 = 5;
 const int RELIC_WALLS = 6;
-const int RELIC_MYTHIC_CURSE = 7;
+const int RELIC_SANDSTORM = 7;
+//---
+const int RELIC_LIGHTNING = 8;
+const int RELIC_CITIZEN_REGEN_5 = 9;
+const int RELIC_PEGASUS = 10;
+const int RELIC_HP_500 = 11;
+const int RELIC_ATTACK_10 = 12;
+const int RELIC_WALL_POWER = 13;
+const int RELIC_JOURNEY = 14;
+//---
+const int RELIC_SECOND_CITIZEN = 15;
+const int RELIC_RANGE_5 = 16;
+const int RELIC_POWER_RESTORATION = 17;
+const int RELIC_BUILD_TIME_50 = 18;
+const int RELIC_POWER_CHICKEN = 19;
+const int RELIC_ARMOUR_10 = 20;
+const int RELIC_POWER_FROST = 21;
 
-const int MAX_RELIC_CLASS = 7;
+
+
+const int MAX_RELIC_CLASS = 21;
 
 void RelicEffect(int p = 0, int effect = 0){
 	trQuestVarSet("qv", 0);
+	xSetPointer(dPlayerData, p);
 	int temp = 0;
 	switch(effect){
 		case 0:
@@ -103,19 +126,77 @@ void RelicEffect(int p = 0, int effect = 0){
 		{
 			UpgradeTest(p, 3);
 		}
-		case RELIC_MYTHIC_CURSE:
+		case RELIC_SANDSTORM:
 		{
-			grantGodPowerNoRechargeNextPosition(p, "Change Chimera", 1);
+			grantGodPowerNoRechargeNextPosition(p, "Sandstorm", 1);
+		}
+		case RELIC_LIGHTNING:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "Lightning Storm", 1);
+		}
+		case RELIC_CITIZEN_REGEN_5:
+		{
+			xSetFloat(dPlayerData,xCitizenRegen,xGetFloat(dPlayerData, xCitizenRegen)+5.0);
+		}
+		case RELIC_PEGASUS:
+		{
+			UpgradeTest(p, 18);
+		}
+		case RELIC_HP_500:
+		{
+			trModifyProtounit("Tower", p, 0, 500);
+		}
+		case RELIC_ATTACK_10:
+		{
+			trModifyProtounit("Tower", p, 31, 10);
+		}
+		case RELIC_WALL_POWER:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "create gold", 1);
+		}
+		case RELIC_JOURNEY:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "Journey", 1);
+		}
+		case RELIC_SECOND_CITIZEN:
+		{
+			UpgradeTest(p, 43);
+		}
+		case RELIC_RANGE_5:
+		{
+			trModifyProtounit("Tower", p, 2, 5);
+			trModifyProtounit("Tower", p, 11, 5);
+		}
+		case RELIC_POWER_RESTORATION:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "Restoration", 1);
+		}
+		case RELIC_BUILD_TIME_50:
+		{
+			xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.5);
+			modifyProtounitAbsolute("Tower", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+		}
+		case RELIC_POWER_CHICKEN:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "Chicken Storm", 1);
+		}
+		case RELIC_ARMOUR_10:
+		{
+			trModifyProtounit("Tower", p, 26, 0.1);
+		}
+		case RELIC_POWER_FROST:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "Frost", 1);
 		}
 	}
 }
 
-void RelicDecor(string proto = "" ,string path = "0,0,0,0,0,0", vector size = vector(1,1,1), int anim = 2, bool statusofrefresh = false){
+void RelicDecor(string proto = "" ,string path = "0,0,0,0,0,0", vector size = vector(1,1,1), int anim = 2, int statusofrefresh = 0){
 	xSetString(dRelicTypes, xRelicDecor, proto);
 	xSetString(dRelicTypes, xRelicDecorAnimPath, path);
 	xSetVector(dRelicTypes, xRelicDecorScale, size);
 	xSetInt(dRelicTypes, xRelicDecorAnim, anim);
-	//xSetBool(dRelicTypes, xRelicDecor, statusofrefresh);
+	xSetInt(dRelicTypes, xRelicDecorRefresh, statusofrefresh);
 }
 
 void RelicSetName(string desc = "error"){
@@ -131,9 +212,41 @@ void CreateRelic(int type = 0){
 	int old = xGetPointer(dRelicTypes);
 	int temp = trGetNextUnitScenarioNameNumber();
 	int index = 0;
-	trQuestVarSetFromRand("x", 0 , 20);
-	trQuestVarSetFromRand("z", 0 , 20);
-	UnitCreate(0, "Dwarf", 1*trQuestVarGet("x"), 1*trQuestVarGet("z"));
+	int Safety = 0;
+	bool Allow = false;
+	while(Allow == false){
+		trQuestVarSetFromRand("x", 0 , 30);
+		trQuestVarSetFromRand("z", 0 , 30);
+		Safety = Safety +1;
+		temp = UnitCreate(0, "Dwarf", 1*trQuestVarGet("x"), 1*trQuestVarGet("z"));
+		if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+temp)/2),xsVectorGetZ(kbGetBlockPosition(""+temp)/2)) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+temp)/2),xsVectorGetZ(kbGetBlockPosition(""+temp)/2)) == getTerrainSubType(RoadTerrain))){
+			trUnitSelectClear();
+			trUnitSelect(""+temp);
+			bool inLOS = false;
+			for(p = 1; < cNumberNonGaiaPlayers){
+				if(trUnitHasLOS(p) && trPlayerDefeated(p) == false){
+					trUnitDestroy();
+					inLOS = true;
+				}
+			}
+			if(inLOS == false){
+				//UNIT CREATED - SET TARGET
+				if(trCountUnitsInArea(""+temp, 0, "Relic", 20) == 0){
+					trUnitDestroy();
+					Allow = true;
+				}
+				trUnitDestroy();
+			}
+		}
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitDestroy();
+		if(Safety > 500){
+			debugLog("BREAK RELIC CREATE");
+			break;
+		}
+	}
+	temp = UnitCreate(0, "Dwarf", 1*trQuestVarGet("x"), 1*trQuestVarGet("z"));
 	trUnitSelectClear();
 	trUnitSelect(""+temp);
 	trUnitChangeProtoUnit("Titan Atlantean");
@@ -184,49 +297,135 @@ highFrequency
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_ATTACK_5);
 	RelicSetName("+5 tower attack");
-	RelicDecor("Valkyrie", "no path", vector(0,0,0),18,false);
+	RelicDecor("Fire Giant", "no path", vector(0,0,0),2,0);
 	//--BUILD RELIC --- 1
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_HP_200);
 	RelicSetName("+200 tower hitpoints");
-	RelicDecor("Trojan Horse", "no path", vector(0.1,0.1,0.1),18,false);
+	RelicDecor("Trojan Horse", "no path", vector(0.1,0.2,0.1),18,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_SKY_HP);
 	RelicSetName("+500 sky passage hitpoints");
-	RelicDecor("Sky Passage", "no path", vector(0,0,0),2,false);
+	RelicDecor("Sky Passage", "no path", vector(0,0,0),2,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_LIGHTHOUSE);
 	RelicSetName("Creates a lighthouse");
-	RelicDecor("Lighthouse", "0,1,0,1,0,0", vector(0.1,0.1,0.1),2,false);
+	RelicDecor("Lighthouse", "0,1,0,1,0,0", vector(0.1,0.1,0.1),2,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_CITIZEN_SPEED_1);
 	RelicSetName("+1 citizen speed");
-	RelicDecor("Villager Atlantean", "no path", vector(1,1,1),15,false);
+	RelicDecor("Villager Atlantean", "no path", vector(1,1,1),15,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_CITIZEN_HP_300);
 	RelicSetName("+300 citizen hp");
-	RelicDecor("Flying Purple Hippo", "no path", vector(0,0,0),1,false); //12 if fail
+	RelicDecor("Flying Purple Hippo", "no path", vector(0,0,0),1,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_WALLS);
 	RelicSetName("Walls level up");
-	RelicDecor("Wall Connector", "3,2,0,0,0,0", vector(1,0.01,1),2,false);
+	RelicDecor("Wall Connector", "3,2,0,0,0,0", vector(1,0.01,1),2,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
-	RelicSetClass(RELIC_MYTHIC_CURSE);
-	RelicSetName("Mythic curse god power");
-	RelicDecor("Curse SFX", "no path", vector(1,1,1),2,true);
+	RelicSetClass(RELIC_SANDSTORM);
+	RelicSetName("Shifting sands power (creates 9 towers at both points)");
+	RelicDecor("Shifting Sands Out", "no path", vector(1,1,1),2,0);
+	
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_LIGHTNING);
+	RelicSetName("Lightning god power");
+	RelicDecor("Mist", "no path", vector(1,1,1),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_CITIZEN_REGEN_5);
+	RelicSetName("+5 citizen regen");
+	RelicDecor("Healing SFX", "no path", vector(1,1,1),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_PEGASUS);
+	RelicSetName("Spawns a pegasus to scout for you");
+	RelicDecor("Pegasus", "no path", vector(0.5,0.5,0.5),0,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_HP_500);
+	RelicSetName("+500 tower hp");
+	RelicDecor("Trojan Horse", "no path", vector(0.1,0.2,0.1),18,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_ATTACK_10);
+	RelicSetName("+10 tower attack");
+	RelicDecor("Fire Giant", "no path", vector(0,0,0),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_WALL_POWER);
+	RelicSetName("Create wall god power");
+	RelicDecor("Dig Pile", "no path", vector(0.5,0.5,0.5),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_JOURNEY);
+	RelicSetName("Walk on cliffs power");
+	RelicDecor("Gate Ram", "no path", vector(0.05,0.01,0.05),2,1);
+	
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_SECOND_CITIZEN);
+	RelicSetName("Spawns a secondary citizen");
+	RelicDecor("Villager Atlantean", "no path", vector(1,1,1),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_RANGE_5);
+	RelicSetName("+5 tower range and LOS");
+	RelicDecor("Gate Ram", "no path", vector(0.05,0.01,0.05),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_POWER_RESTORATION);
+	RelicSetName("Temporary invulnerability power");
+	RelicDecor("Heavenlight", "no path", vector(1,1,1),2,1);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_BUILD_TIME_50);
+	RelicSetName("Towers build 50 percent faster");
+	RelicDecor("Timeshift in", "0,0,1,1,0,0", vector(1,1,1),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_POWER_CHICKEN);
+	RelicSetName("Tower spam power");
+	RelicDecor("Chicken", "no path", vector(2,2,2),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_ARMOUR_10);
+	RelicSetName("+10 tower crush armour");
+	RelicDecor("Weapons", "no path", vector(2,2,2),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_POWER_FROST);
+	RelicSetName("Insta kill large area power");
+	RelicDecor("Hero Death", "no path", vector(1,1,1),2,1);
 	
 	xsDisableSelf();
 }
@@ -239,7 +438,7 @@ highFrequency
 		int old = 0;
 		xDatabaseNext(dRelics);
 		xUnitSelect(dRelics, xRelicID);
-		/*if(xGetBool(dRelics, xRelicDecorRefresh) == true){
+		/*if(xGetInt(dRelics, xRelicDecorRefresh) == 1){
 			if(trTimeMS() > xGetInt(dRelics, xRelicLastRefresh)){
 				xSetInt(dRelics, xRelicLastRefresh, trTimeMS()+3000);
 				trUnitOverrideAnimation(xGetInt(dRelicTypes, xRelicDecorAnim),0, true,true,-1);

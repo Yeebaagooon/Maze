@@ -7,6 +7,15 @@ restor on kb building dmg
 multi level
 vortex too strong for humans especially with multi yeebs
 
+hesperides for runners
+fimbul for hunters
+
+SPECIAL UNIT
+manticore
+lampades
+mummy
+fire giant
+
 
 
 g("configSetInt(\"unbuildWoodCost2\", 200);");
@@ -69,7 +78,7 @@ int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
 bool ForceAutoOff = false;
-bool Visible = false;
+bool Visible = true;
 int MaxRelics = 5;
 
 string CliffTerrain = "CliffGreekA";

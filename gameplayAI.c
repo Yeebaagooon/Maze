@@ -744,3 +744,43 @@ highFrequency
 		}
 	}
 }
+
+rule MirrorTowerDB
+inactive
+highFrequency
+{
+	int p = 0;
+	int target = -1;
+	if(xGetDatabaseCount(dMirrorTower) > 0){
+		xDatabaseNext(dMirrorTower);
+		int id = xGetInt(dMirrorTower,xMirrorTowerID);
+		trUnitSelectClear();
+		trUnitSelectByID(id);
+		p = xGetInt(dMirrorTower,xMirrorTowerOwner);
+		if (trUnitAlive() == false) {
+			xFreeDatabaseBlock(dMirrorTower);
+		}
+		else{
+			if(trTimeMS() > xGetInt(dMirrorTower, xMTLastShot)){
+				
+				xsSetContextPlayer(p);
+				target = kbUnitGetTargetUnitID(id);
+				xsSetContextPlayer(0);
+				if(kbUnitGetOwner(target) == cNumberNonGaiaPlayers){
+					trUnitSelectClear();
+					trUnitSelectByID(target);
+					if(kbGetUnitBaseTypeID(target) != kbGetProtoUnitID("Hero Death")){
+						if(kbGetUnitBaseTypeID(target) != kbGetProtoUnitID("Stymphalian Bird")){
+							trUnitChangeProtoUnit("Hero Death");
+							trQuestVarModify("P"+p+"AddKills", "+", 1);
+							gadgetRefresh("unitStatPanel");
+							xSetInt(dMirrorTower, xMTLastShot, trTimeMS()+5000);
+							//this is working
+						}
+					}
+				}
+			}
+		}
+	}
+}
+

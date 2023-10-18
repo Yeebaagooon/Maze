@@ -577,6 +577,8 @@ highFrequency
 	xsEnableRule("BuildingDB");
 	xsEnableRule("Help_Chat");
 	xsEnableRule("RainCheck");
+	xsEnableRule("CreateInitialRelics");
+	xsEnableRule("MirrorTowerDB");
 	rangedunit = "Centaur";
 	handunit = "Scorpion Man";
 	//Set GP vector to a corner
@@ -593,7 +595,7 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	//UnitCreate(2, "Stymphalian Bird", 6, 12);
+	UnitCreate(1, "Tower Mirror", 6, 12);
 	/*UnitCreate(2, "Tower", 310, 312);
 	UnitCreate(2, "Tower", 310, 314);
 	UnitCreate(2, "Tower", 310, 316);
@@ -617,18 +619,29 @@ highFrequency
 	%
 }
 
-rule TimeShiftMsg
+rule CreateInitialRelics
 inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 2){
-		//20
-		trMessageSetText("Ignore timeshift cost, it is free.", 5000);
-		grantGodPowerNoRechargeNextPosition(1, "Sandstorm",1);
-		xsDisableSelf();
-		for(a = 2; < 8){
+		for(a = 14; <= 21){
+			//trQuestVarSetFromRand("temp",0,7);
+			//CreateRelic(1*trQuestVarGet("temp"));
 			CreateRelic(a);
 		}
+		xsDisableSelf();
+	}
+}
+
+rule TimeShiftMsg
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 20){
+		//20
+		trMessageSetText("Ignore timeshift cost, it is free.", 5000);
+		//grantGodPowerNoRechargeNextPosition(1, "Sandstorm",1);
+		xsDisableSelf();
 	}
 }
 
@@ -736,7 +749,7 @@ rule HunterPower5Mins
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 60*5){
+	if((trTime()-cActivationTime) >= 60*1){
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
@@ -751,6 +764,14 @@ highFrequency
 				if(trCurrentPlayer() == p){
 					trMessageSetText("Vision granted.", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+		}
+		if(AutoEscape){
+			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
+				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
+					trQuestVarSetFromRand("temp",8,14);
+					CreateRelic(1*trQuestVarGet("temp"));
 				}
 			}
 		}
@@ -912,6 +933,12 @@ highFrequency
 		}
 		if(AutoEscape){
 			//	trChatSend(0, "Firing GP");
+			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
+				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
+					trQuestVarSetFromRand("temp",8,14);
+					CreateRelic(1*trQuestVarGet("temp"));
+				}
+			}
 			xsEnableRule("AI_Force_Power");
 		}
 		xsDisableSelf();
@@ -1006,6 +1033,13 @@ highFrequency
 			trUnitSelect("0");
 			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Mountain Giant", "Phoenix", MapSize);
 			trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Behemoth", "Phoenix", MapSize);
+			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
+				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
+					trQuestVarSetFromRand("temp",8,14);
+					CreateRelic(1*trQuestVarGet("temp"));
+				}
+			}
+			
 		}
 		xsDisableSelf();
 	}
@@ -1085,6 +1119,14 @@ highFrequency
 				}
 			}
 		}
+		if(AutoEscape){
+			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
+				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
+					trQuestVarSetFromRand("temp",8,14);
+					CreateRelic(1*trQuestVarGet("temp"));
+				}
+			}
+		}
 		xsDisableSelf();
 	}
 }
@@ -1116,6 +1158,15 @@ highFrequency
 			spawn = xsVectorSet(MapSize/2,0,MapSize/2);
 			UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 			modifyProtounitAbsolute("Stymphalian Bird", cNumberNonGaiaPlayers, 2, MapSize);
+			if(trGetWorldDifficulty() >= 2){
+				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
+			}
+			if(trGetWorldDifficulty() == 3){
+				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
+			}
+			if(getMapSize() == 662){
+				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
+			}
 		}
 		xsDisableSelf();
 	}
