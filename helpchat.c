@@ -42,6 +42,10 @@ highFrequency
 						ColouredIconChat("1,0.5,0", "icons\god power frost icon 64", " - Insta-kill large");
 						trChatSend(0, "<color=1,1,1>Kills enemies in a large area");
 					}
+					if(trGetGPData(p,0,x) == 442){
+						ColouredIconChat("1,0.5,0", "icons\god power implode icons 64", " - Void Sphere");
+						trChatSend(0, "<color=1,1,1>Kills any enemy sucked in to the implode");
+					}
 					if(trGetGPData(p,0,x) == 548){
 						ColouredIconChat("1,0.5,0", "icons\god power journey icon", " - Great Journey");
 						trChatSend(0, "<color=1,1,1>Increases villager speed and allows them to walk on cliff");

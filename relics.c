@@ -80,10 +80,18 @@ const int RELIC_BUILD_TIME_50 = 18;
 const int RELIC_POWER_CHICKEN = 19;
 const int RELIC_ARMOUR_10 = 20;
 const int RELIC_POWER_FROST = 21;
+//---
+const int RELIC_MIRROR_TOWER = 22;
+const int RELIC_TOWER_PROJECTILE = 23;
+const int RELIC_POWER_BIRDS = 24;
+const int RELIC_KILL_PHOENIX = 25;
+const int RELIC_CITIZEN_HP_1000 = 26;
+const int RELIC_ATTACK_20 = 27;
+const int RELIC_POWER_IMPLODE = 28;
 
 
-
-const int MAX_RELIC_CLASS = 21;
+const int MAX_RELIC_CLASS = 28;
+const int RELIC_SHIELD = 47;
 
 void RelicEffect(int p = 0, int effect = 0){
 	trQuestVarSet("qv", 0);
@@ -100,7 +108,7 @@ void RelicEffect(int p = 0, int effect = 0){
 		}
 		case RELIC_SKY_HP:
 		{
-			trModifyProtounit("Sky Passage", p, 0, 500);
+			trModifyProtounit("Sky Passage", p, 0, 1000);
 		}
 		case RELIC_LIGHTHOUSE:
 		{
@@ -188,6 +196,58 @@ void RelicEffect(int p = 0, int effect = 0){
 		{
 			grantGodPowerNoRechargeNextPosition(p, "Frost", 1);
 		}
+		case RELIC_MIRROR_TOWER:
+		{
+			xSetPointer(dPlayerData, p);
+			yFindLatest("qv", "Villager Atlantean Hero", p);
+			temp = UnitCreate(p, "Tower Mirror", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+			trUnitSelectClear();
+			trUnitSelectByQV("qv");
+			trImmediateUnitGarrison(""+temp);
+			trUnitSelectClear();
+			trUnitSelect(""+temp);
+			trUnitChangeProtoUnit("Tower Mirror");
+		}
+		case RELIC_TOWER_PROJECTILE:
+		{
+			trModifyProtounit("Tower", p, 13, 1);
+		}
+		case RELIC_POWER_BIRDS:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
+		}
+		case RELIC_KILL_PHOENIX:
+		{
+			//trQuestVarModify("P"+p+"AddKills", "+", trPlayerUnitCountSpecific(cNumberNonGaiaPlayers, "Phoenix"));
+			trUnitSelectClear();
+			trUnitSelect(""+0);
+			trDamageUnitsInArea(cNumberNonGaiaPlayers, "Phoenix", MapSize, 10000);
+			//KillAllPhoenix(p);
+		}
+		case RELIC_CITIZEN_HP_1000:
+		{
+			trModifyProtounit("Villager Atlantean Hero", p, 0, 1000);
+		}
+		case RELIC_ATTACK_20:
+		{
+			trModifyProtounit("Tower", p, 31, 20);
+		}
+		case RELIC_POWER_IMPLODE:
+		{
+			grantGodPowerNoRechargeNextPosition(p, "Implode", 1);
+		}
+		case RELIC_SHIELD:
+		{
+			xSetPointer(dPlayerData, p);
+			yFindLatest("qv", "Villager Atlantean Hero", p);
+			temp = UnitCreate(p, "Tower", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+			trUnitSelectClear();
+			trUnitSelectByQV("qv");
+			trImmediateUnitGarrison(""+temp);
+			trUnitSelectClear();
+			trUnitSelect(""+temp);
+			trUnitChangeProtoUnit("Monument");
+		}
 	}
 }
 
@@ -215,8 +275,8 @@ void CreateRelic(int type = 0){
 	int Safety = 0;
 	bool Allow = false;
 	while(Allow == false){
-		trQuestVarSetFromRand("x", 0 , 30);
-		trQuestVarSetFromRand("z", 0 , 30);
+		trQuestVarSetFromRand("x", 0 , MapSize);
+		trQuestVarSetFromRand("z", 0 , MapSize);
 		Safety = Safety +1;
 		temp = UnitCreate(0, "Dwarf", 1*trQuestVarGet("x"), 1*trQuestVarGet("z"));
 		if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+temp)/2),xsVectorGetZ(kbGetBlockPosition(""+temp)/2)) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+temp)/2),xsVectorGetZ(kbGetBlockPosition(""+temp)/2)) == getTerrainSubType(RoadTerrain))){
@@ -308,7 +368,7 @@ highFrequency
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_SKY_HP);
-	RelicSetName("+500 sky passage hitpoints");
+	RelicSetName("+1000 sky passage hitpoints");
 	RelicDecor("Sky Passage", "no path", vector(0,0,0),2,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
@@ -426,6 +486,56 @@ highFrequency
 	RelicSetClass(RELIC_POWER_FROST);
 	RelicSetName("Insta kill large area power");
 	RelicDecor("Snow Drift Tower", "no path", vector(1,1,1),2,0);
+	
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_MIRROR_TOWER);
+	RelicSetName("Grants a mirror tower that kill insta kill every 5 seconds");
+	RelicDecor("Tower Mirror", "no path", vector(0.2,0.2,0.2),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_TOWER_PROJECTILE);
+	RelicSetName("+1 tower projectile");
+	RelicDecor("Volley", "no path", vector(1,1,1),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_POWER_BIRDS);
+	RelicSetName("Bird tower power");
+	RelicDecor("Hawk", "no path", vector(2,2,2),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_KILL_PHOENIX);
+	RelicSetName("Instantly kills all AI phoenixes");
+	RelicDecor("Phoenix", "no path", vector(0.6,0.6,0.6),2,0);
+	
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_CITIZEN_HP_1000);
+	RelicSetName("+1000 citizen hp");
+	RelicDecor("Flying Purple Hippo", "no path", vector(0,0,0),1,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_ATTACK_20);
+	RelicSetName("+20 tower attack");
+	RelicDecor("Fire Giant", "no path", vector(0,0,0),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_POWER_IMPLODE);
+	RelicSetName("Void power");
+	RelicDecor("Implode Sphere Effect", "0,1,0,1,0,0", vector(1,1,1),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_SHIELD);
+	RelicSetName("God power shield");
+	RelicDecor("Monument", "no path", vector(0,0,0),4,0);
 	
 	xsDisableSelf();
 }

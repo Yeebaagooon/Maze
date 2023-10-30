@@ -68,6 +68,42 @@ highFrequency
 				xSetInt(dLampades, xSpecialTargetID, 0);
 				break;
 			}
+			case kbGetProtoUnitID("Implode Sphere"):
+			{
+				xAddDatabaseBlock(dImplode, true);
+				xSetInt(dImplode, xImplodeID, j);
+				xSetInt(dImplode, xImplodeOwner, kbUnitGetOwner(id));
+				break;
+			}
+			case kbGetProtoUnitID("Implode Sphere Effect"):
+			{
+				if(kbUnitGetOwner(id) != 0){
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trMutateSelected(kbGetProtoUnitID("Kronny Birth"));
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Monument"):
+			{
+				if(kbUnitGetOwner(id) != 0){
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitOverrideAnimation(4,0, true,true,-1);
+				}
+				break;
+			}
+			case kbGetProtoUnitID("Manticore Barb"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trMutateSelected(kbGetProtoUnitID("Kronny Birth SFX"));
+				trUnitSetAnimationPath("0,1,0,0,0,0");
+				xAddDatabaseBlock(dVDManticore, true);
+				xSetInt(dVDManticore, xVBName, j);
+				xSetVector(dVDManticore, xVBPos, kbGetBlockPosition(""+j));
+				break;
+			}
 			case kbGetProtoUnitID("Attack Revealer"):
 			{
 				if(AutoEscape){
@@ -82,6 +118,16 @@ highFrequency
 			{
 				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
 					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+					break;
+				}
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("black")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("black"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build here");
 					trUnitSelectClear();
 					trUnitSelectByID(id);
 					if(trCurrentPlayer() == kbUnitGetOwner(id)){
@@ -121,18 +167,39 @@ highFrequency
 							playSound("cantdothat.wav");
 						}
 						trUnitDestroy();
+						break;
 					}
-					else{
-						xAddDatabaseBlock(dBuildings, true);
-						xSetInt(dBuildings, xUnitName, j);
-						xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("black")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("black"))){
+						trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build here");
+						trUnitSelectClear();
+						trUnitSelectByID(id);
+						if(trCurrentPlayer() == kbUnitGetOwner(id)){
+							playSound("cantdothat.wav");
+						}
+						trUnitDestroy();
+						break;
 					}
 					if(AutoEscape){
-						if(trTime() > 240){
-							GodPowerChance(j);
-							AI_Send_Death_Squad(j);
-							//debugLog("SP");
+						if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("HadesBuildable1")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("HadesBuildable1"))){
+							trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build here in auto escape mode");
+							trUnitSelectClear();
+							trUnitSelectByID(id);
+							if(trCurrentPlayer() == kbUnitGetOwner(id)){
+								playSound("cantdothat.wav");
+							}
+							trUnitDestroy();
+							break;
 						}
+					}
+					xAddDatabaseBlock(dBuildings, true);
+					xSetInt(dBuildings, xUnitName, j);
+					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				}
+				if(AutoEscape){
+					if(trTime() > 240){
+						GodPowerChance(j);
+						AI_Send_Death_Squad(j);
+						//debugLog("SP");
 					}
 				}
 				break;
@@ -165,17 +232,16 @@ highFrequency
 			}
 			case kbGetProtoUnitID("Tower Mirror"):
 			{
-				xAddDatabaseBlock(dMirrorTower, true);
-				xSetInt(dMirrorTower, xMirrorTowerID, id);
-				xSetInt(dMirrorTower, xMirrorTowerOwner, kbUnitGetOwner(id));
-				xSetInt(dMirrorTower, xMTLastShot, trTimeMS()-6000);
-				trUnitSelectClear();
-				trUnitSelectByID(id);
-				trSetSelectedScale(1,2,1);
-				trUnitSelectClear();
-				xAddDatabaseBlock(dBuildings, true);
-				xSetInt(dBuildings, xUnitName, j);
-				xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				if(kbUnitGetOwner(id) != 0){
+					xAddDatabaseBlock(dMirrorTower, true);
+					xSetInt(dMirrorTower, xMirrorTowerID, id);
+					xSetInt(dMirrorTower, xMirrorTowerOwner, kbUnitGetOwner(id));
+					xSetInt(dMirrorTower, xMTLastShot, trTimeMS()-6000);
+					trUnitSelectClear();
+					xAddDatabaseBlock(dBuildings, true);
+					xSetInt(dBuildings, xUnitName, j);
+					xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				}
 				/*xSetInt(dMirrorTower, xMTDecorID,UnitCreate(0, "Dwarf", 1,1));
 				xUnitSelect(dMirrorTower, xMTDecorID);
 				trImmediateUnitGarrison(""+j);

@@ -1,20 +1,17 @@
 /*
 BUG
-
-AI unit pop increase
-restor on kb building dmg
-
 multi level
-vortex too strong for humans especially with multi yeebs
 
-hesperides for runners
-fimbul for hunters
+Phoenix kill relic does not impact count currently, don't do qv use existing kb fx
 
 SPECIAL UNIT
 manticore
 lampades
 mummy
 fire giant
+
+Reward L15 for runners
+More vision easy/mod for runners
 
 
 
@@ -74,18 +71,19 @@ TEMPLE SHIT
 
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
-int QuickStart = 0;
+int MapSkin = 0;
+//1 = greek, 2 = eggy, 3 = norse, 4 = atlantean
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
 bool ForceAutoOff = false;
-bool Visible = true;
+bool Visible = false;
 int MaxRelics = 5;
 
 string CliffTerrain = "CliffGreekA";
 string RoadTerrain = "OlympusTile";
 
 
-bool AutoEscape = true;
+bool AutoEscape = false;
 int dPlayerData = 0;
 int xSpyID = 0;
 int xOldAnim = 0;
@@ -151,7 +149,7 @@ void DamageBuildingCountRazes(int p = 1, int targetid = 0, float distance = 10.0
 	int count = 0;
 	int diff = 0;
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
-		if((otherp != p && kbIsPlayerAlly(p) == false) && (trCheckGPActive("Restoration", otherp) == false)){
+		if((otherp != p && kbIsPlayerAlly(p) == false) && (trCheckGPActive("Restoration", p) == false)){
 			//count
 			trQuestVarSet("LastAdd", p);
 			trQuestVarSet("CountAdd"+otherp, CountBuildings(otherp));
@@ -199,7 +197,7 @@ void DamageBuildingCountRazes(int p = 1, int targetid = 0, float distance = 10.0
 void DamageUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
 		xsSetContextPlayer(otherp);
-		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", p) == false){
 			int kbid = kbUnitQueryCreate("damageunitabs");
 			kbUnitQuerySetPlayerID(kbid, otherp);
 			kbUnitQuerySetPosition(kbid, pos);
@@ -231,7 +229,7 @@ void BoltUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 
 	trChatSetStatus(false);
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
 		xsSetContextPlayer(otherp);
-		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", p) == false){
 			int kbid = kbUnitQueryCreate("damageunitabs");
 			kbUnitQuerySetPlayerID(kbid, otherp);
 			kbUnitQuerySetPosition(kbid, pos);
@@ -264,7 +262,7 @@ void BoltUnitCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 
 void DamageUnitPercentCountKills(int p = 1, vector pos = vector(0,0,0), float distance = 10.0, float damage = 100){
 	for(otherp = 1 ; <= cNumberNonGaiaPlayers){
 		xsSetContextPlayer(otherp);
-		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", otherp) == false){
+		if(otherp != p && kbIsPlayerAlly(p) == false && trCheckGPActive("Restoration", p) == false){
 			int kbid = kbUnitQueryCreate("damageunitperc");
 			kbUnitQuerySetPlayerID(kbid, otherp);
 			kbUnitQuerySetPosition(kbid, pos);

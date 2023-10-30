@@ -60,6 +60,10 @@ void HunterUnit(string unit = "", int p = 0, int pop = 1){
 		modifyProtounitAbsolute(unit, p, a, 0);
 		modifyProtounitAbsolute(unit, p, 6, pop);
 	}
+	if(AutoEscape){
+		trModifyProtounit(unit, cNumberNonGaiaPlayers, 1, 0.5*trGetWorldDifficulty());
+		trModifyProtounit(unit, cNumberNonGaiaPlayers, 1, -0.5);
+	}
 }
 
 void SetBuildPoints(int a = 10){
@@ -130,6 +134,12 @@ highFrequency
 		modifyProtounitAbsolute("Lampades", p, 11, 24);
 		modifyProtounitAbsolute("Behemoth", p, 29, 100);
 		modifyProtounitAbsolute("Lampades", p, 32, 200);
+		modifyProtounitAbsolute("Manticore", p, 0, 2500);
+		modifyProtounitAbsolute("Manticore", p, 2, 30);
+		modifyProtounitAbsolute("Manticore", p, 11, 24);
+		modifyProtounitAbsolute("Manticore", p, 32, 200);
+		modifyProtounitAbsolute("Manticore", p, 2, 30);
+		modifyProtounitAbsolute("Lampades", p, 2, 30);
 		modifyProtounitAbsolute("Troll", p, 32, 50);
 		modifyProtounitAbsolute("Satyr", p, 32, 10);
 		modifyProtounitAbsolute("Wadjet", p, 32, 15);
@@ -154,6 +164,11 @@ highFrequency
 		modifyProtounitAbsolute("Stymphalian Bird", p, 13, 0);
 		modifyProtounitAbsolute("Raven", p, 0, 10000);
 		modifyProtounitAbsolute("Raven", p, 1, 10);
+		modifyProtounitAbsolute("Fenris Wolf", p, 0, 2500);
+		modifyProtounitAbsolute("Fenris Wolf", p, 1, 6);
+		modifyProtounitAbsolute("Fenris Wolf", p, 2, 30);
+		modifyProtounitAbsolute("Fenris Wolf", p, 29, 70);
+		modifyProtounitAbsolute("Fenris Wolf", p, 27, 80);
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Troll", p);
 		MakeUnitFree("Behemoth", p);
@@ -169,6 +184,7 @@ highFrequency
 		MakeUnitFree("Heka Gigantes", p);
 		MakeUnitFree("Phoenix", p);
 		MakeUnitFree("Lampades", p);
+		MakeUnitFree("Manticore", p);
 		MakeUnitFree("Pegasus", p);
 		HunterUnit("Scorpion Man", p, 1);
 		HunterUnit("Centaur", p, 1);

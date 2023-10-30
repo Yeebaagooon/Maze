@@ -1,5 +1,11 @@
 bool GodPowerChance(int name = 0, int override = 0){
 	//chance of invoking GP for AI
+	AIVector = kbGetBlockPosition(""+name);
+	for(p = 1; < cNumberNonGaiaPlayers){
+		if(trCountUnitsInArea(""+name, p, "Monument", 30) != 0){
+			return(false);
+		}
+	}
 	if(override == 0){
 		trQuestVarSetFromRand("temp", 0, 100);
 	}
@@ -64,7 +70,6 @@ bool GodPowerChance(int name = 0, int override = 0){
 			}
 		}
 		return(true);
-		AIVector = kbGetBlockPosition(""+name);
 	}
 }
 
@@ -136,44 +141,49 @@ highFrequency
 	int z = 0;
 	for(n = 1 ; < xsMin(8, xGetDatabaseCount(dEnemies))){
 		xDatabaseNext(dEnemies);
-		if(xGetInt(dEnemies, xIdleTimeout) < trTime()){
-			anim = kbUnitGetAnimationActionType(kbGetBlockID(""+xGetInt(dEnemies, xUnitID)));
-			if(anim == 9){
-				//roll to check idle time
-				trQuestVarSetFromRand("temp", 1 , 10);
-				//scatter behaviour
-				x = trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "All", 20);
-				if((x > 10) && (x < 20)){
-					trUnitMoveToPoint(xsVectorGetX(AIVector),5,xsVectorGetZ(AIVector),-1,true);
-				}
-				if(x > 20){
-					trQuestVarSet("temp", 4);
-				}
-				if(1*trQuestVarGet("temp") <= 3){
-					x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)));
-					z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)));
-					trQuestVarSetFromRand("x", x-50 , x+50);
-					trQuestVarSetFromRand("z", z-50 , z+50);
-					xUnitSelect(dEnemies, xUnitID);
-					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
-					xSetInt(dEnemies, xIdleTimeout, 1*trQuestVarGet("x")/10+trTime()+30);
-				}
-				if(1*trQuestVarGet("temp") == 4){
-					trQuestVarSetFromRand("x", 0 , MapSize);
-					trQuestVarSetFromRand("z", 0 , MapSize);
-					xUnitSelect(dEnemies, xUnitID);
-					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
-					xSetInt(dEnemies, xIdleTimeout, 1*trQuestVarGet("x")/10+trTime()+30);
-				}
-				else{
-					xSetInt(dEnemies, xIdleTimeout, trTime()+10);
-				}
-			}
-		}
 		xUnitSelect(dEnemies, xUnitID);
 		if(trUnitDead()){
 			xFreeDatabaseBlock(dEnemies);
 		}
+		else{
+			if(xGetInt(dEnemies, xIdleTimeout) < trTime()){
+				anim = kbUnitGetAnimationActionType(kbGetBlockID(""+xGetInt(dEnemies, xUnitID)));
+				if(anim == 9){
+					//roll to check idle time
+					trQuestVarSetFromRand("temp", 1 , 10);
+					//scatter behaviour
+					x = trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "All", 20);
+					if((x > 10) && (x < 20)){
+						trUnitMoveToPoint(xsVectorGetX(AIVector),5,xsVectorGetZ(AIVector),-1,true);
+						xSetInt(dEnemies, xIdleTimeout, trTime()+10);
+					}
+					if(x > 20){
+						trQuestVarSet("temp", 4);
+						xSetInt(dEnemies, xIdleTimeout, trTime()+10);
+					}
+					if(1*trQuestVarGet("temp") <= 3){
+						x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)));
+						z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)));
+						trQuestVarSetFromRand("x", x-50 , x+50);
+						trQuestVarSetFromRand("z", z-50 , z+50);
+						xUnitSelect(dEnemies, xUnitID);
+						trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+						xSetInt(dEnemies, xIdleTimeout, 1*trQuestVarGet("x")/10+trTime()+30);
+					}
+					if(1*trQuestVarGet("temp") == 4){
+						trQuestVarSetFromRand("x", 0 , MapSize);
+						trQuestVarSetFromRand("z", 0 , MapSize);
+						xUnitSelect(dEnemies, xUnitID);
+						trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+						xSetInt(dEnemies, xIdleTimeout, 1*trQuestVarGet("x")/10+trTime()+30);
+					}
+					else{
+						xSetInt(dEnemies, xIdleTimeout, trTime()+10);
+					}
+				}
+			}
+		}
+		
 	}
 	//if dead, remove
 }
@@ -185,7 +195,7 @@ highFrequency
 	if(1*trQuestVarGet("SpawnTime") < trTime()){
 		trQuestVarSet("SpawnTime", trTime()+1);
 		int temp = -1;
-		if(trPlayerGetPopulation(cNumberNonGaiaPlayers) < (90+20*cNumberNonGaiaPlayers)){
+		if(trPlayerGetPopulation(cNumberNonGaiaPlayers) < 70+(10*MapFactor())){
 			//spawn
 			temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
 			xAddDatabaseBlock(dEnemies, true);
@@ -196,6 +206,13 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelect(""+temp);
 			trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+			if(trGetWorldDifficulty() >= 2){
+				temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
+				xAddDatabaseBlock(dEnemies, true);
+				xSetInt(dEnemies, xUnitID, temp);
+				xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+				trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+			}
 			temp = UnitCreate(cNumberNonGaiaPlayers, handunit,(MapSize/2)-5,(MapSize/2)-5);
 			xAddDatabaseBlock(dEnemies, true);
 			xSetInt(dEnemies, xUnitID, temp);
@@ -203,6 +220,13 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelect(""+temp);
 			trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+			if(trGetWorldDifficulty() >= 2){
+				temp = UnitCreate(cNumberNonGaiaPlayers, handunit,(MapSize/2)-5,(MapSize/2)-5);
+				xAddDatabaseBlock(dEnemies, true);
+				xSetInt(dEnemies, xUnitID, temp);
+				xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+				trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+			}
 		}
 	}
 }
@@ -784,3 +808,24 @@ highFrequency
 	}
 }
 
+rule Vanishbase_Search
+inactive
+highFrequency
+{
+	if(xGetDatabaseCount(dVDManticore) > 0){
+		for(a = xGetDatabaseCount(dVDManticore); > 0){
+			xDatabaseNext(dVDManticore);
+			xUnitSelect(dVDManticore, xVBName);
+			if(trUnitDead()){
+				//remove and effect
+				if(TerrainCheckOnVector(xGetVector(dVDManticore, xVBPos), RoadTerrain)){
+					trPaintTerrain(xsVectorGetX(xGetVector(dVDManticore, xVBPos))/2,xsVectorGetZ(xGetVector(dVDManticore, xVBPos))/2,xsVectorGetX(xGetVector(dVDManticore, xVBPos))/2,xsVectorGetZ(xGetVector(dVDManticore, xVBPos))/2,5,4);
+				}
+				xFreeDatabaseBlock(dVDManticore);
+			}
+			else{
+				xSetVector(dVDManticore, xVBPos, kbGetBlockPosition(""+xGetInt(dVDManticore, xVBName)));
+			}
+		}
+	}
+}

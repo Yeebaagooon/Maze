@@ -34,8 +34,6 @@ runImmediately
 	trUIFadeToColor(0, 0, 0, 10000, 10000, false);
 	trFadeOutAllSounds(0.1);
 	trFadeOutMusic(0.1);
-	if(QuickStart == 0){
-	}
 	trBlockAllSounds(true);
 	trArmyDispatch("0,0", "Revealer To Player", 1, MapSize/2, 0, MapSize/2, 0, false);
 	for(p = 1; <= cNumberNonGaiaPlayers){
@@ -114,6 +112,10 @@ highFrequency
 		}
 	}
 	trTechSetStatus(0, 304, 4);
+	if(MapSkin > 0){
+		trQuestVarSetFromRand("temp", 1,4);
+		MapSkin = 1*trQuestVarGet("temp");
+	}
 }
 
 rule load2

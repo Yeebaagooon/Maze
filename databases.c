@@ -175,6 +175,15 @@ int xMirrorTowerTarget = 0;
 int xMTDecorID = 0;
 int xMTLastShot = 0;
 
+int dImplode = 0;
+int xImplodeID = 0;
+int xImplodeOwner = 0;
+
+//manticore vanishbase
+int dVDManticore = 0;
+int xVBName = 0;
+int xVBPos = 0;
+
 rule setup_first_databases
 active
 highFrequency
@@ -332,6 +341,14 @@ highFrequency
 	xMirrorTowerTarget = xInitAddInt(dMirrorTower, "target", -1);
 	xMTDecorID = xInitAddInt(dMirrorTower, "decor", -1);
 	xMTLastShot = xInitAddInt(dMirrorTower, "last shot", 0);
+	
+	dImplode = xInitDatabase("dimplode");
+	xImplodeID = xInitAddInt(dImplode, "desc", 0);
+	xImplodeOwner = xInitAddInt(dImplode, "desc", 0);
+	
+	dVDManticore = xInitDatabase("VBmanticor");
+	xVBName = xInitAddInt(dVDManticore, "VBid", 0);
+	xVBPos = xInitAddVector(dVDManticore, "VBid", vector(5,5,5));
 	
 }
 

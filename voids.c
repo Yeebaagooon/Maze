@@ -1538,3 +1538,12 @@ bool Between(int value = 0, int first = 0, int second = 0){
 		return(false);
 	}
 }
+
+bool TerrainCheckOnVector(vector v = vector(0,0,0), string type = "black"){
+	if((trGetTerrainType(xsVectorGetX(v/2),xsVectorGetZ(v/2)) == getTerrainType(type)) && (trGetTerrainSubType(xsVectorGetX(v/2),xsVectorGetZ(v/2)) == getTerrainSubType(type))){
+		return(true);
+	}
+	else{
+		return(false);
+	}
+}
