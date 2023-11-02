@@ -184,6 +184,13 @@ int dVDManticore = 0;
 int xVBName = 0;
 int xVBPos = 0;
 
+//monument
+int dMonuments = 0;
+int xMonumentName = 0;
+int xMonumentID = 0;
+int xMonumentPos = 0;
+int xDecorMin = 0;
+
 rule setup_first_databases
 active
 highFrequency
@@ -349,6 +356,12 @@ highFrequency
 	dVDManticore = xInitDatabase("VBmanticor");
 	xVBName = xInitAddInt(dVDManticore, "VBid", 0);
 	xVBPos = xInitAddVector(dVDManticore, "VBid", vector(5,5,5));
+	
+	dMonuments = xInitDatabase("Monum");
+	xMonumentName = xInitAddInt(dMonuments, "desc", -1);
+	xMonumentID = xInitAddInt(dMonuments, "desc", -1);
+	xMonumentPos = xInitAddVector(dMonuments, "des", vector(0,0,0));
+	xDecorMin = xInitAddInt(dMonuments, "desc", -1);
 	
 }
 

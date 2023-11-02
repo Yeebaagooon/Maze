@@ -112,9 +112,46 @@ highFrequency
 		}
 	}
 	trTechSetStatus(0, 304, 4);
-	if(MapSkin > 0){
-		trQuestVarSetFromRand("temp", 1,4);
+	if(MapSkin == 0){
+		trQuestVarSetFromRand("temp", 1,7);
 		MapSkin = 1*trQuestVarGet("temp");
+		switch(MapSkin){
+			case 1:
+			{
+				CliffTerrain = "CliffGreekA";
+				RoadTerrain = "OlympusTile";
+			}
+			case 2:
+			{
+				CliffTerrain = "CliffEgyptianA";
+				RoadTerrain = "EgyptianRoadA";
+			}
+			case 3:
+			{
+				CliffTerrain = "CliffNorseA";
+				RoadTerrain = "NorseRoadA";
+			}
+			case 4:
+			{
+				CliffTerrain = "CliffA";
+				RoadTerrain = "GreekRoadA";
+			}
+			case 5:
+			{
+				CliffTerrain = "CliffPlainA";
+				RoadTerrain = "PlainRoadA";
+			}
+			case 6:
+			{
+				CliffTerrain = "HadesCliff";
+				RoadTerrain = "UnderwaterRockC";
+			}
+			case 7:
+			{
+				CliffTerrain = "CliffJungleA";
+				RoadTerrain = "JungleRoadA";
+			}
+		}
 	}
 }
 

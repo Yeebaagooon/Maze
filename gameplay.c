@@ -656,16 +656,19 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 2){
-		MaxRelics = cNumberNonGaiaPlayers+4-trGetWorldDifficulty();
-		if(cNumberNonGaiaPlayers < 4){
-			MaxRelics = MaxRelics+4;
-		}
-		for(a = 0; <= MaxRelics){
-			trQuestVarSetFromRand("temp",0,7); //0,7
-			CreateRelic(1*trQuestVarGet("temp"));
-		}
-		if(trGetWorldDifficulty() < 3){
-			CreateRelic(RELIC_SHIELD);
+		if(AutoEscape){
+			MaxRelics = cNumberNonGaiaPlayers+4-trGetWorldDifficulty();
+			if(cNumberNonGaiaPlayers < 4){
+				MaxRelics = MaxRelics+4;
+			}
+			for(a = 0; <= MaxRelics){
+				trQuestVarSetFromRand("temp",0,7); //0,7
+				CreateRelic(1*trQuestVarGet("temp"));
+			}
+			if(trGetWorldDifficulty() < 3){
+				CreateRelic(RELIC_SHIELD);
+			}
+			xsEnableRule("Monument_Search");
 		}
 		xsDisableSelf();
 	}
@@ -1149,20 +1152,41 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*18){
-		rangedunit = "Lampades";
-		handunit = "Phoenix";
-		for(p = 1; <= cNumberNonGaiaPlayers){
-			xSetPointer(dPlayerData, p);
-			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				trForbidProtounit(p, "Heka Gigantes");
-				trUnforbidProtounit(p, "Lampades");
-				if(AutoEscape == false){
-					trModifyProtounit("Phoenix", p, 6, -1);
-					trModifyProtounit("Phoenix From Egg", p, 6, -1);
+		trQuestVarSetFromRand("specialunit", 1, 2);
+		if(1*trQuestVarGet("specialunit") == 1){
+			rangedunit = "Lampades";
+			handunit = "Phoenix";
+			for(p = 1; <= cNumberNonGaiaPlayers){
+				xSetPointer(dPlayerData, p);
+				if(xGetBool(dPlayerData, xPlayerRunner) == false){
+					trForbidProtounit(p, "Heka Gigantes");
+					trUnforbidProtounit(p, "Lampades");
+					if(AutoEscape == false){
+						trModifyProtounit("Phoenix", p, 6, -1);
+						trModifyProtounit("Phoenix From Egg", p, 6, -1);
+					}
+					if(trCurrentPlayer() == p){
+						trMessageSetText("You can now train lampades. Phoenix pop count reduced.", 8000);
+						playSound("ageadvance.wav");
+					}
 				}
-				if(trCurrentPlayer() == p){
-					trMessageSetText("You can now train lampades. Phoenix pop count reduced.", 8000);
-					playSound("ageadvance.wav");
+			}
+		}
+		else{
+			rangedunit = "Manticore";
+			handunit = "Phoenix";
+			for(p = 1; <= cNumberNonGaiaPlayers){
+				xSetPointer(dPlayerData, p);
+				if(xGetBool(dPlayerData, xPlayerRunner) == false){
+					trUnforbidProtounit(p, "Manticore");
+					if(AutoEscape == false){
+						trModifyProtounit("Phoenix", p, 6, -1);
+						trModifyProtounit("Phoenix From Egg", p, 6, -1);
+					}
+					if(trCurrentPlayer() == p){
+						trMessageSetText("You can now train manticores. Phoenix pop count reduced.", 8000);
+						playSound("ageadvance.wav");
+					}
 				}
 			}
 		}

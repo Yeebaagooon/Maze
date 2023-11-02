@@ -829,3 +829,49 @@ highFrequency
 		}
 	}
 }
+
+rule Monument_Search
+inactive
+highFrequency
+{
+	if(xGetDatabaseCount(dMonuments) > 0){
+		for(a = xGetDatabaseCount(dMonuments); > 0){
+			int temp = 0;
+			xDatabaseNext(dMonuments);
+			xUnitSelect(dMonuments, xMonumentName);
+			if(trUnitDead()){
+				temp = xGetInt(dMonuments, xDecorMin);
+				for(b = 0; < 10){
+					trUnitSelectClear();
+					trUnitSelect(""+(temp+b));
+					trUnitChangeProtoUnit("Rocket");
+				}
+				xFreeDatabaseBlock(dMonuments);
+			}
+			/*else{
+				//debugLog(""+xGetVector(dMonuments, xMonumentPos) + " | " + kbGetBlockPosition(""+trGetUnitScenarioNameNumber(xGetInt(dMonuments, xMonumentID))));
+				if(xGetVector(dMonuments, xMonumentPos) != kbGetBlockPosition(""+xGetInt(dMonuments, xMonumentName))){
+					//redo circle
+					trUnitSelectClear();
+					temp = xGetInt(dMonuments, xDecorMin);
+					for(b = 0; < 10){
+						trUnitSelectClear();
+						trUnitSelect(""+(temp+b));
+						trUnitChangeProtoUnit("Rocket");
+					}
+					xSetVector(dMonuments, xMonumentPos, kbGetBlockPosition(""+xGetInt(dMonuments, xMonumentName)));
+					trVectorQuestVarSet("Monument", xGetVector(dMonuments, xMonumentPos));
+					trVectorQuestVarSet("dir", xsVectorSet(0, 0, 30));
+					float baseCos = xsCos(6.283185 / 10);
+					float baseSin = xsSin(6.283185 / 10);
+					for(b=1; <= 10) {
+						trVectorQuestVarSet("base", trVectorQuestVarGet("Monument") + trVectorQuestVarGet("dir"));
+						temp = trGetNextUnitScenarioNameNumber();
+						UnitCreate(0, "UI Range Indicator Norse SFX", trVectorQuestVarGetX("base"), trVectorQuestVarGetZ("base"), 0);
+						trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
+					}
+				}
+			}*/
+		}
+	}
+}
