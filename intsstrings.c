@@ -12,13 +12,6 @@ fire giant
 
 Reward L15 for runners
 More vision easy/mod for runners
-
-
-
-g("configSetInt(\"unbuildWoodCost2\", 200);");
-g("configSetInt(\"unbuildGoldCost2\", 100);");
-to revert timeshift cost after player resigns/game ends
-
 TEMPLE SHIT
 <train row="0" page="1" column="0">Hero Norse</train>
 <train row="0" page="1" column="0">Oracle Scout</train>
@@ -76,7 +69,7 @@ int MapSkin = 0;
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
 bool ForceAutoOff = false;
-bool Visible = true;
+bool Visible = false;
 int MaxRelics = 5;
 
 string CliffTerrain = "CliffGreekA";

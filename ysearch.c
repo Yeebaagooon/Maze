@@ -84,11 +84,6 @@ highFrequency
 				}
 				break;
 			}
-			case kbGetProtoUnitID("Timeshift In"):
-			{
-				trChatSend(0, ""+kbUnitGetOwner(id));
-				break;
-			}
 			case kbGetProtoUnitID("Monument"):
 			{
 				if(kbUnitGetOwner(id) != 0){
@@ -100,8 +95,6 @@ highFrequency
 					xSetInt(dMonuments, xMonumentID, id);
 					xSetVector(dMonuments, xMonumentPos, kbGetBlockPosition(""+j));
 					xSetInt(dMonuments, xDecorMin, trGetNextUnitScenarioNameNumber());
-					
-					
 					trVectorQuestVarSet("Monument", xGetVector(dMonuments, xMonumentPos));
 					trVectorQuestVarSet("dir", xsVectorSet(0, 0, 30));
 					float baseCos = xsCos(6.283185 / 10);

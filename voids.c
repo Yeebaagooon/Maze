@@ -1547,3 +1547,24 @@ bool TerrainCheckOnVector(vector v = vector(0,0,0), string type = "black"){
 		return(false);
 	}
 }
+
+int cameraTrackTime = 0;
+bool cameraFirstWaypoint = false;
+
+void createCameraTrack(int timeMS = 0){
+	cameraFirstWaypoint = true;
+	cameraTrackTime = timeMS;
+	trackInsert();
+	trackPlay(cameraTrackTime, -1);
+}
+void addCameraTrackWaypoint(){
+	if(cameraFirstWaypoint){
+		cameraFirstWaypoint = false;
+	} else {
+		trackAddWaypoint();
+	}
+	trackEditWaypoint();
+}
+void playCameraTrack(int eventId = -1){
+	trackPlay(cameraTrackTime, eventId);
+}

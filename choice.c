@@ -68,7 +68,7 @@ const int RunnerRewardL8 = 45;
 const int RunnerRewardL9 = 49;
 
 string RewardText(int r = 0){
-	string reward = "error";
+	string reward = "You waited too long";
 	switch(r){
 		//RUNNER REWARD LEVEL 1, 4-13
 		case 3:
@@ -290,7 +290,7 @@ const int HunterRewardL5 = 40;
 const int HunterRewardL6 = 50;
 
 string RewardTextHunter(int r = 0){
-	string reward = "error";
+	string reward = "You waited too long";
 	switch(r){
 		//RUNNER REWARD LEVEL 1, 4-13
 		case 3:
@@ -621,7 +621,7 @@ inactive
 		{
 			case 0:
 			{
-				debugLog("NO CONSEQUENCE SET");
+				//debugLog("NO CONSEQUENCE SET");
 			}
 			case 1:
 			{

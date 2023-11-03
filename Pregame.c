@@ -55,6 +55,12 @@ inactive
 highFrequency
 {
 	xsDisableSelf();
+	createCameraTrack(100000);
+	trCameraCut(vector(50.793114,55.865345,-29.563869), vector(0.016167,-0.552531,0.833335), vector(0.010718,0.833492,0.552428), vector(0.999812,0.000000,-0.019397));
+	addCameraTrackWaypoint();
+	trCameraCut(vector(50.793114,55.865345,-29.563869), vector(0.016167,-0.552531,0.833335), vector(0.010718,0.833492,0.552428), vector(0.999812,0.000000,-0.019397));
+	addCameraTrackWaypoint();
+	playCameraTrack();
 	DestroyAbove = trGetNextUnitScenarioNameNumber();
 	//trPaintTerrain(CurrentCell(maxnumberx/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberz/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberx/2, cellsize, cellpadding)+cellpadding+1,CurrentCell(maxnumberz/2, cellsize, cellpadding)+cellpadding+1,getTerrainType("HadesBuildable1"), getTerrainSubType("HadesBuildable1"));
 	PaintAtlantisArea(15,15,35,35,getTerrainType("IceA"),getTerrainSubType("IceA"));
@@ -105,7 +111,7 @@ highFrequency
 		trVectorQuestVarSet("build", trVectorQuestVarGet("start") + trVectorQuestVarGet("dir"));
 		trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
 		trQuestVarSet("RunnerCol" + a, trGetNextUnitScenarioNameNumber());
-		UnitCreate(0, "Columns", trVectorQuestVarGetX("build"), trVectorQuestVarGetZ("build"));
+		UnitCreate(0, "Columns", trVectorQuestVarGetX("build"), trVectorQuestVarGetZ("build"), 90);
 	}
 	
 	baseCos = xsCos(6.283185 / HunterNumber);
@@ -116,7 +122,7 @@ highFrequency
 		trVectorQuestVarSet("build", trVectorQuestVarGet("start") + trVectorQuestVarGet("dir"));
 		trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
 		trQuestVarSet("HunterCol" + a, trGetNextUnitScenarioNameNumber());
-		UnitCreate(0, "Columns", trVectorQuestVarGetX("build"), trVectorQuestVarGetZ("build"));
+		UnitCreate(0, "Columns", trVectorQuestVarGetX("build"), trVectorQuestVarGetZ("build"), 90);
 	}
 	//make the columns and flags
 	//SPAWN PLAYERS
@@ -305,6 +311,12 @@ highFrequency
 			trUnitSelect(""+a);
 			trUnitDestroy();
 		}
+		createCameraTrack(1);
+		trCameraCut(vector(-51.841183,123.743729,-51.841183), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
+		addCameraTrackWaypoint();
+		trCameraCut(vector(-51.841183,123.743729,-51.841183), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
+		addCameraTrackWaypoint();
+		playCameraTrack();
 	}
 }
 

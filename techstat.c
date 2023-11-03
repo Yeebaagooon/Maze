@@ -196,14 +196,14 @@ highFrequency
 		HunterUnit("Scarab", p, 1);
 		HunterUnit("Phoenix", p, 3);
 		HunterUnit("Phoenix From Egg", p, 3);
-		HunterUnit("Mountain Giant", p, 1);
-		HunterUnit("Heka Gigantes", p, 1);
+		HunterUnit("Mountain Giant", p, 2);
+		HunterUnit("Heka Gigantes", p, 2);
 		HunterUnit("Lampades", p, 2);
 		HunterUnit("Pegasus", p, 3);
 		HunterUnit("Guardian XP", p, 3);
 		ZeroArmour("Guardian XP", p);
 		trModifyProtounit("Dwarf", p, 55, 4);
-		trModifyProtounit("Temple", p, 7, 150);
+		trModifyProtounit("Temple", p, 7, 100);
 		trModifyProtounit("Animal Attractor", p, 55, 4);
 		trModifyProtounit(""+YesChoiceUnitName, p, 55, 4);
 		trModifyProtounit(""+YesChoiceUnitName, p, 1, -10);
