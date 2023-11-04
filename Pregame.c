@@ -10,6 +10,23 @@ highFrequency
 		PregameTimeout = trTime()+10;
 		trCounterAddTime("cdchoice", 10,0, "Hunters chosen at random", -1);
 		xsEnableRule("HuntersTimeout");
+		for(p = 1; <= cNumberNonGaiaPlayers){
+			if(playerIsPlaying(p)){
+				xSetPointer(dPlayerData, p);
+				if(xGetInt(dPlayerData, xHuntResign) >= 3){
+					if(p == 1){
+						UpgradeTest(1,2);
+					}
+					trSetPlayerDefeated(p);
+					PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + " is a serial resigner so has been blocked from playing");
+					if(trCurrentPlayer() == p){
+						gadgetUnreal("ShowChoiceBox");
+						OverlayTextPlayerColor(p);
+						trOverlayText("You keep resigning so cannot play with human hunters", 80.0, 444, 300, 1000);
+					}
+				}
+			}
+		}
 		xsDisableSelf();
 	}
 }
@@ -70,8 +87,10 @@ highFrequency
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		if(playerIsPlaying(p)){
 			xSetPointer(dPlayerData, p);
-			xSetInt(dPlayerData, xPlayerUnitID, trGetNextUnitScenarioNameNumber());
-			UnitCreate(p, "Old Man", 50,48-cNumberNonGaiaPlayers+p*2,0);
+			if(xGetInt(dPlayerData, xHuntResign) < 3){
+				xSetInt(dPlayerData, xPlayerUnitID, trGetNextUnitScenarioNameNumber());
+				UnitCreate(p, "Old Man", 50,48-cNumberNonGaiaPlayers+p*2,0);
+			}
 		}
 	}
 	UnitCreate(0, "Villager Atlantean Hero", 34,50,90);
@@ -83,12 +102,15 @@ highFrequency
 	int PlayersA = 0;
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		if(playerIsPlaying(p)){
-			PlayersA = PlayersA+1;
+			xSetPointer(dPlayerData, p);
+			if(xGetInt(dPlayerData, xHuntResign) < 3){
+				PlayersA = PlayersA+1;
+			}
 		}
 	}
 	if(PlayersA <= 5){
 		HunterNumber = 1;
-		ColouredIconChat("1,0.5,0", "icons\improvement monsterous rage icon 64", "this game requires " + HunterNumber + " hunters");
+		ColouredIconChat("1,0.5,0", "icons\improvement monsterous rage icon 64", "this game requires " + HunterNumber + " hunter");
 	}
 	else if((PlayersA > 5) && (PlayersA <=7)){
 		HunterNumber = 2;
@@ -141,39 +163,43 @@ highFrequency
 		}
 		int p = CyclePlayers;
 		xSetPointer(dPlayerData, p);
-		if(xGetBool(dPlayerData, xRoleDefined) == false){
-			pos =  kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID));
-			if(xsVectorGetX(pos) < 40){
-				//choose runner
-				trUnitSelectClear();
-				trUnitSelect(""+xGetInt(dPlayerData, xPlayerUnitID));
-				trUnitChangeProtoUnit("Hero Death");
-				xSetBool(dPlayerData, xRoleDefined, true);
-				xSetBool(dPlayerData, xPlayerRunner, true);
-				RunnerCount = RunnerCount+1;
-				trUnitSelectClear();
-				trUnitSelect(""+1*trQuestVarGet("RunnerCol"+RunnerCount));
-				trUnitChangeProtoUnit("Flag");
-				trUnitSelectClear();
-				trUnitSelect(""+1*trQuestVarGet("RunnerCol"+RunnerCount));
-				trUnitConvert(p);
-				trUnitSetAnimationPath("0,0,0,0,0,0");
-			}
-			if(xsVectorGetX(pos) > 62){
-				//choose hunter
-				trUnitSelectClear();
-				trUnitSelect(""+xGetInt(dPlayerData, xPlayerUnitID));
-				trUnitChangeProtoUnit("Hero Death");
-				xSetBool(dPlayerData, xRoleDefined, true);
-				xSetBool(dPlayerData, xPlayerRunner, false);
-				HunterCount = HunterCount+1;
-				trUnitSelectClear();
-				trUnitSelect(""+1*trQuestVarGet("HunterCol"+HunterCount));
-				trUnitChangeProtoUnit("Flag");
-				trUnitSelectClear();
-				trUnitSelect(""+1*trQuestVarGet("HunterCol"+HunterCount));
-				trUnitConvert(p);
-				trUnitSetAnimationPath("0,0,0,0,0,0");
+		if(playerIsPlaying(p)){
+			if(xGetInt(dPlayerData, xHuntResign) < 3){
+				if(xGetBool(dPlayerData, xRoleDefined) == false){
+					pos =  kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID));
+					if(xsVectorGetX(pos) < 40){
+						//choose runner
+						trUnitSelectClear();
+						trUnitSelect(""+xGetInt(dPlayerData, xPlayerUnitID));
+						trUnitChangeProtoUnit("Hero Death");
+						xSetBool(dPlayerData, xRoleDefined, true);
+						xSetBool(dPlayerData, xPlayerRunner, true);
+						RunnerCount = RunnerCount+1;
+						trUnitSelectClear();
+						trUnitSelect(""+1*trQuestVarGet("RunnerCol"+RunnerCount));
+						trUnitChangeProtoUnit("Flag");
+						trUnitSelectClear();
+						trUnitSelect(""+1*trQuestVarGet("RunnerCol"+RunnerCount));
+						trUnitConvert(p);
+						trUnitSetAnimationPath("0,0,0,0,0,0");
+					}
+					if(xsVectorGetX(pos) > 62){
+						//choose hunter
+						trUnitSelectClear();
+						trUnitSelect(""+xGetInt(dPlayerData, xPlayerUnitID));
+						trUnitChangeProtoUnit("Hero Death");
+						xSetBool(dPlayerData, xRoleDefined, true);
+						xSetBool(dPlayerData, xPlayerRunner, false);
+						HunterCount = HunterCount+1;
+						trUnitSelectClear();
+						trUnitSelect(""+1*trQuestVarGet("HunterCol"+HunterCount));
+						trUnitChangeProtoUnit("Flag");
+						trUnitSelectClear();
+						trUnitSelect(""+1*trQuestVarGet("HunterCol"+HunterCount));
+						trUnitConvert(p);
+						trUnitSetAnimationPath("0,0,0,0,0,0");
+					}
+				}
 			}
 		}
 		if(HunterCount == HunterNumber){
@@ -204,9 +230,11 @@ highFrequency
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		if(playerIsPlaying(p)){
 			xSetPointer(dPlayerData, p);
-			if(xGetBool(dPlayerData, xRoleDefined) == false){
-				xSetBool(dPlayerData, xRoleDefined, true);
-				xSetBool(dPlayerData, xPlayerRunner, true);
+			if(xGetInt(dPlayerData, xHuntResign) < 3){
+				if(xGetBool(dPlayerData, xRoleDefined) == false){
+					xSetBool(dPlayerData, xRoleDefined, true);
+					xSetBool(dPlayerData, xPlayerRunner, true);
+				}
 			}
 		}
 	}
@@ -221,9 +249,11 @@ highFrequency
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		if(playerIsPlaying(p)){
 			xSetPointer(dPlayerData, p);
-			if(xGetBool(dPlayerData, xRoleDefined) == false){
-				xSetBool(dPlayerData, xRoleDefined, true);
-				xSetBool(dPlayerData, xPlayerRunner, false);
+			if(xGetInt(dPlayerData, xHuntResign) < 3){
+				if(xGetBool(dPlayerData, xRoleDefined) == false){
+					xSetBool(dPlayerData, xRoleDefined, true);
+					xSetBool(dPlayerData, xPlayerRunner, false);
+				}
 			}
 		}
 	}
@@ -241,27 +271,29 @@ highFrequency
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			if(playerIsPlaying(p)){
 				xSetPointer(dPlayerData, p);
-				if(xGetBool(dPlayerData, xRoleDefined) == false){
-					if(HunterCount == HunterNumber){
-						xSetBool(dPlayerData, xRoleDefined, true);
-						xSetBool(dPlayerData, xPlayerRunner, true);
-					}
-					else if(RunnerCount == (cNumberNonGaiaPlayers-HunterNumber)){
-						xSetBool(dPlayerData, xRoleDefined, true);
-						xSetBool(dPlayerData, xPlayerRunner, false);
-					}
-					else{
-						trQuestVarSetFromRand("temp", 1, 3);
-						xSetBool(dPlayerData, xRoleDefined, true);
-						if(1*trQuestVarGet("temp") == 1){
+				if(xGetInt(dPlayerData, xHuntResign) < 3){
+					if(xGetBool(dPlayerData, xRoleDefined) == false){
+						if(HunterCount == HunterNumber){
+							xSetBool(dPlayerData, xRoleDefined, true);
+							xSetBool(dPlayerData, xPlayerRunner, true);
+						}
+						else if(RunnerCount == (cNumberNonGaiaPlayers-HunterNumber)){
+							xSetBool(dPlayerData, xRoleDefined, true);
 							xSetBool(dPlayerData, xPlayerRunner, false);
-							HunterCount = HunterCount+1;
 						}
 						else{
-							xSetBool(dPlayerData, xPlayerRunner, true);
-							RunnerCount = RunnerCount+1;
+							trQuestVarSetFromRand("temp", 1, 3);
+							xSetBool(dPlayerData, xRoleDefined, true);
+							if(1*trQuestVarGet("temp") == 1){
+								xSetBool(dPlayerData, xPlayerRunner, false);
+								HunterCount = HunterCount+1;
+							}
+							else{
+								xSetBool(dPlayerData, xPlayerRunner, true);
+								RunnerCount = RunnerCount+1;
+							}
+							//randomise
 						}
-						//randomise
 					}
 				}
 			}
@@ -282,17 +314,19 @@ highFrequency
 	trUIFadeToColor(0,0,0,10000,100000,false);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
-		xSetBool(dPlayerData, xRoleDefined, true);
-		if(xGetBool(dPlayerData, xPlayerRunner) == false){
-			if(trCurrentPlayer() == p){
-				OverlayTextPlayerColor(p);
-				trOverlayText("You are a Hunter", 8.0, 534, 300, 1000);
+		if(xGetInt(dPlayerData, xHuntResign) < 3){
+			xSetBool(dPlayerData, xRoleDefined, true);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				if(trCurrentPlayer() == p){
+					OverlayTextPlayerColor(p);
+					trOverlayText("You are a Hunter", 8.0, 534, 300, 1000);
+				}
 			}
-		}
-		else{
-			if(trCurrentPlayer() == p){
-				OverlayTextPlayerColor(p);
-				trOverlayText("You are a Runner", 8.0, 534, 300, 1000);
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				if(trCurrentPlayer() == p){
+					OverlayTextPlayerColor(p);
+					trOverlayText("You are a Runner", 8.0, 534, 300, 1000);
+				}
 			}
 		}
 	}
@@ -329,8 +363,11 @@ highFrequency
 	int Safety = 0;
 	int PlayersA = 0;
 	for(p = 1; <= cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
 		if(playerIsPlaying(p)){
-			PlayersA = PlayersA+1;
+			if(xGetInt(dPlayerData, xHuntResign) < 3){
+				PlayersA = PlayersA+1;
+			}
 		}
 	}
 	if(PlayersA <= 5){
@@ -358,25 +395,29 @@ highFrequency
 		a = 1*trQuestVarGet("temp");
 		if(playerIsPlaying(a)){
 			xSetPointer(dPlayerData, a);
-			if(xGetBool(dPlayerData, xPlayerRunner) == true){
-				xSetBool(dPlayerData, xPlayerRunner, false);
-				CurrentHunters = CurrentHunters+1;
+			if(xGetInt(dPlayerData, xHuntResign) < 3){
+				if(xGetBool(dPlayerData, xPlayerRunner) == true){
+					xSetBool(dPlayerData, xPlayerRunner, false);
+					CurrentHunters = CurrentHunters+1;
+				}
 			}
 		}
 	}
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
-		xSetBool(dPlayerData, xRoleDefined, true);
-		if(xGetBool(dPlayerData, xPlayerRunner) == false){
-			if(trCurrentPlayer() == p){
-				OverlayTextPlayerColor(p);
-				trOverlayText("You are a Hunter", 8.0, 534, 300, 1000);
+		if(xGetInt(dPlayerData, xHuntResign) < 3){
+			xSetBool(dPlayerData, xRoleDefined, true);
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				if(trCurrentPlayer() == p){
+					OverlayTextPlayerColor(p);
+					trOverlayText("You are a Hunter", 8.0, 534, 300, 1000);
+				}
 			}
-		}
-		else{
-			if(trCurrentPlayer() == p){
-				OverlayTextPlayerColor(p);
-				trOverlayText("You are a Runner", 8.0, 534, 300, 1000);
+			else{
+				if(trCurrentPlayer() == p){
+					OverlayTextPlayerColor(p);
+					trOverlayText("You are a Runner", 8.0, 534, 300, 1000);
+				}
 			}
 		}
 	}
@@ -438,14 +479,28 @@ highFrequency
 						characterDialog("Create units at the temples and kill all runner citizens to win", "You are hunting on your own", "icons\improvement monsterous rage icon 64");
 					}
 				}
+				xSetInt(dPlayerData, xHumanHuntGames, xGetInt(dPlayerData, xHumanHuntGames)+1);
 			}
-			else{
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
 				if(AutoEscape){
+					if(trGetWorldDifficulty() == 0){
+						xSetInt(dPlayerData, xGamesEasy, xGetInt(dPlayerData, xGamesEasy)+1);
+					}
+					if(trGetWorldDifficulty() == 1){
+						xSetInt(dPlayerData, xGamesMedium, xGetInt(dPlayerData, xGamesMedium)+1);
+					}
+					if(trGetWorldDifficulty() == 2){
+						xSetInt(dPlayerData, xGamesHard, xGetInt(dPlayerData, xGamesHard)+1);
+					}
+					if(trGetWorldDifficulty() == 3){
+						xSetInt(dPlayerData, xGamesTitan, xGetInt(dPlayerData, xGamesTitan)+1);
+					}
 					if(trCurrentPlayer() == p){
 						characterDialog("If your citizen dies you lose", "Build and timeshift towers and sky passages to escape the computer", "icons\villager x male hero icons 64");
 					}
 				}
 				else{
+					xSetInt(dPlayerData, xHumanRunGames, xGetInt(dPlayerData, xHumanRunGames)+1);
 					if(trCurrentPlayer() == p){
 						characterDialog("If your citizen dies you lose", "Build and timeshift towers and sky passages to escape the hunters", "icons\villager x male hero icons 64");
 					}
@@ -498,25 +553,27 @@ highFrequency
 		
 		//Runners
 		for(a = 1; <= 1*trQuestVarGet("Runners")){
-			trQuestVarSetFromRand("pos", 0, SwitchMapSize()-1);
-			temp = trGetNextUnitScenarioNameNumber();
-			if(iModulo(4, a) == 0){
-				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",1*trQuestVarGet("pos")*22+10,12);
+			if(playerIsPlaying(1*trQuestVarGet("Runner"+a))){
+				trQuestVarSetFromRand("pos", 0, SwitchMapSize()-1);
+				temp = trGetNextUnitScenarioNameNumber();
+				if(iModulo(4, a) == 0){
+					UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",1*trQuestVarGet("pos")*22+10,12);
+				}
+				else if(iModulo(3, a) == 0){
+					UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",10,1*trQuestVarGet("pos")*22+12);
+				}
+				else if(iModulo(2, a) == 0){
+					UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",1*trQuestVarGet("pos")*22+10,MapSize-12);
+				}
+				else{
+					UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",MapSize-12,1*trQuestVarGet("pos")*22+10);
+				}
+				xSetPointer(dPlayerData, 1*trQuestVarGet("Runner"+a));
+				xSetInt(dPlayerData, xPlayerUnitID, temp);
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitSetStance("Passive");
 			}
-			else if(iModulo(3, a) == 0){
-				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",10,1*trQuestVarGet("pos")*22+12);
-			}
-			else if(iModulo(2, a) == 0){
-				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",1*trQuestVarGet("pos")*22+10,MapSize-12);
-			}
-			else{
-				UnitCreate(1*trQuestVarGet("Runner"+a), "Villager Atlantean Hero",MapSize-12,1*trQuestVarGet("pos")*22+10);
-			}
-			xSetPointer(dPlayerData, 1*trQuestVarGet("Runner"+a));
-			xSetInt(dPlayerData, xPlayerUnitID, temp);
-			trUnitSelectClear();
-			trUnitSelect(""+temp);
-			trUnitSetStance("Passive");
 		}
 		
 		//Timer
@@ -579,9 +636,8 @@ highFrequency
 		gadgetRefresh("unitStatPanel");
 		for(p = 1 ; < cNumberNonGaiaPlayers){
 			trUnitSelectClear();
-			trUnitSelectByID(0);
+			trUnitSelect(""+LowestUnit);
 			trUnitChangeInArea(p,p, "Temple", "Temple", MapSize);
-			modifyProtounitAbsolute("Temple", p, 7, 125); //temple pop limit
 		}
 		if(AutoEscape){
 			xsEnableRule("AI_Activate");

@@ -25,6 +25,28 @@ int dEnemies = 0;
 int xUnitID = 0;
 int xIdleTimeout = 0;
 
+//---DATA
+int xWinEasy = 0;
+int xWinMedium = 0;
+int xWinHard = 0;
+int xWinTitan = 0;
+
+int xGamesEasy = 0;
+int xGamesMedium = 0;
+int xGamesHard = 0;
+int xGamesTitan = 0;
+
+int xHumanRunGames = 0;
+int xHumanRunWins = 0;
+
+int xHumanHuntGames = 0;
+int xHumanHuntWins = 0;
+int xHuntResign = 0;
+
+int xHumanHuntKills = 0;
+
+int xPwnedByYeeb = 0;
+
 /*DB HELP
 dPlayerData = xInitDatabase("playerData");
 xDrillPower = xInitAddInt(dPlayerData, "drillpower", 10);
@@ -191,6 +213,8 @@ int xMonumentID = 0;
 int xMonumentPos = 0;
 int xDecorMin = 0;
 
+int xWinStat = 0;
+
 rule setup_first_databases
 active
 highFrequency
@@ -208,6 +232,27 @@ highFrequency
 	xPlayerWallLevel = xInitAddInt(dPlayerData, "wall level", 1);
 	xCitizenRegen = xInitAddFloat(dPlayerData, "citizen regen", 0.0);
 	xJourneyOn = xInitAddBool(dPlayerData, "journey", false);
+	//---
+	xWinEasy = xInitAddInt(dPlayerData, "data", 0);
+	xWinMedium = xInitAddInt(dPlayerData, "data", 0);
+	xWinHard = xInitAddInt(dPlayerData, "data", 0);
+	xWinTitan = xInitAddInt(dPlayerData, "data", 0);
+	
+	xGamesEasy = xInitAddInt(dPlayerData, "data", 0);
+	xGamesMedium = xInitAddInt(dPlayerData, "data", 0);
+	xGamesHard = xInitAddInt(dPlayerData, "data", 0);
+	xGamesTitan = xInitAddInt(dPlayerData, "data", 0);
+	
+	xHumanRunGames = xInitAddInt(dPlayerData, "data", 0);
+	xHumanRunWins = xInitAddInt(dPlayerData, "data", 0);
+	
+	xHumanHuntGames = xInitAddInt(dPlayerData, "data", 0);
+	xHumanHuntWins = xInitAddInt(dPlayerData, "data", 0);
+	xHuntResign = xInitAddInt(dPlayerData, "data", 0);
+	
+	xHumanHuntKills = xInitAddInt(dPlayerData, "data", 0);
+	
+	xPwnedByYeeb = xInitAddInt(dPlayerData, "data", 0);
 	
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {

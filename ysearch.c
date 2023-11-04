@@ -129,6 +129,14 @@ highFrequency
 				}
 				break;
 			}
+			case kbGetProtoUnitID("Villager Atlantean"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitSetStance("Passive");
+				break;
+			}
+			
 			case kbGetProtoUnitID("Tower"):
 			{
 				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){

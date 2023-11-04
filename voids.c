@@ -1568,3 +1568,14 @@ void addCameraTrackWaypoint(){
 void playCameraTrack(int eventId = -1){
 	trackPlay(cameraTrackTime, eventId);
 }
+
+string Pluralise(string text = "ok", int pluralvar = 0){
+	string ending = text;
+	if(pluralvar == 1){
+		return(ending);
+	}
+	else{
+		ending = ending + "s";
+		return(ending);
+	}
+}

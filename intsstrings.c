@@ -83,6 +83,8 @@ int xOldAnim = 0;
 int xTarget = 0;
 int CyclePlayers = 0;
 int AutoHunterLevel = 1;
+int LowestUnit = 0;
+int GPAllowTime = 0;
 vector AIVector = vector(0,0,0);
 //MapSize
 int MapFactor(){
@@ -126,6 +128,7 @@ string handunit = "error";
 float timediff = 0.0;
 float timelast = 0.0;
 int RunnersDead = 0;
+string displayz = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 
 
 int CountBuildings(int p = 0){

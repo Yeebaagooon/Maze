@@ -1,7 +1,7 @@
 int PlayerCycle = 1;
 int ActionChoice = 0;
 int ChoiceEffect = 0;
-string YesChoiceUnitName = "Swordsman";
+string YesChoiceUnitName = "Trident Soldier";
 string NoChoiceUnitName = "Lancer";
 
 /*
@@ -703,13 +703,6 @@ inactive
 					trModifyProtounit("Wall Long", p, 26, 0.05);
 					trModifyProtounit("Gate", p, 26, 0.05);
 				}
-				/*trUnitSelectClear();
-				trUnitSelectByID(0);
-				trUnitChangeInArea(p,p, "Tower", "Titan Atlantean", MapSize);
-				trUnitSelectClear();
-				trUnitSelectByID(0);
-				trUnitChangeInArea(p,p, "Titan Atlantean", "Tower", MapSize);
-				unitTransform("Titan Gate Dead", "Tower");*/
 			}
 			case 4:
 			{

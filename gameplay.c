@@ -294,65 +294,62 @@ highFrequency
 			CyclePlayers = 1;
 		}
 		int p = CyclePlayers;
-		trUnitSelectClear();
-		trUnitSelectByID(0);
-		trDamageUnitsInArea(p, "Temple", MapSize, -100000);
 		xSetPointer(dPlayerData, p);
 		trUnitSelectClear();
-		trUnitSelectByID(0);
+		trUnitSelect(""+(1*trQuestVarGet("Temple"+p)));
+		trDamageUnitsInArea(p, "Temple", MapSize, -100000);
+		xUnitSelect(dPlayerData, xPlayerUnitID);
 		trUnitChangeInArea(p,p, "Wall Long", "Gate", MapSize);
-		//	trUnitChangeInArea(0,1, "Chicken Exploding", "Tower", MapSize);
-		if(xGetBool(dPlayerData, xPlayerAlive)){
-			if(playerIsPlaying(p)){
-				if(xGetBool(dPlayerData, xPlayerRunner) == true){
-					//lavacheck
-					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) == getTerrainSubType("Hades4Passable"))){
-						xUnitSelect(dPlayerData, xPlayerUnitID);
-						trDamageUnit(0.1*timediff);
-					}
-					//runner stat checker
-					if(trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"UnitKills")){
-						trQuestVarSet("P"+p+"UnitKills", trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills"));
+		if(xGetBool(dPlayerData, xPlayerAlive) == true){
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				//lavacheck
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) == getTerrainSubType("Hades4Passable"))){
+					xUnitSelect(dPlayerData, xPlayerUnitID);
+					trDamageUnit(0.1*timediff);
+				}
+				//runner stat checker
+				if(trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"UnitKills")){
+					trQuestVarSet("P"+p+"UnitKills", trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills"));
+					trSetCivilizationNameOverride(p, "Kills: " + 1*trQuestVarGet("P"+p+"UnitKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
+					gadgetRefresh("unitStatPanel");
+					if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"UnitKills")){
+						xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
+						xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
+						LevelUp(p);
 						trSetCivilizationNameOverride(p, "Kills: " + 1*trQuestVarGet("P"+p+"UnitKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 						gadgetRefresh("unitStatPanel");
-						if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"UnitKills")){
-							xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
-							xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
-							LevelUp(p);
-							trSetCivilizationNameOverride(p, "Kills: " + 1*trQuestVarGet("P"+p+"UnitKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
-							gadgetRefresh("unitStatPanel");
-						}
-					}
-					if((trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0) && (trPlayerUnitCountSpecific(p, "Hero Ragnorok") == 0)){
-						//Defeated
-						EvilLaugh();
-						PlayerLighting(p, 4.0);
-						OverlayTextPlayerColor(p);
-						trOverlayText(trStringQuestVarGet("p"+p+"name") + " has been " + DeadText(), 5.0, 404, 300, 3000);
-						trSetPlayerDefeated(p);
-						trPlayerKillAllBuildings(p);
-						trPlayerKillAllGodPowers(p);
-						trPlayerKillAllUnits(p);
-						xSetBool(dPlayerData, xPlayerAlive, false);
-						RunnersDead = RunnersDead+1;
 					}
 				}
-			}
-			else{
-				//runner resign
-				trSetPlayerDefeated(p);
-				trPlayerKillAllBuildings(p);
-				trPlayerKillAllGodPowers(p);
-				trPlayerKillAllUnits(p);
-				xSetBool(dPlayerData, xPlayerAlive, false);
-				RunnersDead = RunnersDead+1;
-				if(trCurrentPlayer() == p){
-					%
-					code("configSetInt(\"unbuildWoodCost\", 5);");
-					code("configSetInt(\"unbuildWoodCost1\", 5);");
-					code("configSetInt(\"unbuildWoodCost2\", 200);");
-					code("configSetInt(\"unbuildGoldCost2\", 100);");
-					%
+				if((trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0) && (trPlayerUnitCountSpecific(p, "Hero Ragnorok") == 0)){
+					//Defeated
+					EvilLaugh();
+					PlayerLighting(p, 4.0);
+					OverlayTextPlayerColor(p);
+					trOverlayText(trStringQuestVarGet("p"+p+"name") + " has been " + DeadText(), 5.0, 404, 300, 3000);
+					trSetPlayerDefeated(p);
+					trPlayerKillAllBuildings(p);
+					trPlayerKillAllGodPowers(p);
+					trPlayerKillAllUnits(p);
+					xSetBool(dPlayerData, xPlayerAlive, false);
+					RunnersDead = RunnersDead+1;
+					saveAllData();
+				}
+				if(kbIsPlayerResigned(p) == true){
+					//runner resign
+					trSetPlayerDefeated(p);
+					trPlayerKillAllBuildings(p);
+					trPlayerKillAllGodPowers(p);
+					trPlayerKillAllUnits(p);
+					xSetBool(dPlayerData, xPlayerAlive, false);
+					RunnersDead = RunnersDead+1;
+					if(trCurrentPlayer() == p){
+						%
+						code("configSetInt(\"unbuildWoodCost\", 5);");
+						code("configSetInt(\"unbuildWoodCost1\", 5);");
+						code("configSetInt(\"unbuildWoodCost2\", 200);");
+						code("configSetInt(\"unbuildGoldCost2\", 100);");
+						%
+					}
 				}
 			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
@@ -373,20 +370,42 @@ highFrequency
 				//hunter resign
 				if(AutoEscape == false){
 					if((playerIsPlaying(p) == false) || (trPlayerUnitCountSpecific(p, "Temple") == 0) ){
-						PlayerColouredChat(p, "I am a resigning n00b");
-						PlayerColouredChat(p, "Repeat hunter resigners will be locked out of the map");
+						xSetInt(dPlayerData, xHuntResign, xGetInt(dPlayerData, xHuntResign)+1);
 						trSetPlayerDefeated(p);
 						trPlayerKillAllBuildings(p);
 						trPlayerKillAllGodPowers(p);
 						trPlayerKillAllUnits(p);
 						xSetBool(dPlayerData, xPlayerAlive, false);
-						if(trCurrentPlayer() == p){
+						saveAllData();
+						/*if(trCurrentPlayer() == p){
 							%
 							code("configSetInt(\"unbuildWoodCost\", 5);");
 							code("configSetInt(\"unbuildWoodCost1\", 5);");
 							code("configSetInt(\"unbuildWoodCost2\", 200);");
 							code("configSetInt(\"unbuildGoldCost2\", 100);");
 							%
+						}*/
+						if(trCurrentPlayer() == p){
+							if(xGetInt(dPlayerData, xHuntResign) == 1){
+								uiMessageBox("Resigning ruins the map for others, shame on you");
+							}
+							if(xGetInt(dPlayerData, xHuntResign) == 2){
+								uiMessageBox("If you resign as hunter again you will be blocked from the map");
+							}
+							if(xGetInt(dPlayerData, xHuntResign) == 3){
+								uiMessageBox("You are now unable to play this map in human mode");
+							}
+						}
+						PlayerColouredChat(p, "I am a resigning n00b");
+						if(xGetInt(dPlayerData, xHuntResign) == 1){
+							PlayerColouredChat(p, "Repeat hunter resigners will be locked out of the map");
+						}
+						if(xGetInt(dPlayerData, xHuntResign) == 2){
+							PlayerColouredChat(p, "If I resign again I will be locked out of the map");
+						}
+						if(xGetInt(dPlayerData, xHuntResign) >= 3){
+							PlayerColouredChat(p, "I have ruined the player experience 3 times");
+							PlayerColouredChat(p, "I am now locked out of playing this map in future");
 						}
 					}
 				}
@@ -501,10 +520,15 @@ highFrequency
 				BoltUnitCountKills(p, kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)), 24.0, 1000);
 			}
 			if(xGetFloat(dPlayerData, xCitizenRegen) > 0){
-				trUnitSelectClear();
-				trUnitSelect(""+0);
+				xUnitSelect(dPlayerData, xPlayerUnitID);
 				trDamageUnitsInArea(p, "Villager Atlantean Hero", MapSize, xGetFloat(dPlayerData, xCitizenRegen)*-1);
 				trDamageUnitsInArea(p, "Villager Atlantean", MapSize, xGetFloat(dPlayerData, xCitizenRegen)*-1);
+				trUnitSelectClear();
+			}
+			if(trGetStatValue(p, 4) > 1*trQuestVarGet("P"+p+"KillValues")){
+				trQuestVarModify("P"+p+"KillValues", "+", 8000);
+				xSetInt(dPlayerData, xHumanHuntKills, xGetInt(dPlayerData, xHumanHuntKills)+1);
+				saveAllData();
 			}
 		}
 		if(xGetDatabaseCount(dImplode) > 0){
@@ -520,6 +544,9 @@ highFrequency
 					DamageUnitCountKills(xGetInt(dImplode, xImplodeOwner),kbGetBlockPosition(""+xGetInt(dImplode, xImplodeID)),0.5,2000.0);
 				}
 			}
+		}
+		if(trPlayerGetPopulation(cNumberNonGaiaPlayers) > 90+(10*MapFactor())){
+			trChatSendToPlayer(0,1, "Cap breach");
 		}
 		gadgetRefresh("unitStatPanel");
 	}
@@ -697,6 +724,7 @@ highFrequency
 				grantGodPowerNoRechargeNextPosition(p, "Reverse Time", MapFactor());
 				if(trCurrentPlayer() == p){
 					trMessageSetText("Deconstruction granted.", 8000);
+					trChatSend(0, "You get much more powerful units and powers later in the game");
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
@@ -880,6 +908,7 @@ highFrequency
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
 				if(AutoEscape){
 					grantGodPowerNoRechargeNextPosition(p, "create gold", 1);
+					grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
 					if(trCurrentPlayer() == p){
 						trMessageSetText("Gold mine = 30s temporary cliff wall", 8000);
 						playSound("\cinematics\17_in\weirdthing.mp3");
@@ -1277,13 +1306,44 @@ highFrequency
 	if(trTime() > gGameEndTime){
 		for(p = 1 ; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
+			if(AutoEscape){
+				if(trGetWorldDifficulty() == 0){
+					if(playerIsPlaying(p)){
+						xSetInt(dPlayerData, xWinEasy, xGetInt(dPlayerData, xWinEasy)+1);
+					}
+					PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + "'s auto escape easy wins: " + xGetInt(dPlayerData, xWinEasy) + "/" + xGetInt(dPlayerData, xGamesEasy));
+				}
+				if(trGetWorldDifficulty() == 1){
+					if(playerIsPlaying(p)){
+						xSetInt(dPlayerData, xWinMedium, xGetInt(dPlayerData, xWinMedium)+1);
+					}
+					PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + "'s auto escape medium wins: " + xGetInt(dPlayerData, xWinMedium) + "/" + xGetInt(dPlayerData, xGamesMedium));
+				}
+				if(trGetWorldDifficulty() == 2){
+					if(playerIsPlaying(p)){
+						xSetInt(dPlayerData, xWinHard, xGetInt(dPlayerData, xWinHard)+1);
+					}
+					PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + "'s auto escape hard wins: " + xGetInt(dPlayerData, xWinHard) + "/" + xGetInt(dPlayerData, xGamesHard));
+				}
+				if(trGetWorldDifficulty() == 3){
+					if(playerIsPlaying(p)){
+						xSetInt(dPlayerData, xWinTitan, xGetInt(dPlayerData, xWinTitan)+1);
+					}
+					PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + "'s auto escape titan wins: " + xGetInt(dPlayerData, xWinTitan) + "/" + xGetInt(dPlayerData, xGamesTitan));
+				}
+			}
+			else{
+				if(playerIsPlaying(p)){
+					xSetInt(dPlayerData, xHumanRunWins, xGetInt(dPlayerData, xHumanRunWins)+1);
+				}
+				PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + "'s wins as a human runner: " + xGetInt(dPlayerData, xHumanRunWins) + "/" + xGetInt(dPlayerData, xHumanRunGames));
+			}
 			if(xGetBool(dPlayerData, xPlayerRunner)){
 				trSetPlayerWon(p);
 			}
 			else{
 				trSetPlayerDefeated(p);
 			}
-			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + xGetInt(dPlayerData, xPlayerLevel));
 		}
 		xsEnableRule("GameEnd");
 		trShowWinLose("The runners have won!");
@@ -1303,7 +1363,12 @@ highFrequency
 			else{
 				trSetPlayerWon(p);
 			}
-			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + xGetInt(dPlayerData, xPlayerLevel));
+			if(AutoEscape == false){
+				if(xGetBool(dPlayerData, xPlayerRunner) == false){
+					xSetInt(dPlayerData, xHumanHuntWins, xGetInt(dPlayerData, xHumanHuntWins)+1);
+					PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + "'s wins as a human hunter: " + xGetInt(dPlayerData, xHumanHuntWins) + "/" + xGetInt(dPlayerData, xHumanHuntGames));
+				}
+			}
 		}
 		xsEnableRule("GameEnd");
 		trShowWinLose("The hunters have won!");
@@ -1323,6 +1388,7 @@ highFrequency
 		trChatSend(0, "<color=1,0.5,0>The map also works as an auto escape if the last slot is CPU");
 		trChatSend(0, "<color=1,0.5,0>You can also change map size for a bigger map");
 	}
+	saveAllData();
 	trEndGame();
 	%
 	code("configSetInt(\"unbuildWoodCost1\", 5);");

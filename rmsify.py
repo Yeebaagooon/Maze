@@ -30,7 +30,7 @@ import sys
 FILENAME = 'AMazeTest.xs'
 rmsFunc = 'rmsfunc.c'
 rmsMain = 'main.c'
-files = ['zshared.c', 'voids.c', 'globals.c', 'intsstrings.c', 'databases.c', 'text.c',  'choice.c', 
+files = ['globals.c', 'zshared.c', 'voids.c', 'intsstrings.c', 'databases.c', 'dataload.c', 'text.c',  'choice.c', 
 'setup.c', 'techstat.c', 'maze.c', 'relics.c', 'Pregame.c', 'gameplay.c', 'gameplayAI.c', 'ysearch.c', 'helpchat.c']
 
 #########################################

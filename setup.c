@@ -1,16 +1,3 @@
-/*
-trUnitChangeProtoUnit("Cinematic Block");
-trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
-trUnitSelectClear();
-trUnitSelect(""+a);
-trUnitSelectByQV("temp");
-trUnitDestroy();
-trOverlayText(3, "lol", 8000);
-trUIFadeToColor(0,0,0,800,100,false);
-trLetterBox(true);
-trSetSelectedScale(0.5,0.5,0.5);
-*/
-
 rule EventSetHandler
 active
 highFrequency
@@ -31,14 +18,16 @@ highFrequency
 runImmediately
 {
 	characterDialog("Waiting for everyone to connect.", " ", "icons\special e son of osiris icon 64");
-	trUIFadeToColor(0, 0, 0, 10000, 10000, false);
+	trUIFadeToColor(0, 0, 0, 1, 1, false);
 	trFadeOutAllSounds(0.1);
 	trFadeOutMusic(0.1);
 	trBlockAllSounds(true);
-	trArmyDispatch("0,0", "Revealer To Player", 1, MapSize/2, 0, MapSize/2, 0, false);
+	xsDisableRule("BasicVC1");
+	xsDisableRule("BasicVC2");
+	/*trArmyDispatch("0,0", "Revealer To Player", 1, MapSize/2, 0, MapSize/2, 0, false);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		deployLocHeading(0, p*2, "Victory Marker", p, 180);
-	}
+	}*/
 	trSetFogAndBlackmap(false, false);
 	%
 	code("map(\"space\",\"game\",\"uiFindType("+k+"Maceman"+k+");uiTransformSelectedUnit("+k+"Maceman Hero"+k+")\");");
@@ -63,7 +52,7 @@ highFrequency
 	xsDisableRule("BasicVC2");
 	//start fade to black
 	//trUIFadeToColor(1,0,0,0,0,true);
-	trShowImageDialog("world a road 4 intersection", MapName + " by Yeebaagooon");
+	/*trShowImageDialog("world a road 4 intersection", MapName + " by Yeebaagooon");
 	gadgetUnreal("ShowImageBox-BordersTop");
 	gadgetUnreal("ShowImageBox-BordersBottom");
 	gadgetUnreal("ShowImageBox-BordersLeft");
@@ -73,9 +62,9 @@ highFrequency
 	gadgetUnreal("ShowImageBox-BordersRightBottom");
 	gadgetUnreal("ShowImageBox-BordersRightTop");
 	gadgetUnreal("ShowImageBox-CloseButton");
-	pause(0);
+	pause(0);*/
 	characterDialog("Initialising map", " ", "world a road 4 intersection");
-	xsEnableRule("load1");
+	//xsEnableRule("load1");
 	xsDisableSelf();
 	%
 	for(p=1; <= cNumberNonGaiaPlayers) {
@@ -184,6 +173,7 @@ highFrequency
 		xsEnableRule("load4");
 		xsEnableRule("SetupChoiceUnits");
 		xsDisableSelf();
+		trFadeOutAllSounds(3);
 	}
 }
 
@@ -195,7 +185,7 @@ highFrequency
 		//fade out when loaded
 		trUnblockAllSounds();
 		trLetterBox(false);
-		trUIFadeToColor(0,0,0,1000,1,false);
+		trUIFadeToColor(0,0,0,1000,1000,false);
 		trOverlayTextColour(255, 125, 0);
 		gadgetUnreal("ShowImageBox");
 		trOverlayText(MapName, 8.0, 594, 28, 1000);

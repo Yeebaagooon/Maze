@@ -36,9 +36,9 @@ highFrequency
 		trUnforbidProtounit(p, "Wall Short");
 		trUnforbidProtounit(p, "Wall Medium");
 		trUnforbidProtounit(p, "Wall Long");
+		trUnforbidProtounit(p, "Maceman Hero");
 	}
 	trRateTrain(10);
-	//  trUnforbidProtounit(1*p, "Maceman Hero");
 	xsDisableSelf();
 }
 
@@ -61,8 +61,8 @@ void HunterUnit(string unit = "", int p = 0, int pop = 1){
 		modifyProtounitAbsolute(unit, p, 6, pop);
 	}
 	if(AutoEscape){
-		trModifyProtounit(unit, cNumberNonGaiaPlayers, 1, 0.5*trGetWorldDifficulty());
-		trModifyProtounit(unit, cNumberNonGaiaPlayers, 1, -0.5);
+		trModifyProtounit(unit, p, 1, 0.5*trGetWorldDifficulty());
+		trModifyProtounit(unit, p, 1, -0.5);
 	}
 }
 
@@ -239,9 +239,29 @@ highFrequency
 		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 17, -9999999999999999999.0);
 		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 18, -9999999999999999999.0);
 		trModifyProtounit(""+NoChoiceUnitName + " Hero", p, 19, -9999999999999999999.0);
+		trModifyProtounit("Maceman", p, 55, 4);
+		trModifyProtounit("Maceman", p, 1, -10);
+		trModifyProtounit("Maceman", p, 2, 9999999999999999999.0);
+		trModifyProtounit("Maceman", p, 2, -9999999999999999999.0);
+		trModifyProtounit("Maceman", p, 2, 0);
+		trModifyProtounit("Maceman Hero", p, 2, 9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 2, -9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 2, 0);
+		trModifyProtounit("Maceman Hero", p, 6, -100);
+		trModifyProtounit("Maceman Hero", p, 16, 9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 17, 9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 18, 9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 19, 9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 16, -9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 17, -9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 18, -9999999999999999999.0);
+		trModifyProtounit("Maceman Hero", p, 19, -9999999999999999999.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 27, 0.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 28, 0.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 29, 0.0);
+		MakeUnitFree("Villager Atlantean", p);
+		MakeUnitFree("Villager Atlantean Hero", p);
+		trModifyProtounit("Villager Atlantean Hero", p, 16, 8000);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);

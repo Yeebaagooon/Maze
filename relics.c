@@ -219,8 +219,7 @@ void RelicEffect(int p = 0, int effect = 0){
 		case RELIC_KILL_PHOENIX:
 		{
 			//trQuestVarModify("P"+p+"AddKills", "+", trPlayerUnitCountSpecific(cNumberNonGaiaPlayers, "Phoenix"));
-			trUnitSelectClear();
-			trUnitSelect(""+0);
+			xUnitSelect(dPlayerData, xPlayerUnitID);
 			trDamageUnitsInArea(cNumberNonGaiaPlayers, "Phoenix", MapSize, 10000);
 			//KillAllPhoenix(p);
 		}
