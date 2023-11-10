@@ -1,8 +1,20 @@
+void GPStopRapidFire(){
+	if(trGetWorldDifficulty() == 0){
+		GPBlockTime = trTime()+25;
+	}
+	if(trGetWorldDifficulty() == 1){
+		GPBlockTime = trTime()+15;
+	}
+	if(trGetWorldDifficulty() == 2){
+		GPBlockTime = trTime()+6;
+	}
+}
+
 bool GodPowerChance(int name = 0, int override = 0){
 	//chance of invoking GP for AI
 	AIVector = kbGetBlockPosition(""+name);
 	for(p = 1; < cNumberNonGaiaPlayers){
-		if(trCountUnitsInArea(""+name, p, "Monument", 30) != 0){
+		if(trCountUnitsInArea(""+name, p, "Monument", GPShieldRadius) != 0){
 			return(false);
 		}
 	}
@@ -12,64 +24,74 @@ bool GodPowerChance(int name = 0, int override = 0){
 	else{
 		trQuestVarSet("temp", 0);
 	}
-	if(1*trQuestVarGet("temp") < MapFactor()){
-		if(Between(AutoHunterLevel,2,4)){
-			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Undermine", MapFactor());
-			trUnitSelectClear();
-			trUnitSelect(""+name);
-			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Undermine", kbGetBlockPosition(""+name), vector(0,0,0));
-		}
-		if(Between(AutoHunterLevel,5,6)){
-			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Lightning Storm", MapFactor());
-			trUnitSelectClear();
-			trUnitSelect(""+name);
-			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Lightning Storm", kbGetBlockPosition(""+name), vector(0,0,0));
-		}
-		if(Between(AutoHunterLevel,7,8)){
-			if(trCheckGPActive("Tornado", cNumberNonGaiaPlayers) == false){
-				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tornado", MapFactor());
+	if(trTime() > GPBlockTime){
+		if(1*trQuestVarGet("temp") < MapFactor()){
+			if(Between(AutoHunterLevel,2,4)){
+				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Undermine", MapFactor());
 				trUnitSelectClear();
 				trUnitSelect(""+name);
-				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tornado", kbGetBlockPosition(""+name), vector(0,0,0));
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Undermine", kbGetBlockPosition(""+name), vector(0,0,0));
 			}
-		}
-		if(Between(AutoHunterLevel,9,10)){
-			grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tartarian Gate", MapFactor());
-			trUnitSelectClear();
-			trUnitSelect(""+name);
-			trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
-		}
-		if(AutoHunterLevel > 10){
-			trQuestVarSetFromRand("temp", 1, AutoHunterLevel);
-			if(1*trQuestVarGet("temp") <= 2){
+			if(Between(AutoHunterLevel,5,6)){
+				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Lightning Storm", MapFactor());
+				trUnitSelectClear();
+				trUnitSelect(""+name);
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Lightning Storm", kbGetBlockPosition(""+name), vector(0,0,0));
+			}
+			if(Between(AutoHunterLevel,7,8)){
+				if(trCheckGPActive("Tornado", cNumberNonGaiaPlayers) == false){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tornado", MapFactor());
+					trUnitSelectClear();
+					trUnitSelect(""+name);
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tornado", kbGetBlockPosition(""+name), vector(0,0,0));
+				}
+			}
+			if(Between(AutoHunterLevel,9,10)){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tartarian Gate", MapFactor());
 				trUnitSelectClear();
 				trUnitSelect(""+name);
-				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
-			}
-			else if(1*trQuestVarGet("temp") <= 6){
-				if(trCheckGPActive("Meteor", cNumberNonGaiaPlayers) == false){
-					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
-					trUnitSelectClear();
-					trUnitSelect(""+name);
-					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
+				if(trPlayerUnitCountSpecific(cNumberNonGaiaPlayers, "Tartarian Gate") == 0){
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
 				}
 			}
-			else if(1*trQuestVarGet("temp") < 10){
-				if(trCheckGPActive("Earthquake", cNumberNonGaiaPlayers) == false){
-					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
+			if(AutoHunterLevel > 10){
+				trQuestVarSetFromRand("temp", 1, AutoHunterLevel);
+				if(1*trQuestVarGet("temp") <= 2){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tartarian Gate", MapFactor());
 					trUnitSelectClear();
 					trUnitSelect(""+name);
-					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+					if(trPlayerUnitCountSpecific(cNumberNonGaiaPlayers, "Tartarian Gate") == 0){
+						trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
+					}
+				}
+				else if(1*trQuestVarGet("temp") <= 6){
+					if(trCheckGPActive("Meteor", cNumberNonGaiaPlayers) == false){
+						grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Meteor", MapFactor());
+						trUnitSelectClear();
+						trUnitSelect(""+name);
+						trTechInvokeGodPower(cNumberNonGaiaPlayers, "Meteor", kbGetBlockPosition(""+name), vector(0,0,0));
+					}
+				}
+				else if(1*trQuestVarGet("temp") < 10){
+					if(trCheckGPActive("Earthquake", cNumberNonGaiaPlayers) == false){
+						grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Earthquake", MapFactor());
+						trUnitSelectClear();
+						trUnitSelect(""+name);
+						trTechInvokeGodPower(cNumberNonGaiaPlayers, "Earthquake", kbGetBlockPosition(""+name), vector(0,0,0));
+					}
+				}
+				else if(1*trQuestVarGet("temp") > 10){
+					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Vortex", MapFactor());
+					trUnitSelectClear();
+					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Vortex", kbGetBlockPosition(""+name), vector(0,0,0));
 				}
 			}
-			else if(1*trQuestVarGet("temp") > 10){
-				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Vortex", MapFactor());
-				trUnitSelectClear();
-				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Vortex", kbGetBlockPosition(""+name), vector(0,0,0));
-			}
+			GPStopRapidFire();
+			return(true);
 		}
-		return(true);
+	}
+	else{
+		return(false);
 	}
 }
 
@@ -84,26 +106,28 @@ bool AI_Send_Death_Squad(int name = 0, int override = 0){
 		}
 		if(1*trQuestVarGet("temp") < 1){
 			trQuestVarSetFromRand("temp", 1, 2);
-			if(1*trQuestVarGet("temp") == 1){
-				for(n = 1; < 5){
-					temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
-					xAddDatabaseBlock(dEnemies, true);
-					xSetInt(dEnemies, xUnitID, temp);
-					xSetInt(dEnemies, xIdleTimeout, 0);
-					trUnitSelectClear();
-					trUnitSelect(""+temp);
-					trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
+			if(trPlayerUnitCount(cNumberNonGaiaPlayers) < 70+(10*MapFactor())){
+				if(1*trQuestVarGet("temp") == 1){
+					for(n = 1; < 5){
+						temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
+						xAddDatabaseBlock(dEnemies, true);
+						xSetInt(dEnemies, xUnitID, temp);
+						xSetInt(dEnemies, xIdleTimeout, 0);
+						trUnitSelectClear();
+						trUnitSelect(""+temp);
+						trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
+					}
 				}
-			}
-			else{
-				for(n = 1; < 5){
-					temp = UnitCreate(cNumberNonGaiaPlayers, handunit,(MapSize/2)+5,(MapSize/2)+5);
-					xAddDatabaseBlock(dEnemies, true);
-					xSetInt(dEnemies, xUnitID, temp);
-					xSetInt(dEnemies, xIdleTimeout, 0);
-					trUnitSelectClear();
-					trUnitSelect(""+temp);
-					trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
+				else{
+					for(n = 1; < 5){
+						temp = UnitCreate(cNumberNonGaiaPlayers, handunit,(MapSize/2)+5,(MapSize/2)+5);
+						xAddDatabaseBlock(dEnemies, true);
+						xSetInt(dEnemies, xUnitID, temp);
+						xSetInt(dEnemies, xIdleTimeout, 0);
+						trUnitSelectClear();
+						trUnitSelect(""+temp);
+						trUnitMoveToPoint(xsVectorGetX(kbGetBlockPosition(""+name)),5,xsVectorGetZ(kbGetBlockPosition(""+name)),-1,true);
+					}
 				}
 			}
 			return(true);
@@ -195,7 +219,7 @@ highFrequency
 	if(1*trQuestVarGet("SpawnTime") < trTime()){
 		trQuestVarSet("SpawnTime", trTime()+1);
 		int temp = -1;
-		if(trPlayerGetPopulation(cNumberNonGaiaPlayers) < 70+(10*MapFactor())){
+		if(trPlayerUnitCount(cNumberNonGaiaPlayers) < 70+(10*MapFactor())){
 			//spawn
 			temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
 			xAddDatabaseBlock(dEnemies, true);
@@ -547,7 +571,9 @@ highFrequency
 					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tartarian Gate", MapFactor());
 					trUnitSelectClear();
 					trUnitSelect(""+name);
-					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
+					if(trPlayerUnitCountSpecific(cNumberNonGaiaPlayers, "Tartarian Gate") == 0){
+						trTechInvokeGodPower(cNumberNonGaiaPlayers, "Tartarian Gate", kbGetBlockPosition(""+name), vector(0,0,0));
+					}
 				}
 				else if(1*trQuestVarGet("temp") <= 7){
 					grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Tornado", MapFactor());
@@ -586,25 +612,28 @@ rule TowerDB
 inactive
 highFrequency
 {
-	//DAMAGE BECAUSE NOT EVERY LOOP, NEED EACH ONE TO HAVE A TIME LAST CHECKED
-	//so the damage would be like trTimeMS() - xGetVar(lava, xPreviousTime)
 	if (xGetDatabaseCount(dTowers) > 0) {
-		xDatabaseNext(dTowers);
-		xUnitSelect(dTowers, xTowerName);
-		int p = xGetInt(dTowers,xPlayerOwner);
-		if (trUnitAlive() == false) {
-			xFreeDatabaseBlock(dTowers);
-		}
-		else{
-			if(trCheckGPActive("Restoration", p) == false){
-				int x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
-				int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
-				if((trGetTerrainType(x,z) == 5) && (trGetTerrainSubType(x,z) == 7)){
-					//Hades4Passable
-					xUnitSelect(dTowers, xTowerName);
-					trDamageUnit(1.001*timediff);
+		for(n = 1 ; < xsMin(10, xGetDatabaseCount(dTowers))){
+			xDatabaseNext(dTowers);
+			xUnitSelect(dTowers, xTowerName);
+			int p = xGetInt(dTowers,xPlayerOwner);
+			if (trUnitAlive() == false) {
+				xFreeDatabaseBlock(dTowers);
+			}
+			else{
+				if (xGetDatabaseCount(dVolcanoDB) > 0) {
+					if(trCheckGPActive("Restoration", p) == false){
+						int x = xsVectorGetX(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
+						int z = xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dTowers, xTowerName)))/2;
+						if((trGetTerrainType(x,z) == 5) && (trGetTerrainSubType(x,z) == 7)){
+							//Hades4Passable
+							xUnitSelect(dTowers, xTowerName);
+							trDamageUnit((trTimeMS()-xGetInt(dTowers, xLastCheck)*0.1));
+						}
+					}
 				}
 			}
+			xSetInt(dTowers, xLastCheck, trTimeMS());
 		}
 	}
 }
@@ -841,37 +870,13 @@ highFrequency
 			xUnitSelect(dMonuments, xMonumentName);
 			if(trUnitDead()){
 				temp = xGetInt(dMonuments, xDecorMin);
-				for(b = 0; < 10){
+				for(b = 0; < 15){
 					trUnitSelectClear();
 					trUnitSelect(""+(temp+b));
 					trUnitChangeProtoUnit("Rocket");
 				}
 				xFreeDatabaseBlock(dMonuments);
 			}
-			/*else{
-				//debugLog(""+xGetVector(dMonuments, xMonumentPos) + " | " + kbGetBlockPosition(""+trGetUnitScenarioNameNumber(xGetInt(dMonuments, xMonumentID))));
-				if(xGetVector(dMonuments, xMonumentPos) != kbGetBlockPosition(""+xGetInt(dMonuments, xMonumentName))){
-					//redo circle
-					trUnitSelectClear();
-					temp = xGetInt(dMonuments, xDecorMin);
-					for(b = 0; < 10){
-						trUnitSelectClear();
-						trUnitSelect(""+(temp+b));
-						trUnitChangeProtoUnit("Rocket");
-					}
-					xSetVector(dMonuments, xMonumentPos, kbGetBlockPosition(""+xGetInt(dMonuments, xMonumentName)));
-					trVectorQuestVarSet("Monument", xGetVector(dMonuments, xMonumentPos));
-					trVectorQuestVarSet("dir", xsVectorSet(0, 0, 30));
-					float baseCos = xsCos(6.283185 / 10);
-					float baseSin = xsSin(6.283185 / 10);
-					for(b=1; <= 10) {
-						trVectorQuestVarSet("base", trVectorQuestVarGet("Monument") + trVectorQuestVarGet("dir"));
-						temp = trGetNextUnitScenarioNameNumber();
-						UnitCreate(0, "UI Range Indicator Norse SFX", trVectorQuestVarGetX("base"), trVectorQuestVarGetZ("base"), 0);
-						trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
-					}
-				}
-			}*/
 		}
 	}
 }

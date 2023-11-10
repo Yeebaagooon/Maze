@@ -66,6 +66,7 @@ const int RunnerRewardL6 = 38;
 const int RunnerRewardL7 = 43;
 const int RunnerRewardL8 = 45;
 const int RunnerRewardL9 = 49;
+const int RunnerRewardL10 = 53;
 
 string RewardText(int r = 0){
 	string reward = "You waited too long";
@@ -215,7 +216,7 @@ string RewardText(int r = 0){
 		}
 		case 36:
 		{
-			reward = "+6 citizen LOS";
+			reward = "+12 citizen LOS";
 		}
 		case 37:
 		{
@@ -268,14 +269,31 @@ string RewardText(int r = 0){
 		{
 			reward = "2x Temporary invulnerability power";
 		}
-		//NEXT LEVEL
+		//Unique to highest level only
 		case 49:
 		{
-			reward = "+1000 sky passage hp";
+			reward = "+2500 sky passage hp";
 		}
 		case 50:
 		{
 			reward = "+8 tower attack";
+		}
+		case 51:
+		{
+			reward = "+5 hp/s citizen regen";
+		}
+		case 52:
+		{
+			reward = "+1 tower projectile";
+		}
+		case 53:
+		{
+			if(AutoEscape){
+				reward = "Flare nearest relic";
+			}
+			else{
+				reward = "Death tower (5s recharge)";
+			}
 		}
 	}
 	return(reward);
@@ -288,6 +306,7 @@ const int HunterRewardL3 = 27;
 const int HunterRewardL4 = 37;
 const int HunterRewardL5 = 40;
 const int HunterRewardL6 = 50;
+const int HunterRewardL7 = 54;
 
 string RewardTextHunter(int r = 0){
 	string reward = "You waited too long";
@@ -494,6 +513,22 @@ string RewardTextHunter(int r = 0){
 		case 50:
 		{
 			reward = ""+MapFactor() + "x Earthquake power";
+		}
+		case 51:
+		{
+			reward = "3x Lampades";
+		}
+		case 52:
+		{
+			reward = "3x Manticore";
+		}
+		case 53:
+		{
+			reward = "3x Phoenix";
+		}
+		case 54:
+		{
+			reward = "Guardian";
 		}
 		//Have EQ here and lampades
 		
@@ -865,8 +900,8 @@ inactive
 			}
 			case 36:
 			{
-				trModifyProtounit("Villager Atlantean Hero", p, 2, 6);
-				trModifyProtounit("Villager Atlantean", p, 2, 6);
+				trModifyProtounit("Villager Atlantean Hero", p, 2, 12);
+				trModifyProtounit("Villager Atlantean", p, 2, 12);
 			}
 			case 37:
 			{
@@ -924,6 +959,52 @@ inactive
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Restoration", 2);
 			}
+			case 49:
+			{
+				trModifyProtounit("Sky Passage", p, 0, 2500);
+			}
+			case 50:
+			{
+				trModifyProtounit("Tower", p, 28, 8);
+			}
+			case 51:
+			{
+				xSetFloat(dPlayerData,xCitizenRegen,xGetFloat(dPlayerData, xCitizenRegen)+5.0);
+			}
+			case 52:
+			{
+				trModifyProtounit("Tower", p, 13, 1);
+			}
+			case 53:
+			{
+				if(AutoEscape){
+					float dist = 0.0;
+					float closest = 100000.0;
+					int closestint = 0;
+					for(a = xGetDatabaseCount(dRelicTypes); > 0){
+						xDatabaseNext(dRelicTypes);
+						xUnitSelect(dRelics, xRelicID);
+						//look for closest
+						dist = trUnitDistanceToUnit(""+xGetInt(dPlayerData, xPlayerUnitID));
+						if(dist < closest){
+							closest = dist;
+							closestint = xGetInt(dRelics, xRelicID);
+						}
+					}
+					trMinimapFlare(p, 10, kbGetBlockPosition(""+closestint) , false);
+				}
+				else{
+					xSetPointer(dPlayerData, p);
+					yFindLatest("qv", "Villager Atlantean Hero", p);
+					id = UnitCreate(p, "Tower Mirror", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					trUnitSelectClear();
+					trUnitSelectByQV("qv");
+					trImmediateUnitGarrison(""+id);
+					trUnitSelectClear();
+					trUnitSelect(""+id);
+					trUnitChangeProtoUnit("Tower Mirror");
+				}
+			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);
 		trQuestVarSet("P"+ActionChoice+"NoAction", 0);
@@ -947,6 +1028,7 @@ inactive
 	//xsSetContextPlayer(0);
 	//[REMEMBER THIS IS OPEN AND MAY NEED PLAYER SPECIFIC TAG]
 	if(ActionChoice != 0){
+		int id = 0;
 		int p = ActionChoice;
 		xSetPointer(dPlayerData, p);
 		int temp = 0;
@@ -1097,7 +1179,11 @@ inactive
 			}
 			case 32:
 			{
-				UnitCreate(p, "Huskarl", MapSize, MapSize);
+				id = UnitCreate(p, "Revealer To Player", MapSize/2,MapSize/2);
+				xAddDatabaseBlock(dDestroyMe, true);
+				xSetInt(dDestroyMe, xDestroyName, id);
+				xSetInt(dDestroyMe, xDestroyTime, trTimeMS()+2000);
+				trModifyProtounit("Revealer To Player",p,2,MapSize);
 			}
 			case 33:
 			{
@@ -1229,6 +1315,96 @@ inactive
 				grantGodPowerNoRechargeNextPosition(p, "Earthquake", MapFactor());
 				if(AutoEscape){
 					xsEnableRule("AI_Force_Power");
+				}
+			}
+			case 51:
+			{
+				if(AutoEscape){
+					temp = UnitCreate(cNumberNonGaiaPlayers, "Lampades",(MapSize/2)+5,(MapSize/2)+5);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, temp);
+					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+					trQuestVarSetFromRand("x", 0 , MapSize);
+					trQuestVarSetFromRand("z", 0 , MapSize);
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+				}
+				else{
+					temp = yFindLatest("qv", "Temple", p);
+					UnitCreate(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreate(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreate(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					if(trCurrentPlayer() == p){
+						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
+					}
+				}
+			}
+			case 52:
+			{
+				if(AutoEscape){
+					temp = UnitCreate(cNumberNonGaiaPlayers, "Manticore",(MapSize/2)+5,(MapSize/2)+5);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, temp);
+					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+					trQuestVarSetFromRand("x", 0 , MapSize);
+					trQuestVarSetFromRand("z", 0 , MapSize);
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+				}
+				else{
+					temp = yFindLatest("qv", "Temple", p);
+					UnitCreate(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreate(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreate(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					if(trCurrentPlayer() == p){
+						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
+					}
+				}
+			}
+			case 53:
+			{
+				if(AutoEscape){
+					temp = UnitCreate(cNumberNonGaiaPlayers, "Phoenix",(MapSize/2)+5,(MapSize/2)+5);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, temp);
+					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+					trQuestVarSetFromRand("x", 0 , MapSize);
+					trQuestVarSetFromRand("z", 0 , MapSize);
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+				}
+				else{
+					temp = yFindLatest("qv", "Temple", p);
+					UnitCreate(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreate(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreate(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					if(trCurrentPlayer() == p){
+						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
+					}
+				}
+			}
+			case 54:
+			{
+				if(AutoEscape){
+					temp = UnitCreate(cNumberNonGaiaPlayers, "Guardian XP",(MapSize/2)+5,(MapSize/2)+5);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, temp);
+					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+					trQuestVarSetFromRand("x", 0 , MapSize);
+					trQuestVarSetFromRand("z", 0 , MapSize);
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+				}
+				else{
+					temp = yFindLatest("qv", "Temple", p);
+					UnitCreate(p, "Guardian XP", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					if(trCurrentPlayer() == p){
+						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
+					}
 				}
 			}
 		}

@@ -2,13 +2,11 @@
 BUG
 multi level
 
-Phoenix kill relic does not impact count currently, don't do qv use existing kb fx
+Stop mine on cliff - xTest that this fix works
+Enemy attack maceman, end maceman timer
 
-SPECIAL UNIT
-manticore
-lampades
-mummy
-fire giant
+titan too easy?
+
 
 Reward L15 for runners
 More vision easy/mod for runners
@@ -65,7 +63,6 @@ TEMPLE SHIT
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
 int MapSkin = 0;
-//1 = greek, 2 = eggy, 3 = norse, 4 = atlantean
 string MapVersion = "Test Version";
 string MapName = "Maze Escape";
 bool ForceAutoOff = false;
@@ -84,6 +81,8 @@ int xTarget = 0;
 int CyclePlayers = 0;
 int AutoHunterLevel = 1;
 vector AIVector = vector(0,0,0);
+int GPBlockTime = 0;
+int GPShieldRadius = 30;
 //MapSize
 int MapFactor(){
 	if(MapSize == 398){

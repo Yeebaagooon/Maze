@@ -61,8 +61,8 @@ void HunterUnit(string unit = "", int p = 0, int pop = 1){
 		modifyProtounitAbsolute(unit, p, 6, pop);
 	}
 	if(AutoEscape){
-		trModifyProtounit(unit, cNumberNonGaiaPlayers, 1, 0.5*trGetWorldDifficulty());
-		trModifyProtounit(unit, cNumberNonGaiaPlayers, 1, -0.5);
+		trModifyProtounit(unit, p, 1, 0.5*trGetWorldDifficulty());
+		trModifyProtounit(unit, p, 1, -0.5);
 	}
 }
 
@@ -163,7 +163,8 @@ highFrequency
 		modifyProtounitAbsolute("Stymphalian Bird", p, 11, 20);
 		modifyProtounitAbsolute("Stymphalian Bird", p, 13, 0);
 		modifyProtounitAbsolute("Raven", p, 0, 10000);
-		modifyProtounitAbsolute("Raven", p, 1, 10);
+		modifyProtounitAbsolute("Raven", p, 1, 5);
+		modifyProtounitAbsolute("Raven", p, 2, 20);
 		modifyProtounitAbsolute("Fenris Wolf", p, 0, 2500);
 		modifyProtounitAbsolute("Fenris Wolf", p, 1, 6);
 		modifyProtounitAbsolute("Fenris Wolf", p, 2, 30);
@@ -242,6 +243,13 @@ highFrequency
 		modifyProtounitAbsolute("Bolt Strike", p, 27, 0.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 28, 0.0);
 		modifyProtounitAbsolute("Bolt Strike", p, 29, 0.0);
+		MakeUnitFree("Villager Atlantean", p);
+		MakeUnitFree("Villager Atlantean Hero", p);
+		modifyProtounitAbsolute("Villager Atlantean Hero", p, 26, 0.9);
+		modifyProtounitAbsolute("Villager Atlantean", p, 26, 0.8);
+		modifyProtounitAbsolute("Monument", p, 2, GPShieldRadius+2);
+		modifyProtounitAbsolute("Villager Atlantean Hero", p, 0, 250);
+		//trModifyProtounit("Gold Mine Dwarven", p, 55, 4);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);
@@ -249,6 +257,9 @@ highFrequency
 	trModifyProtounit("Revealer to Player", 0, 2, MapSize+50);
 	modifyProtounitAbsolute("Titan Atlantean", 0, 2, 0.0);
 	modifyProtounitAbsolute("Titan Gate Dead", 0, 2, 0.0);
+	trModifyProtounit("Tartarian Gate", cNumberNonGaiaPlayers, 55, 4);
+	trModifyProtounit("Tartarian Gate Birth", cNumberNonGaiaPlayers, 55, 4);
+	//trModifyProtounit("Gold Mine Dwarven", 0, 55, 4);
 	xsDisableSelf();
 }
 
@@ -289,5 +300,5 @@ Hand Attack Crush=29
 Ranged Attack Hack=30
 Ranged Attack Pierce=31
 Ranged Attack Crush=32
-Movetype = 55
+Movetype = 55 | 4 = air
 */

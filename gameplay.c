@@ -153,18 +153,10 @@ void LevelUp(int p = 0){
 		}
 		//high
 		else if(xGetInt(dPlayerData, xPlayerLevel) > 9){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL5, (RunnerRewardL9-1));
+			trQuestVarSetFromRand("CL"+p, RunnerRewardL7, (RunnerRewardL10));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL9);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL9){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL9-1);
-					}
-				}
+				trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL10);
 			}
 		}
 	}
@@ -251,12 +243,28 @@ void LevelUp(int p = 0){
 				//trChatSend(0, "Hunter level" + AutoHunterLevel);
 			}
 		}
-		else{
-			//high
-			trQuestVarSetFromRand("CL"+p, HunterRewardL3, (HunterRewardL5-1));
+		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 14, 15)){
+			trQuestVarSetFromRand("CL"+p, HunterRewardL6, (HunterRewardL7-1));
 			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
 			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, HunterRewardL3, (HunterRewardL5-1));
+				trQuestVarSetFromRand("CR"+p, HunterRewardL6, (HunterRewardL7-1));
+			}
+			if(AutoEscape){
+				//Auto reward for hunter CPU AI
+				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+				ActionChoice = p;
+				xsEnableRule("HunterConsequences");
+				AutoHunterLevel=AutoHunterLevel+1;
+				//trChatSend(0, "Hunter level" + AutoHunterLevel);
+			}
+		}
+		else{
+			//high
+			trQuestVarSetFromRand("CL"+p, HunterRewardL5, (HunterRewardL7));
+			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+				trQuestVarSetFromRand("CR"+p, HunterRewardL5, (HunterRewardL7));
 			}
 			if(AutoEscape){
 				//Auto reward for hunter CPU AI
@@ -374,19 +382,19 @@ highFrequency
 				if(AutoEscape == false){
 					if((playerIsPlaying(p) == false) || (trPlayerUnitCountSpecific(p, "Temple") == 0) ){
 						PlayerColouredChat(p, "I am a resigning n00b");
-						PlayerColouredChat(p, "Repeat hunter resigners will be locked out of the map");
 						trSetPlayerDefeated(p);
 						trPlayerKillAllBuildings(p);
 						trPlayerKillAllGodPowers(p);
 						trPlayerKillAllUnits(p);
 						xSetBool(dPlayerData, xPlayerAlive, false);
 						if(trCurrentPlayer() == p){
-							%
+							uiMessageBox("Resigning ruins the fun for everyone, fuck you.");
+							/*%
 							code("configSetInt(\"unbuildWoodCost\", 5);");
 							code("configSetInt(\"unbuildWoodCost1\", 5);");
 							code("configSetInt(\"unbuildWoodCost2\", 200);");
 							code("configSetInt(\"unbuildGoldCost2\", 100);");
-							%
+							%*/
 						}
 					}
 				}
@@ -517,7 +525,10 @@ highFrequency
 					xFreeDatabaseBlock(dImplode);
 				}
 				else{
-					DamageUnitCountKills(xGetInt(dImplode, xImplodeOwner),kbGetBlockPosition(""+xGetInt(dImplode, xImplodeID)),0.5,2000.0);
+					for(x = 1; < cNumberNonGaiaPlayers){
+						trDamageUnitsInArea(x, "All", 4, -100);
+					}
+					DamageUnitCountKills(xGetInt(dImplode, xImplodeOwner),kbGetBlockPosition(""+xGetInt(dImplode, xImplodeID)),0.5,40000.0);
 				}
 			}
 		}
@@ -639,8 +650,15 @@ highFrequency
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
-			//grantGodPowerNoRechargeNextPosition(p, "Rain", 2);
-			//grantGodPowerNoRechargeNextPosition(p, "Tartarian Gate", 1);
+			//TITAN STATS
+			if(trGetWorldDifficulty() == 3){
+				modifyProtounitAbsolute("Tower", p, 0, 300);
+				modifyProtounitAbsolute("Tower", p, 31, 10);
+				modifyProtounitAbsolute("Villager Atlantean Hero", p, 0, 200);
+			}
+			if(trGetWorldDifficulty() == 0){
+				trModifyProtounit("Vision Revealer", p, 2, 10);
+			}
 		}
 	}
 	%
@@ -810,7 +828,6 @@ highFrequency
 			}
 		}
 		if(AutoEscape){
-			MaxRelics = MaxRelics-1;
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
 					trQuestVarSetFromRand("temp",8,14);
@@ -875,6 +892,9 @@ highFrequency
 				}
 				if(AutoEscape){
 					trTechInvokeGodPower(cNumberNonGaiaPlayers, "Eclipse", xsVectorSet(MapSize,0,MapSize), vector(0,0,0));
+					if(trGetWorldDifficulty() == 3){
+						trSetDisableGPBlocking(false);
+					}
 				}
 			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
@@ -946,6 +966,9 @@ highFrequency
 				}
 			}
 		}
+		if(trGetWorldDifficulty() == 3){
+			trSetDisableGPBlocking(true);
+		}
 		xsDisableSelf();
 	}
 }
@@ -982,7 +1005,6 @@ highFrequency
 			}
 		}
 		if(AutoEscape){
-			MaxRelics = MaxRelics-1;
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
 					trQuestVarSetFromRand("temp",15,21);
@@ -1087,10 +1109,9 @@ highFrequency
 				trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Mountain Giant", "Phoenix", MapSize);
 				trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Behemoth", "Phoenix", MapSize);
 			}
-			MaxRelics = MaxRelics-1;
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
-					trQuestVarSetFromRand("temp",15,21);
+					trQuestVarSetFromRand("temp",15,21+3-trGetWorldDifficulty());
 					CreateRelic(1*trQuestVarGet("temp"));
 				}
 			}
@@ -1125,7 +1146,14 @@ highFrequency
 			if(trGetWorldDifficulty() >= 1){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Snow Storm", 1);
 				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Snow Storm", xsVectorSet(MapSize,0,MapSize), vector(0,0,0));
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Snow Storm", xsVectorSet(MapSize/2,0,MapSize/2), vector(0,0,0));
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Snow Storm", xsVectorSet(5,0,MapSize/2), vector(0,0,0));
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Snow Storm", xsVectorSet(5,0,5), vector(0,0,0));
+				trTechInvokeGodPower(cNumberNonGaiaPlayers, "Snow Storm", xsVectorSet(MapSize/2,0,5), vector(0,0,0));
 				playSound("\xpack\xcinematics\1_in\wolfhowl.mp3");
+				if(trGetWorldDifficulty() == 3){
+					trSetDisableGPBlocking(false);
+				}
 				for(p = 1; < cNumberNonGaiaPlayers){
 					xSetPointer(dPlayerData, p);
 					//spawn
@@ -1152,6 +1180,7 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*18){
+		int temp = 0;
 		trQuestVarSetFromRand("specialunit", 1, 2);
 		if(1*trQuestVarGet("specialunit") == 1){
 			rangedunit = "Lampades";
@@ -1188,6 +1217,22 @@ highFrequency
 						playSound("ageadvance.wav");
 					}
 				}
+			}
+		}
+		if(AutoEscape){
+			for(a = trPlayerUnitCount(cNumberNonGaiaPlayers) ; < 60){
+				temp = UnitCreate(cNumberNonGaiaPlayers, rangedunit,(MapSize/2)+5,(MapSize/2)+5);
+				xAddDatabaseBlock(dEnemies, true);
+				xSetInt(dEnemies, xUnitID, temp);
+				xSetInt(dEnemies, xIdleTimeout, trTime()+30);
+				trQuestVarSetFromRand("x", 0 , MapSize);
+				trQuestVarSetFromRand("z", 0 , MapSize);
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitMoveToPoint(1*trQuestVarGet("x"),5,1*trQuestVarGet("z"),-1,true);
+			}
+			if(trGetWorldDifficulty() == 3){
+				trSetDisableGPBlocking(true);
 			}
 		}
 		xsDisableSelf();

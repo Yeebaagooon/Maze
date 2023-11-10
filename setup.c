@@ -1,16 +1,3 @@
-/*
-trUnitChangeProtoUnit("Cinematic Block");
-trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
-trUnitSelectClear();
-trUnitSelect(""+a);
-trUnitSelectByQV("temp");
-trUnitDestroy();
-trOverlayText(3, "lol", 8000);
-trUIFadeToColor(0,0,0,800,100,false);
-trLetterBox(true);
-trSetSelectedScale(0.5,0.5,0.5);
-*/
-
 rule EventSetHandler
 active
 highFrequency
@@ -144,7 +131,7 @@ highFrequency
 			case 6:
 			{
 				CliffTerrain = "HadesCliff";
-				RoadTerrain = "UnderwaterRockC";
+				RoadTerrain = "UnderwaterRockE";
 			}
 			case 7:
 			{
@@ -161,6 +148,16 @@ highFrequency
 {
 	characterDialog("Loading map..", ""+MapVersion+"", "icons\special e son of osiris icon 64");
 	xsEnableRule("load3");
+	trSetDisableGPBlocking(true);
+	if(trGetWorldDifficulty() == 0){
+		GPShieldRadius = 45;
+	}
+	if(trGetWorldDifficulty() == 1){
+		GPShieldRadius = 40;
+	}
+	if(trGetWorldDifficulty() == 2){
+		GPShieldRadius = 35;
+	}
 	xsEnableRule("Stats");
 	xsEnableRule("Technologies");
 	xsDisableSelf();

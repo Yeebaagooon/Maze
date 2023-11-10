@@ -149,6 +149,9 @@ void RelicEffect(int p = 0, int effect = 0){
 		case RELIC_PEGASUS:
 		{
 			UpgradeTest(p, 18);
+			trModifyProtounit("Pegasus", p, 0, 500);
+			trModifyProtounit("Pegasus", p, 1, 2);
+			trModifyProtounit("Pegasus", p, 2, 8);
 		}
 		case RELIC_HP_500:
 		{
@@ -417,7 +420,7 @@ highFrequency
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_PEGASUS);
-	RelicSetName("Spawns a pegasus to scout for you");
+	RelicSetName("Spawns a pegasus with improved stats to scout for you");
 	RelicDecor("Pegasus", "no path", vector(0.5,0.5,0.5),0,0);
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
@@ -576,7 +579,7 @@ highFrequency
 					xUnitSelect(dRelics, xRelicID);
 					trUnitChangeProtoUnit("Osiris Box Glow");
 					if(trCurrentPlayer() == p){
-						playSound("\cinematics\17_in\weirdthing.mp3");
+						playSound("\cinematics\10_in\clearedcity.wav");
 					}
 					xFreeDatabaseBlock(dRelics);
 				}

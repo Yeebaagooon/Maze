@@ -349,10 +349,6 @@ highFrequency
 inactive
 {
 	xsDisableSelf();
-	//BasicMaze(0,0,24,24,4,1,"CliffEgyptianA");
-	//Small, 18
-	//Medium 24 = 578
-	//GIant 30
 	ConnectingMaze((MapSize-2)/22,(MapSize-2)/22,gCellSize,gCellPadding, CliffTerrain, RoadTerrain);
 	trPaintTerrain(0,MapSize/2,MapSize/2,MapSize/2, getTerrainType("IceA"), getTerrainSubType("IceA"));
 	refreshPassability();

@@ -575,13 +575,12 @@ highFrequency
 		trBlockAllSounds(false);
 		trUnblockAllSounds();
 		xsEnableRule("Eternal_Loops");
-		trSetDisableGPBlocking(true);
 		gadgetRefresh("unitStatPanel");
 		for(p = 1 ; < cNumberNonGaiaPlayers){
 			trUnitSelectClear();
 			trUnitSelectByID(0);
 			trUnitChangeInArea(p,p, "Temple", "Temple", MapSize);
-			modifyProtounitAbsolute("Temple", p, 7, 125); //temple pop limit
+			modifyProtounitAbsolute("Temple", p, 7, 60+15*MapFactor()); //temple pop limit
 		}
 		if(AutoEscape){
 			xsEnableRule("AI_Activate");

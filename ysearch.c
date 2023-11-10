@@ -96,12 +96,11 @@ highFrequency
 					xSetVector(dMonuments, xMonumentPos, kbGetBlockPosition(""+j));
 					xSetInt(dMonuments, xDecorMin, trGetNextUnitScenarioNameNumber());
 					trVectorQuestVarSet("Monument", xGetVector(dMonuments, xMonumentPos));
-					trVectorQuestVarSet("dir", xsVectorSet(0, 0, 30));
-					float baseCos = xsCos(6.283185 / 10);
-					float baseSin = xsSin(6.283185 / 10);
-					for(a=1; <= 10) {
+					trVectorQuestVarSet("dir", xsVectorSet(0, 0, GPShieldRadius));
+					float baseCos = xsCos(6.283185 / 15);
+					float baseSin = xsSin(6.283185 / 15);
+					for(a=1; <= 15) {
 						trVectorQuestVarSet("base", trVectorQuestVarGet("Monument") + trVectorQuestVarGet("dir"));
-						temp = trGetNextUnitScenarioNameNumber();
 						UnitCreate(0, "UI Range Indicator Norse SFX", trVectorQuestVarGetX("base"), trVectorQuestVarGetZ("base"), 0);
 						trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
 					}
@@ -382,6 +381,34 @@ highFrequency
 			}
 			case kbGetProtoUnitID("Gold Mine Dwarven"):
 			{
+				/*if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType(RoadTerrain)) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType(RoadTerrain))){
+					BuildCliff(kbGetBlockPosition(""+j));
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitChangeProtoUnit("Undermine Building Destruction SFX");
+				}
+				else{
+					int timesave = trTimeMS();
+					int checknext = 0;
+					int playersave = 0;
+					for(p = 1 ; <= cNumberNonGaiaPlayers){
+						for(slot = 0; < 4){
+							checknext = trGetGPData(p,4,slot); //time MS of last cast
+							if(trTimeMS()-checknext < timesave){ //get closest value to current time then determine player who cast and regrant
+								timesave = checknext;
+								playersave = p;
+							}
+						}
+					}
+					trChatSendToPlayer(0, playersave, "<color=1,0,0>Invalid placement - road required.</color>");
+					grantGodPowerNoRechargeNextPosition(playersave, "create gold", 1);
+					if(trCurrentPlayer() == playersave){
+						playSound("cantdothat.wav");
+					}
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitChangeProtoUnit("Undermine Building Destruction SFX");
+				}*/
 				BuildCliff(kbGetBlockPosition(""+j));
 				trUnitSelectClear();
 				trUnitSelectByID(id);
