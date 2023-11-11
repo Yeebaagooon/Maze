@@ -517,6 +517,7 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelect(""+temp);
 			trUnitSetStance("Passive");
+			spyEffect(kbGetProtoUnitID("Roc"), 2, xsVectorSet(dPlayerData, xRocID, 1*trQuestVarGet("Runner"+a)), vector(1,1,1),-1);
 		}
 		
 		//Timer

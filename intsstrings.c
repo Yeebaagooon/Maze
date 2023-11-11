@@ -1,7 +1,6 @@
 /*
 Reduce hunter power
 Limit sky passages to 2
-remove phoenix
 ?palace
 
 TEMPLE SHIT

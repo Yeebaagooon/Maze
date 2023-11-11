@@ -26,6 +26,11 @@ highFrequency
 		trTechSetStatus(p, 411, 0); // bronze wall
 		trTechSetStatus(p, 412, 0); // iron wall
 		trTechSetStatus(p, 413, 0); // orimakalous wall
+		
+		trTechSetStatus(p, 58, 0);
+		trTechSetStatus(p, 59, 0);
+		trTechSetStatus(p, 422, 0);
+		trTechSetStatus(p, 6, 0);
 		for(n=930; >0) {
 			trForbidProtounit(p,kbGetProtoUnitName(n));
 		}
@@ -36,6 +41,7 @@ highFrequency
 		trUnforbidProtounit(p, "Wall Short");
 		trUnforbidProtounit(p, "Wall Medium");
 		trUnforbidProtounit(p, "Wall Long");
+		trUnforbidProtounit(p, "Palace");
 	}
 	trRateTrain(10);
 	//  trUnforbidProtounit(1*p, "Maceman Hero");
@@ -76,9 +82,10 @@ void SetBuildPoints(int a = 10){
 		modifyProtounitAbsolute("Wall Short", p, 4, a/5);
 		modifyProtounitAbsolute("Wall Medium", p, 4, a/5);
 		modifyProtounitAbsolute("Wall Long", p, 4, a/5);
-		modifyProtounitAbsolute("Sky Passage", p, 4, a);
+		modifyProtounitAbsolute("Sky Passage", p, 4, a*2.5);
 		modifyProtounitAbsolute("Lighthouse", p, 4, a*3);
 		modifyProtounitAbsolute("Tower Mirror", p, 4, a/3);
+		modifyProtounitAbsolute("Palace", p, 4, a*4);
 	}
 }
 
@@ -89,7 +96,7 @@ void SetBuildPointsPlayer(int a = 10, int p =0){
 	modifyProtounitAbsolute("Wall Short", p, 4, a/5);
 	modifyProtounitAbsolute("Wall Medium", p, 4, a/5);
 	modifyProtounitAbsolute("Wall Long", p, 4, a/5);
-	modifyProtounitAbsolute("Sky Passage", p, 4, a);
+	modifyProtounitAbsolute("Sky Passage", p, 4, a*2.5);
 	modifyProtounitAbsolute("Lighthouse", p, 4, a*3);
 }
 
@@ -170,10 +177,12 @@ highFrequency
 		modifyProtounitAbsolute("Fenris Wolf", p, 2, 30);
 		modifyProtounitAbsolute("Fenris Wolf", p, 29, 70);
 		modifyProtounitAbsolute("Fenris Wolf", p, 27, 80);
+		modifyProtounitAbsolute("Sky Passage", p, 10, 2); //Sky passage limit
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Troll", p);
 		MakeUnitFree("Behemoth", p);
 		MakeUnitFree("Sky Passage", p);
+		MakeUnitFree("Palace", p);
 		MakeUnitFree("Gate", p);
 		MakeUnitFree("Wall Connector", p);
 		MakeUnitFree("Wall Short", p);
@@ -259,6 +268,12 @@ highFrequency
 		modifyProtounitAbsolute("Prisoner", p, 0, 1000000);
 		trModifyProtounit("Roc", p, 2, -100);
 		trModifyProtounit("Prisoner", p, 2, -100);
+		modifyProtounitAbsolute("Palace", p, 10, 1);
+		modifyProtounitAbsolute("Palace", p, 0, 3000);
+		modifyProtounitAbsolute("Palace", p, 13, 2);
+		modifyProtounitAbsolute("Palace", p, 31, 100);
+		modifyProtounitAbsolute("Palace", p, 11, 26);
+		modifyProtounitAbsolute("Palace", p, 12, 0);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);

@@ -7,6 +7,7 @@ highFrequency
 	int temp = 0;
 	int closest = 0;
 	int closestid = 0;
+	int spyplayer = 0;
 	vector scale = vector(0,0,0);
 	vector dest = vector(0,0,0);
 	for(j = spysearch; < trGetNextUnitScenarioNameNumber()) {
@@ -21,19 +22,36 @@ highFrequency
 					dest = xGetVector(dSpyRequests, xSpyRequestDest);
 					trUnitSelectClear();
 					trUnitSelectByID(id);
-					trMutateSelected(xGetInt(dSpyRequests, xSpyRequestProto));
+					//trMutateSelected(xGetInt(dSpyRequests, xSpyRequestProto));
+					trUnitChangeProtoUnit("Roc");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitConvert(xsVectorGetZ(dest));
 					trSetSelectedScale(xsVectorGetX(scale),xsVectorGetY(scale),xsVectorGetZ(scale));
 					trUnitOverrideAnimation(xGetInt(dSpyRequests, xSpyRequestAnim),0,true,false,-1);
 					trEventFire(xGetInt(dSpyRequests, xSpyRequestEvent));
+					xSetPointer(xsVectorGetZ(dest));
 					if (aiPlanSetUserVariableInt(1*xsVectorGetX(dest),1*xsVectorGetY(dest),1*xsVectorGetZ(dest),j) == false) {
 						//	debugLog("spy error N/A: " + 1*xsVectorGetX(dest) + "," + 1*xsVectorGetY(dest) + "," + 1*xsVectorGetZ(dest));
 					}
+					spyplayer = xsVectorGetZ(dest);
+					trArmyDispatch(""+1*spyplayer+",1", "Villager Norse", 1, xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID))), 0, xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID))), 0, true);
 					xFreeDatabaseBlock(dSpyRequests);
 					spyreset = 0;
+					temp = trGetNextUnitScenarioNameNumber();
 				} else {
 					//	debugLog("Spy Buffer is empty");
 				}
 				break;
+			}
+			case kbGetProtoUnitID("Villager Norse"):
+			{
+				xSetPointer(dPlayerData, kbUnitGetOwner(id));
+				xSetInt(dPlayerData, xMacemanID, j);
+				xUnitSelect(dPlayerData, xMacemanID);
+				trImmediateUnitGarrison(""+xGetInt(dPlayerData, xRocID));
+				xUnitSelect(dPlayerData, xMacemanID);
+				trMutateSelected(kbGetProtoUnitID("Prisoner"));
 			}
 			case kbGetProtoUnitID("Mountain Giant"):
 			{
@@ -241,7 +259,7 @@ highFrequency
 			case kbGetProtoUnitID("Meteor"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),j,5.0,1000.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,5.0,700.0);
 				break;
 			}
 			case kbGetProtoUnitID("Tower Mirror"):
@@ -267,7 +285,7 @@ highFrequency
 			case kbGetProtoUnitID("SPCMeteor"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,2000.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,700.0);
 				trUnitSelectClear();
 				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,500.0);
 				break;

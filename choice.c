@@ -1432,9 +1432,6 @@ inactive
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreateChange(p, "Cinematic Block", p*3, 3, 0);
 		trQuestVarSet("P"+p+"No", temp);
-		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreateChange(p, "Cinematic Block", p*3, MapSize-1, 0);
-		trQuestVarSet("P"+p+"Space", temp);
 	}
 }
 

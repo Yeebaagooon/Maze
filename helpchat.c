@@ -54,8 +54,8 @@ highFrequency
 					}
 					if(trGetGPData(p,0,x) == 57){
 						if(trGetGPData(p,1,x) >0){
-							ColouredIconChat("1,0.5,0", "icons\god power frost icon 64", " - Insta-kill large");
-							trChatSend(0, "<color=1,1,1>Kills enemies in a large area");
+							ColouredIconChat("1,0.5,0", "icons\god power frost icon 64", " - Frost");
+							trChatSend(0, "<color=1,1,1>Deals 5000 damage in a large area");
 						}
 					}
 					if(trGetGPData(p,0,x) == 442){
@@ -68,6 +68,18 @@ highFrequency
 						if(trGetGPData(p,1,x) > 0){
 							ColouredIconChat("1,0.5,0", "icons\god power journey icon", " - Great Journey");
 							trChatSend(0, "<color=1,1,1>Increases villager speed and allows them to walk on cliff");
+						}
+					}
+					if(trGetGPData(p,0,x) == 61){
+						if(trGetGPData(p,1,x) > 0){
+							ColouredIconChat("1,0.5,0", "icons\god power meteor icon 64", " - Meteor");
+							trChatSend(0, "<color=1,1,1>Does 700 damage per meteor");
+						}
+					}
+					if(trGetGPData(p,0,x) == 239){
+						if(trGetGPData(p,1,x) > 0){
+							ColouredIconChat("1,0.5,0", "icons\god power earthquake icon 64", " - Earthquake");
+							trChatSend(0, "<color=1,1,1>Deals 500 damage over a massive area");
 						}
 					}
 				}

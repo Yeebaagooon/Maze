@@ -84,7 +84,7 @@ const int RELIC_POWER_FROST = 21;
 const int RELIC_MIRROR_TOWER = 22;
 const int RELIC_TOWER_PROJECTILE = 23;
 const int RELIC_POWER_BIRDS = 24;
-const int RELIC_KILL_PHOENIX = 25;
+const int RELIC_EXTRA_SKY_PASSAGE = 25;
 const int RELIC_CITIZEN_HP_1000 = 26;
 const int RELIC_ATTACK_20 = 27;
 const int RELIC_POWER_IMPLODE = 28;
@@ -98,11 +98,11 @@ void RelicEffect(int p = 0, int effect = 0){
 	xSetPointer(dPlayerData, p);
 	int temp = 0;
 	switch(effect){
-		case 0:
+		case RELIC_ATTACK_5:
 		{
 			trModifyProtounit("Tower", p, 31, 5);
 		}
-		case 1:
+		case RELIC_HP_200:
 		{
 			trModifyProtounit("Tower", p, 0, 200);
 		}
@@ -219,13 +219,9 @@ void RelicEffect(int p = 0, int effect = 0){
 		{
 			grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
 		}
-		case RELIC_KILL_PHOENIX:
+		case RELIC_EXTRA_SKY_PASSAGE:
 		{
-			//trQuestVarModify("P"+p+"AddKills", "+", trPlayerUnitCountSpecific(cNumberNonGaiaPlayers, "Phoenix"));
-			trUnitSelectClear();
-			trUnitSelect(""+0);
-			trDamageUnitsInArea(cNumberNonGaiaPlayers, "Phoenix", MapSize, 10000);
-			//KillAllPhoenix(p);
+			trModifyProtounit("Sky Passage", p, 10, 1);
 		}
 		case RELIC_CITIZEN_HP_1000:
 		{
@@ -487,7 +483,7 @@ highFrequency
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
 	RelicSetClass(RELIC_POWER_FROST);
-	RelicSetName("Insta kill large area power");
+	RelicSetName("Deals 5000 damage in a large area");
 	RelicDecor("Snow Drift Tower", "no path", vector(1,1,1),2,0);
 	
 	//--BUILD RELIC
@@ -511,9 +507,9 @@ highFrequency
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);
 	xSetInt(dRelicTypes, xRelicPointer, index);
-	RelicSetClass(RELIC_KILL_PHOENIX);
-	RelicSetName("Instantly kills all AI phoenixes");
-	RelicDecor("Phoenix", "no path", vector(0.6,0.6,0.6),2,0);
+	RelicSetClass(RELIC_EXTRA_SKY_PASSAGE);
+	RelicSetName("Grants an extra sky passage");
+	RelicDecor("Garrison Flag Sky Passage", "no path", vector(1,1,1),2,0);
 	
 	//--BUILD RELIC
 	index = xAddDatabaseBlock(dRelicTypes, true);

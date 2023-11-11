@@ -13,28 +13,31 @@ void LevelUpChoice(int p = 0){
 }
 
 void LevelUp(int p = 0){
+	xSetPointer(dPlayerData, p);
 	int temp = 0;
-	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"Space")) == -1){
+	if(xGetBool(dPlayerData, xPlayerRunner) == false){
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(p, "Cinematic Block", p*20, MapSize, 0);
 		trQuestVarSet("P"+p+"Space", temp);
-		//	debugLog("Space selector dead");
-	}
-	if((AutoEscape == false) || (p != cNumberNonGaiaPlayers)){
+		if((AutoEscape == false) || (p != cNumberNonGaiaPlayers)){
+			trUnitSelectByQV("P"+p+"Space");
+			trUnitChangeProtoUnit("Maceman");
+			trUnitSelectByQV("P"+p+"Space");
+			trSetSelectedScale(0,0,0);
+		}
+		temp = UnitCreateChange(p, "Roc", p*3, MapSize-1);
+		debugLog("Spawn " + temp);
+		trUnitSelectClear();
 		trUnitSelectByQV("P"+p+"Space");
-		trUnitChangeProtoUnit("Maceman");
-		trUnitSelectByQV("P"+p+"Space");
+		trImmediateUnitGarrison(""+temp);
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
 		trSetSelectedScale(0,0,0);
+		xsEnableRule("RocChange");
 	}
-	temp = UnitCreateChange(p, "Roc", p*3, MapSize-1);
-	trUnitSelectClear();
-	trUnitSelectByQV("P"+p+"Space");
-	trImmediateUnitGarrison(""+temp);
-	trUnitSelectClear();
-	trUnitSelect(""+temp);
-	trSetSelectedScale(0,0,0);
-	xsEnableRule("RocChange");
-	xSetPointer(dPlayerData, p);
+	xUnitSelect(dPlayerData, xMacemanID);
+	//trMutateSelected(kbGetProtoUnitID("Maceman"));
+	trUnitChangeProtoUnit("Maceman");
 	//RUNNER REWARDS
 	if(xGetBool(dPlayerData, xPlayerRunner)){
 		//	trChatSend(0, "<color=1,1,0>P" + p + " Level " + xGetInt(dPlayerData, xPlayerLevel));
@@ -413,10 +416,8 @@ highFrequency
 			}
 		}
 		if(trPlayerUnitCountSpecific(p, "Maceman Hero") > 0){
-			trUnitSelectByQV("P"+p+"Space");
-			trUnitChangeInArea(p,p, "Maceman Hero", "Cinematic Block", MapSize);
-			trUnitChangeInArea(p,p, "Roc", "Cinematic Block", MapSize);
-			trUnitChangeInArea(p,p, "Prisoner", "Cinematic Block", MapSize);
+			xUnitSelect(dPlayerData, xMacemanID);
+			trMutateSelected(kbGetProtoUnitID("Prisoner"));
 			
 			/*			if(trCurrentPlayer() == p){
 				uiZoomToProto("Villager Atlantean Hero");
@@ -446,7 +447,7 @@ highFrequency
 				}
 				else{
 					xUnitSelect(dEarthquake, xEarthquakeName);
-					DamageBuildingCountRazes(xGetInt(dEarthquake, xEarthquakeOwner),xGetInt(dEarthquake, xEarthquakeName),30.0,0.17*timediff);
+					DamageBuildingCountRazes(xGetInt(dEarthquake, xEarthquakeOwner),xGetInt(dEarthquake, xEarthquakeName),30.0,0.05*timediff);
 					//trDamageUnitsInArea(p, "Unit", 30, 0.03*timediff);
 				}
 			}
@@ -618,7 +619,7 @@ highFrequency
 	xsEnableRule("HunterUnits13Mins");
 	xsEnableRule("HunterUnits15Mins");
 	xsEnableRule("HunterUnits17Mins");
-	xsEnableRule("HunterUnits18Mins");
+	xsEnableRule("HunterUnits16Mins");
 	xsEnableRule("HunterUnits20Mins");
 	xsEnableRule("HunterUnits22Mins");
 	xsEnableRule("TerrainResets");
@@ -664,7 +665,7 @@ highFrequency
 	//trTechGodPower(1, "create gold", 4);
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
-			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+			//grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
 			//TITAN STATS
 			if(trGetWorldDifficulty() == 3){
 				modifyProtounitAbsolute("Tower", p, 0, 300);
@@ -730,6 +731,13 @@ highFrequency
 				grantGodPowerNoRechargeNextPosition(p, "Reverse Time", MapFactor());
 				if(trCurrentPlayer() == p){
 					trMessageSetText("Deconstruction granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
+			else{
+				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Vision granted.", 8000);
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
@@ -1095,20 +1103,9 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*15){
-		rangedunit = "Phoenix";
 		handunit = "Heka Gigantes";
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
-			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				if(AutoEscape){
-					trUnforbidProtounit(p, "Phoenix");
-					trUnforbidProtounit(p, "Phoenix From Egg");
-					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train phoenixes. They take less population room later.", 8000);
-						playSound("ageadvance.wav");
-					}
-				}
-			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
 				grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
 				if(trCurrentPlayer() == p){
@@ -1120,10 +1117,6 @@ highFrequency
 		if(AutoEscape){
 			trUnitSelectClear();
 			trUnitSelect("0");
-			if(trGetWorldDifficulty() >= 2){
-				trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Mountain Giant", "Phoenix", MapSize);
-				trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Behemoth", "Phoenix", MapSize);
-			}
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
 					trQuestVarSetFromRand("temp",15,21+3-trGetWorldDifficulty());
@@ -1141,22 +1134,8 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*17){
-		rangedunit = "Phoenix";
 		int temp = 0;
 		handunit = "Heka Gigantes";
-		for(p = 1; <= cNumberNonGaiaPlayers){
-			xSetPointer(dPlayerData, p);
-			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				if(AutoEscape == false){
-					trUnforbidProtounit(p, "Phoenix");
-					trUnforbidProtounit(p, "Phoenix From Egg");
-					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train phoenixes.", 7000);
-						playSound("ageadvance.wav");
-					}
-				}
-			}
-		}
 		if(AutoEscape){
 			if(trGetWorldDifficulty() >= 1){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Snow Storm", 1);
@@ -1190,27 +1169,22 @@ highFrequency
 	}
 }
 
-rule HunterUnits18Mins
+rule HunterUnits16Mins
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 60*18){
+	if((trTime()-cActivationTime) >= 60*16){
 		int temp = 0;
 		trQuestVarSetFromRand("specialunit", 1, 2);
 		if(1*trQuestVarGet("specialunit") == 1){
 			rangedunit = "Lampades";
-			handunit = "Phoenix";
 			for(p = 1; <= cNumberNonGaiaPlayers){
 				xSetPointer(dPlayerData, p);
 				if(xGetBool(dPlayerData, xPlayerRunner) == false){
 					trForbidProtounit(p, "Heka Gigantes");
 					trUnforbidProtounit(p, "Lampades");
-					if(AutoEscape == false){
-						trModifyProtounit("Phoenix", p, 6, -1);
-						trModifyProtounit("Phoenix From Egg", p, 6, -1);
-					}
 					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train lampades. Phoenix pop count reduced.", 8000);
+						trMessageSetText("You can now train lampades.", 8000);
 						playSound("ageadvance.wav");
 					}
 				}
@@ -1218,17 +1192,12 @@ highFrequency
 		}
 		else{
 			rangedunit = "Manticore";
-			handunit = "Phoenix";
 			for(p = 1; <= cNumberNonGaiaPlayers){
 				xSetPointer(dPlayerData, p);
 				if(xGetBool(dPlayerData, xPlayerRunner) == false){
 					trUnforbidProtounit(p, "Manticore");
-					if(AutoEscape == false){
-						trModifyProtounit("Phoenix", p, 6, -1);
-						trModifyProtounit("Phoenix From Egg", p, 6, -1);
-					}
 					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train manticores. Phoenix pop count reduced.", 8000);
+						trMessageSetText("You can now train manticores.", 8000);
 						playSound("ageadvance.wav");
 					}
 				}
@@ -1259,7 +1228,6 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*20){
-		rangedunit = "Phoenix";
 		handunit = "Guardian XP";
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
@@ -1320,12 +1288,11 @@ highFrequency
 			UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 			modifyProtounitAbsolute("Stymphalian Bird", cNumberNonGaiaPlayers, 2, MapSize);
 			if(trGetWorldDifficulty() >= 2){
-				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 				YeebSpecialAttackChance = 20;
 			}
 			if(trGetWorldDifficulty() == 3){
 				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
-				YeebSpecialAttackChance = 10;
+				YeebSpecialAttackChance = 12;
 			}
 		}
 		xsDisableSelf();

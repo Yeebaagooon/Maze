@@ -20,6 +20,8 @@ int xPlayerLevel = 0;
 int xPlayerNextLevel = 0;
 int xPlayerWallLevel = 0;
 int xJourneyOn = 0;
+int xRocID = 0;
+int xMacemanID = 0;
 
 int dEnemies = 0;
 int xUnitID = 0;
@@ -208,6 +210,8 @@ highFrequency
 	xPlayerWallLevel = xInitAddInt(dPlayerData, "wall level", 1);
 	xCitizenRegen = xInitAddFloat(dPlayerData, "citizen regen", 0.0);
 	xJourneyOn = xInitAddBool(dPlayerData, "journey", false);
+	xRocID = xInitAddInt(dPlayerData, "rocid", 0);
+	xMacemanID = xInitAddInt(dPlayerData, "maceman", 0);
 	
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
@@ -399,9 +403,7 @@ void spyEffect(int proto = 0, int anim = 0, vector dest = vector(0,0,0), vector 
 	xSetVector(dSpyRequests, xSpyRequestDest, dest, newest);
 	xSetVector(dSpyRequests, xSpyRequestScale, scale, newest);
 	xSetInt(dSpyRequests, xSpyRequestEvent, event, newest);
-	//xSetInt(dSpyRequests, xSpyRequestExtra, extra, newest);
 	trTechInvokeGodPower(0, "spy", vector(0,0,0), vector(0,0,0));
-	//unitTransform("Huskarl", "Ball of fire");
 }
 
 void BuildCliff(vector target = vector(0,0,0)){
