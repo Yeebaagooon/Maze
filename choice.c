@@ -225,7 +225,7 @@ string RewardText(int r = 0){
 		//NEXT LEVEL
 		case 38:
 		{
-			reward = "+2 tower range";
+			reward = "+4 tower range";
 		}
 		case 39:
 		{
@@ -911,7 +911,7 @@ inactive
 			//NEXT LEVEL
 			case 38:
 			{
-				trModifyProtounit("Tower", p, 11, 2);
+				trModifyProtounit("Tower", p, 11, 4);
 			}
 			case 39:
 			{
@@ -978,20 +978,25 @@ inactive
 			case 53:
 			{
 				if(AutoEscape){
-					float dist = 0.0;
-					float closest = 100000.0;
-					int closestint = 0;
-					for(a = xGetDatabaseCount(dRelicTypes); > 0){
-						xDatabaseNext(dRelicTypes);
-						xUnitSelect(dRelics, xRelicID);
-						//look for closest
-						dist = trUnitDistanceToUnit(""+xGetInt(dPlayerData, xPlayerUnitID));
-						if(dist < closest){
-							closest = dist;
-							closestint = xGetInt(dRelics, xRelicID);
-						}
+					if(xGetDatabaseCount(dRelicTypes) == 0){
+						trChatSendToPlayer(0, p, "<color=1,0.5,0>No more relics remain!");
 					}
-					trMinimapFlare(p, 10, kbGetBlockPosition(""+closestint) , false);
+					else{
+						float dist = 0.0;
+						float closest = 100000.0;
+						int closestint = 0;
+						for(a = xGetDatabaseCount(dRelicTypes); > 0){
+							xDatabaseNext(dRelicTypes);
+							xUnitSelect(dRelics, xRelicID);
+							//look for closest
+							dist = trUnitDistanceToUnit(""+xGetInt(dPlayerData, xPlayerUnitID));
+							if(dist < closest){
+								closest = dist;
+								closestint = xGetInt(dRelics, xRelicID);
+							}
+						}
+						trMinimapFlare(p, 10, kbGetBlockPosition(""+closestint) , false);
+					}
 				}
 				else{
 					xSetPointer(dPlayerData, p);
@@ -1432,9 +1437,6 @@ inactive
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreateChange(p, "Cinematic Block", p*3, 3, 0);
 		trQuestVarSet("P"+p+"No", temp);
-		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreateChange(p, "Cinematic Block", p*3, MapSize-1, 0);
-		trQuestVarSet("P"+p+"Space", temp);
 	}
 }
 

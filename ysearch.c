@@ -241,7 +241,7 @@ highFrequency
 			case kbGetProtoUnitID("Meteor"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),j,5.0,1000.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,5.0,700.0);
 				break;
 			}
 			case kbGetProtoUnitID("Tower Mirror"):
@@ -267,7 +267,7 @@ highFrequency
 			case kbGetProtoUnitID("SPCMeteor"):
 			{
 				trUnitSelectClear();
-				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,2000.0);
+				DamageBuildingCountRazes(kbUnitGetOwner(id),j,6.0,700.0);
 				trUnitSelectClear();
 				DamageUnitCountKills(kbUnitGetOwner(id),kbGetBlockPosition(""+j),6.0,500.0);
 				break;

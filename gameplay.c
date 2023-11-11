@@ -12,291 +12,6 @@ void LevelUpChoice(int p = 0){
 	gadgetRefresh("unitStatPanel");
 }
 
-void LevelUp(int p = 0){
-	int temp = 0;
-	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"Space")) == -1){
-		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreate(p, "Cinematic Block", p*20, MapSize, 0);
-		trQuestVarSet("P"+p+"Space", temp);
-		//	debugLog("Space selector dead");
-	}
-	if((AutoEscape == false) || (p != cNumberNonGaiaPlayers)){
-		trUnitSelectByQV("P"+p+"Space");
-		trUnitChangeProtoUnit("Maceman");
-		trUnitSelectByQV("P"+p+"Space");
-		trSetSelectedScale(0,0,0);
-	}
-	temp = UnitCreateChange(p, "Roc", p*3, MapSize-1);
-	trUnitSelectClear();
-	trUnitSelectByQV("P"+p+"Space");
-	trImmediateUnitGarrison(""+temp);
-	trUnitSelectClear();
-	trUnitSelect(""+temp);
-	trSetSelectedScale(0,0,0);
-	xsEnableRule("RocChange");
-	xSetPointer(dPlayerData, p);
-	//RUNNER REWARDS
-	if(xGetBool(dPlayerData, xPlayerRunner)){
-		//	trChatSend(0, "<color=1,1,0>P" + p + " Level " + xGetInt(dPlayerData, xPlayerLevel));
-		//Level 0-5 rewards
-		if(Between(xGetInt(dPlayerData, xPlayerLevel), 0, 2)){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL1, (RunnerRewardL2-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL2){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 2){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2-1);
-					}
-				}
-			}
-		}
-		//Level 5-10rewards
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 3){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL2, (RunnerRewardL3-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL2, RunnerRewardL3);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL3){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 3){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL2, RunnerRewardL3-1);
-					}
-				}
-			}
-		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 4){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL3, (RunnerRewardL4-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL3, RunnerRewardL4);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL4){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL3, RunnerRewardL4-1);
-					}
-				}
-			}
-		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 5){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL4, (RunnerRewardL5-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL4, RunnerRewardL5);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL5){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL4, RunnerRewardL5-1);
-					}
-				}
-			}
-		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 6){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL5, (RunnerRewardL6-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL6);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL6){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL6-1);
-					}
-				}
-			}
-		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 7){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL6, (RunnerRewardL7-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL6, RunnerRewardL7);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL7){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL6, RunnerRewardL7-1);
-					}
-				}
-			}
-		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 8){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL7, (RunnerRewardL8-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL8);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL8){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL8-1);
-					}
-				}
-			}
-		}
-		else if(xGetInt(dPlayerData, xPlayerLevel) == 9){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL8, (RunnerRewardL9-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL8, RunnerRewardL9);
-				if(1*trQuestVarGet("CR"+p) == RunnerRewardL9){
-					if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
-						trQuestVarSet("CR"+p, 3);
-					}
-					else{
-						trQuestVarSetFromRand("CR"+p, RunnerRewardL8, RunnerRewardL9-1);
-					}
-				}
-			}
-		}
-		//high
-		else if(xGetInt(dPlayerData, xPlayerLevel) > 9){
-			trQuestVarSetFromRand("CL"+p, RunnerRewardL7, (RunnerRewardL10));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL10);
-			}
-		}
-	}
-	else{
-		//HUNTER REWARDS
-		//Level 0-5 rewards
-		if(Between(xGetInt(dPlayerData, xPlayerLevel), 0, 4)){
-			trQuestVarSetFromRand("CL"+p, HunterRewardL1, (HunterRewardL2-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, HunterRewardL1, (HunterRewardL2-1));
-			}
-			if(AutoEscape){
-				//Auto reward for hunter CPU AI
-				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-				ActionChoice = p;
-				xsEnableRule("HunterConsequences");
-				AutoHunterLevel=AutoHunterLevel+1;
-				//trChatSend(0, "Hunter level" + AutoHunterLevel);
-			}
-		}
-		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 5, 8)){
-			trQuestVarSetFromRand("CL"+p, HunterRewardL2, (HunterRewardL3-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, HunterRewardL2, (HunterRewardL3-1));
-			}
-			if(AutoEscape){
-				//Auto reward for hunter CPU AI
-				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-				ActionChoice = p;
-				xsEnableRule("HunterConsequences");
-				AutoHunterLevel=AutoHunterLevel+1;
-				//trChatSend(0, "Hunter level" + AutoHunterLevel);
-			}
-		}
-		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 9, 10)){
-			trQuestVarSetFromRand("CL"+p, HunterRewardL3, (HunterRewardL4-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, HunterRewardL3, (HunterRewardL4-1));
-			}
-			if(AutoEscape){
-				//Auto reward for hunter CPU AI
-				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-				ActionChoice = p;
-				xsEnableRule("HunterConsequences");
-				AutoHunterLevel=AutoHunterLevel+1;
-				//trChatSend(0, "Hunter level" + AutoHunterLevel);
-			}
-		}
-		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 11, 12)){
-			trQuestVarSetFromRand("CL"+p, HunterRewardL4, (HunterRewardL5-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, HunterRewardL4, (HunterRewardL5-1));
-			}
-			if(AutoEscape){
-				//Auto reward for hunter CPU AI
-				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-				ActionChoice = p;
-				xsEnableRule("HunterConsequences");
-				AutoHunterLevel=AutoHunterLevel+1;
-				//trChatSend(0, "Hunter level" + AutoHunterLevel);
-			}
-		}
-		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 12, 13)){
-			trQuestVarSetFromRand("CL"+p, HunterRewardL5, (HunterRewardL6-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, HunterRewardL5, (HunterRewardL6-1));
-			}
-			if(AutoEscape){
-				//Auto reward for hunter CPU AI
-				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-				ActionChoice = p;
-				xsEnableRule("HunterConsequences");
-				AutoHunterLevel=AutoHunterLevel+1;
-				//trChatSend(0, "Hunter level" + AutoHunterLevel);
-			}
-		}
-		else if(Between(xGetInt(dPlayerData, xPlayerLevel), 14, 15)){
-			trQuestVarSetFromRand("CL"+p, HunterRewardL6, (HunterRewardL7-1));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, HunterRewardL6, (HunterRewardL7-1));
-			}
-			if(AutoEscape){
-				//Auto reward for hunter CPU AI
-				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-				ActionChoice = p;
-				xsEnableRule("HunterConsequences");
-				AutoHunterLevel=AutoHunterLevel+1;
-				//trChatSend(0, "Hunter level" + AutoHunterLevel);
-			}
-		}
-		else{
-			//high
-			trQuestVarSetFromRand("CL"+p, HunterRewardL5, (HunterRewardL7));
-			trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
-			while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
-				trQuestVarSetFromRand("CR"+p, HunterRewardL5, (HunterRewardL7));
-			}
-			if(AutoEscape){
-				//Auto reward for hunter CPU AI
-				xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-				ChoiceEffect = xGetInt(dPlayerData, xLUCL);
-				ActionChoice = p;
-				xsEnableRule("HunterConsequences");
-				AutoHunterLevel=AutoHunterLevel+1;
-				//trChatSend(0, "Hunter level" + AutoHunterLevel);
-			}
-		}
-	}
-	//trChatSend(p, ""+1*trQuestVarGet("CL"+p) + " and " + 1*trQuestVarGet("CR"+p));
-	xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
-	xSetInt(dPlayerData, xLUCR, 1*trQuestVarGet("CR"+p));
-	if(trCurrentPlayer() == p){
-		OverlayTextPlayerColor(p);
-		trOverlayText("LEVEL UP - press space to choose a reward", 5.0, 404, 300, 3000);
-		playSound("arkantosarrive.wav");
-		trSetCounterDisplay("REWARD ACTIVE - PRESS SPACE");
-	}
-	gadgetRefresh("unitStatPanel");
-}
 
 rule Eternal_Loops
 inactive
@@ -338,7 +53,8 @@ highFrequency
 						if(xGetInt(dPlayerData, xPlayerNextLevel) <= 1*trQuestVarGet("P"+p+"UnitKills")){
 							xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
 							xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
-							LevelUp(p);
+							//LevelUp(p);
+							trQuestVarModify("P"+p+"LevelsUnspent", "+", 1);
 							trSetCivilizationNameOverride(p, "Kills: " + 1*trQuestVarGet("P"+p+"UnitKills") + "/" + xGetInt(dPlayerData, xPlayerNextLevel));
 							gadgetRefresh("unitStatPanel");
 						}
@@ -387,7 +103,8 @@ highFrequency
 						xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerLevel)*5+xGetInt(dPlayerData, xPlayerNextLevel));
 						//xSetInt(dPlayerData, xPlayerNextLevel, xGetInt(dPlayerData, xPlayerNextLevel)+1);
 						xSetInt(dPlayerData, xPlayerLevel, xGetInt(dPlayerData, xPlayerLevel)+1);
-						LevelUp(p);
+						//LevelUp(p);
+						trQuestVarModify("P"+p+"LevelsUnspent", "+", 1);
 					}
 				}
 				//hunter resign
@@ -509,8 +226,295 @@ highFrequency
 				xFreeDatabaseBlock(dDestroyMe);
 			}
 		}
+		
+		//LEVELING
+		if((1*trQuestVarGet("P"+p+"LevelsUnspent") > 0) && (trPlayerUnitCountSpecific(p, "Maceman") == 0)){
+			trQuestVarModify("P"+p+"LevelsUnspent", "-", 1);
+			trQuestVarModify("P"+p+"ActualLevel", "+", 1);
+			int temp = 0;
+			temp = trGetNextUnitScenarioNameNumber();
+			UnitCreate(p, "Cinematic Block", p*20, MapSize, 0);
+			trQuestVarSet("P"+p+"Space", temp);
+			if((AutoEscape == false) || (p != cNumberNonGaiaPlayers)){
+				trUnitSelectByQV("P"+p+"Space");
+				trUnitChangeProtoUnit("Maceman");
+				trUnitSelectByQV("P"+p+"Space");
+				trSetSelectedScale(0,0,0);
+			}
+			temp = UnitCreateChange(p, "Roc", p*3, MapSize-1);
+			trUnitSelectClear();
+			trUnitSelectByQV("P"+p+"Space");
+			trImmediateUnitGarrison(""+temp);
+			trUnitSelectClear();
+			trUnitSelect(""+temp);
+			trSetSelectedScale(0,0,0);
+			xsEnableRule("RocChange");
+			xSetPointer(dPlayerData, p);
+			//RUNNER REWARDS
+			if(xGetBool(dPlayerData, xPlayerRunner)){
+				//	trChatSend(0, "<color=1,1,0>P" + p + " Level " + 1*trQuestVarGet("P"+p+"ActualLevel"));
+				//Level 0-5 rewards
+				if(Between(1*trQuestVarGet("P"+p+"ActualLevel"), 1, 2)){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL1, (RunnerRewardL2-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2);
+						if(1*trQuestVarGet("CR"+p) == RunnerRewardL2){
+							if(xGetInt(dPlayerData, xPlayerWallLevel) <= 2){
+								trQuestVarSet("CR"+p, 3);
+							}
+							else{
+								trQuestVarSetFromRand("CR"+p, RunnerRewardL1, RunnerRewardL2-1);
+							}
+						}
+					}
+				}
+				//Level 5-10rewards
+				else if(1*trQuestVarGet("P"+p+"ActualLevel") == 3){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL2, (RunnerRewardL3-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL2, RunnerRewardL3);
+						if(1*trQuestVarGet("CR"+p) == RunnerRewardL3){
+							if(xGetInt(dPlayerData, xPlayerWallLevel) <= 3){
+								trQuestVarSet("CR"+p, 3);
+							}
+							else{
+								trQuestVarSetFromRand("CR"+p, RunnerRewardL2, RunnerRewardL3-1);
+							}
+						}
+					}
+				}
+				else if(1*trQuestVarGet("P"+p+"ActualLevel") == 4){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL3, (RunnerRewardL4-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL3, RunnerRewardL4);
+						if(1*trQuestVarGet("CR"+p) == RunnerRewardL4){
+							if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
+								trQuestVarSet("CR"+p, 3);
+							}
+							else{
+								trQuestVarSetFromRand("CR"+p, RunnerRewardL3, RunnerRewardL4-1);
+							}
+						}
+					}
+				}
+				else if(1*trQuestVarGet("P"+p+"ActualLevel") == 5){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL4, (RunnerRewardL5-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL4, RunnerRewardL5);
+						if(1*trQuestVarGet("CR"+p) == RunnerRewardL5){
+							if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
+								trQuestVarSet("CR"+p, 3);
+							}
+							else{
+								trQuestVarSetFromRand("CR"+p, RunnerRewardL4, RunnerRewardL5-1);
+							}
+						}
+					}
+				}
+				else if(1*trQuestVarGet("P"+p+"ActualLevel") == 6){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL5, (RunnerRewardL6-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL6);
+						if(1*trQuestVarGet("CR"+p) == RunnerRewardL6){
+							if(xGetInt(dPlayerData, xPlayerWallLevel) <= 4){
+								trQuestVarSet("CR"+p, 3);
+							}
+							else{
+								trQuestVarSetFromRand("CR"+p, RunnerRewardL5, RunnerRewardL6-1);
+							}
+						}
+					}
+				}
+				else if(1*trQuestVarGet("P"+p+"ActualLevel") == 7){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL6, (RunnerRewardL7-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL6, RunnerRewardL7);
+						if(1*trQuestVarGet("CR"+p) == RunnerRewardL7){
+							if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
+								trQuestVarSet("CR"+p, 3);
+							}
+							else{
+								trQuestVarSetFromRand("CR"+p, RunnerRewardL6, RunnerRewardL7-1);
+							}
+						}
+					}
+				}
+				else if(1*trQuestVarGet("P"+p+"ActualLevel") == 8){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL7, (RunnerRewardL8-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL8);
+						if(1*trQuestVarGet("CR"+p) == RunnerRewardL8){
+							if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
+								trQuestVarSet("CR"+p, 3);
+							}
+							else{
+								trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL8-1);
+							}
+						}
+					}
+				}
+				else if(1*trQuestVarGet("P"+p+"ActualLevel") == 9){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL8, (RunnerRewardL9-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL8, RunnerRewardL9);
+						if(1*trQuestVarGet("CR"+p) == RunnerRewardL9){
+							if(xGetInt(dPlayerData, xPlayerWallLevel) <= 5){
+								trQuestVarSet("CR"+p, 3);
+							}
+							else{
+								trQuestVarSetFromRand("CR"+p, RunnerRewardL8, RunnerRewardL9-1);
+							}
+						}
+					}
+				}
+				//high
+				else if(1*trQuestVarGet("P"+p+"ActualLevel") > 9){
+					trQuestVarSetFromRand("CL"+p, RunnerRewardL7, (RunnerRewardL10));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, RunnerRewardL7, RunnerRewardL10);
+					}
+				}
+			}
+			else{
+				//HUNTER REWARDS
+				//Level 0-5 rewards
+				if(Between(1*trQuestVarGet("P"+p+"ActualLevel"), 0, 4)){
+					trQuestVarSetFromRand("CL"+p, HunterRewardL1, (HunterRewardL2-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, HunterRewardL1, (HunterRewardL2-1));
+					}
+					if(AutoEscape){
+						//Auto reward for hunter CPU AI
+						xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+						ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+						ActionChoice = p;
+						xsEnableRule("HunterConsequences");
+						AutoHunterLevel=AutoHunterLevel+1;
+						//trChatSend(0, "Hunter level" + AutoHunterLevel);
+					}
+				}
+				else if(Between(1*trQuestVarGet("P"+p+"ActualLevel"), 5, 8)){
+					trQuestVarSetFromRand("CL"+p, HunterRewardL2, (HunterRewardL3-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, HunterRewardL2, (HunterRewardL3-1));
+					}
+					if(AutoEscape){
+						//Auto reward for hunter CPU AI
+						xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+						ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+						ActionChoice = p;
+						xsEnableRule("HunterConsequences");
+						AutoHunterLevel=AutoHunterLevel+1;
+						//trChatSend(0, "Hunter level" + AutoHunterLevel);
+					}
+				}
+				else if(Between(1*trQuestVarGet("P"+p+"ActualLevel"), 9, 10)){
+					trQuestVarSetFromRand("CL"+p, HunterRewardL3, (HunterRewardL4-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, HunterRewardL3, (HunterRewardL4-1));
+					}
+					if(AutoEscape){
+						//Auto reward for hunter CPU AI
+						xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+						ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+						ActionChoice = p;
+						xsEnableRule("HunterConsequences");
+						AutoHunterLevel=AutoHunterLevel+1;
+						//trChatSend(0, "Hunter level" + AutoHunterLevel);
+					}
+				}
+				else if(Between(1*trQuestVarGet("P"+p+"ActualLevel"), 11, 12)){
+					trQuestVarSetFromRand("CL"+p, HunterRewardL4, (HunterRewardL5-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, HunterRewardL4, (HunterRewardL5-1));
+					}
+					if(AutoEscape){
+						//Auto reward for hunter CPU AI
+						xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+						ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+						ActionChoice = p;
+						xsEnableRule("HunterConsequences");
+						AutoHunterLevel=AutoHunterLevel+1;
+						//trChatSend(0, "Hunter level" + AutoHunterLevel);
+					}
+				}
+				else if(Between(1*trQuestVarGet("P"+p+"ActualLevel"), 12, 13)){
+					trQuestVarSetFromRand("CL"+p, HunterRewardL5, (HunterRewardL6-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, HunterRewardL5, (HunterRewardL6-1));
+					}
+					if(AutoEscape){
+						//Auto reward for hunter CPU AI
+						xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+						ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+						ActionChoice = p;
+						xsEnableRule("HunterConsequences");
+						AutoHunterLevel=AutoHunterLevel+1;
+						//trChatSend(0, "Hunter level" + AutoHunterLevel);
+					}
+				}
+				else if(Between(1*trQuestVarGet("P"+p+"ActualLevel"), 14, 15)){
+					trQuestVarSetFromRand("CL"+p, HunterRewardL6, (HunterRewardL7-1));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, HunterRewardL6, (HunterRewardL7-1));
+					}
+					if(AutoEscape){
+						//Auto reward for hunter CPU AI
+						xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+						ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+						ActionChoice = p;
+						xsEnableRule("HunterConsequences");
+						AutoHunterLevel=AutoHunterLevel+1;
+						//trChatSend(0, "Hunter level" + AutoHunterLevel);
+					}
+				}
+				else{
+					//high
+					trQuestVarSetFromRand("CL"+p, HunterRewardL5, (HunterRewardL7));
+					trQuestVarSet("CR"+p, 1*trQuestVarGet("CL"+p));
+					while(1*trQuestVarGet("CL"+p) == 1*trQuestVarGet("CR"+p)){
+						trQuestVarSetFromRand("CR"+p, HunterRewardL5, (HunterRewardL7));
+					}
+					if(AutoEscape){
+						//Auto reward for hunter CPU AI
+						xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+						ChoiceEffect = xGetInt(dPlayerData, xLUCL);
+						ActionChoice = p;
+						xsEnableRule("HunterConsequences");
+						AutoHunterLevel=AutoHunterLevel+1;
+						//trChatSend(0, "Hunter level" + AutoHunterLevel);
+					}
+				}
+			}
+			//trChatSend(p, ""+1*trQuestVarGet("CL"+p) + " and " + 1*trQuestVarGet("CR"+p));
+			xSetInt(dPlayerData, xLUCL, 1*trQuestVarGet("CL"+p));
+			xSetInt(dPlayerData, xLUCR, 1*trQuestVarGet("CR"+p));
+			if(trCurrentPlayer() == p){
+				OverlayTextPlayerColor(p);
+				trOverlayText("LEVEL UP - press space to choose a reward", 5.0, 404, 300, 3000);
+				playSound("arkantosarrive.wav");
+				trSetCounterDisplay("REWARD ACTIVE - PRESS SPACE");
+			}
+			gadgetRefresh("unitStatPanel");
+		}
 	}
 }
+
 
 rule Loops_1_Second
 inactive
@@ -618,7 +622,7 @@ highFrequency
 	xsEnableRule("HunterUnits13Mins");
 	xsEnableRule("HunterUnits15Mins");
 	xsEnableRule("HunterUnits17Mins");
-	xsEnableRule("HunterUnits18Mins");
+	xsEnableRule("HunterUnits16Mins");
 	xsEnableRule("HunterUnits20Mins");
 	xsEnableRule("HunterUnits22Mins");
 	xsEnableRule("TerrainResets");
@@ -653,7 +657,7 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	//UnitCreate(1, "Stymphalian Bird", 6, 12);
+	UnitCreate(1, "Manticore", 6, 12);
 	/*UnitCreate(2, "Tower", 310, 312);
 	UnitCreate(2, "Tower", 310, 314);
 	UnitCreate(2, "Tower", 310, 316);
@@ -664,7 +668,7 @@ highFrequency
 	//trTechGodPower(1, "create gold", 4);
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
-			grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+			//grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
 			//TITAN STATS
 			if(trGetWorldDifficulty() == 3){
 				modifyProtounitAbsolute("Tower", p, 0, 300);
@@ -733,9 +737,16 @@ highFrequency
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
+			else{
+				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Vision granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
 		}
+		xsDisableSelf();
 	}
-	xsDisableSelf();
 }
 
 rule HunterUnits2Mins
@@ -1009,12 +1020,18 @@ highFrequency
 					playSound("ageadvance.wav");
 				}
 			}
-			if(AutoEscape == false){
-				if(xGetBool(dPlayerData, xPlayerRunner) == true){
+			if(xGetBool(dPlayerData, xPlayerRunner) == true){
+				if(AutoEscape == false){
 					grantGodPowerNoRechargeNextPosition(p, "Pestilence", 1);
 					if(trCurrentPlayer() == p){
 						trMessageSetText("Pestilence granted.", 8000);
 						playSound("\cinematics\17_in\weirdthing.mp3");
+					}
+				}
+				else{
+					trModifyProtounit("Palace", p, 13, 1);
+					if(trCurrentPlayer() == p){
+						trMessageSetText("Extra palace projectile granted.", 8000);
 					}
 				}
 			}
@@ -1095,20 +1112,9 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*15){
-		rangedunit = "Phoenix";
 		handunit = "Heka Gigantes";
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
-			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				if(AutoEscape){
-					trUnforbidProtounit(p, "Phoenix");
-					trUnforbidProtounit(p, "Phoenix From Egg");
-					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train phoenixes. They take less population room later.", 8000);
-						playSound("ageadvance.wav");
-					}
-				}
-			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
 				grantGodPowerNoRechargeNextPosition(p, "Rain", 1);
 				if(trCurrentPlayer() == p){
@@ -1120,10 +1126,6 @@ highFrequency
 		if(AutoEscape){
 			trUnitSelectClear();
 			trUnitSelect("0");
-			if(trGetWorldDifficulty() >= 2){
-				trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Mountain Giant", "Phoenix", MapSize);
-				trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Behemoth", "Phoenix", MapSize);
-			}
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
 					trQuestVarSetFromRand("temp",15,21+3-trGetWorldDifficulty());
@@ -1141,22 +1143,8 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*17){
-		rangedunit = "Phoenix";
 		int temp = 0;
 		handunit = "Heka Gigantes";
-		for(p = 1; <= cNumberNonGaiaPlayers){
-			xSetPointer(dPlayerData, p);
-			if(xGetBool(dPlayerData, xPlayerRunner) == false){
-				if(AutoEscape == false){
-					trUnforbidProtounit(p, "Phoenix");
-					trUnforbidProtounit(p, "Phoenix From Egg");
-					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train phoenixes.", 7000);
-						playSound("ageadvance.wav");
-					}
-				}
-			}
-		}
 		if(AutoEscape){
 			if(trGetWorldDifficulty() >= 1){
 				grantGodPowerNoRechargeNextPosition(cNumberNonGaiaPlayers, "Snow Storm", 1);
@@ -1190,27 +1178,22 @@ highFrequency
 	}
 }
 
-rule HunterUnits18Mins
+rule HunterUnits16Mins
 inactive
 highFrequency
 {
-	if((trTime()-cActivationTime) >= 60*18){
+	if((trTime()-cActivationTime) >= 60*16){
 		int temp = 0;
 		trQuestVarSetFromRand("specialunit", 1, 2);
 		if(1*trQuestVarGet("specialunit") == 1){
 			rangedunit = "Lampades";
-			handunit = "Phoenix";
 			for(p = 1; <= cNumberNonGaiaPlayers){
 				xSetPointer(dPlayerData, p);
 				if(xGetBool(dPlayerData, xPlayerRunner) == false){
 					trForbidProtounit(p, "Heka Gigantes");
 					trUnforbidProtounit(p, "Lampades");
-					if(AutoEscape == false){
-						trModifyProtounit("Phoenix", p, 6, -1);
-						trModifyProtounit("Phoenix From Egg", p, 6, -1);
-					}
 					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train lampades. Phoenix pop count reduced.", 8000);
+						trMessageSetText("You can now train lampades.", 8000);
 						playSound("ageadvance.wav");
 					}
 				}
@@ -1218,17 +1201,12 @@ highFrequency
 		}
 		else{
 			rangedunit = "Manticore";
-			handunit = "Phoenix";
 			for(p = 1; <= cNumberNonGaiaPlayers){
 				xSetPointer(dPlayerData, p);
 				if(xGetBool(dPlayerData, xPlayerRunner) == false){
 					trUnforbidProtounit(p, "Manticore");
-					if(AutoEscape == false){
-						trModifyProtounit("Phoenix", p, 6, -1);
-						trModifyProtounit("Phoenix From Egg", p, 6, -1);
-					}
 					if(trCurrentPlayer() == p){
-						trMessageSetText("You can now train manticores. Phoenix pop count reduced.", 8000);
+						trMessageSetText("You can now train manticores.", 8000);
 						playSound("ageadvance.wav");
 					}
 				}
@@ -1259,7 +1237,6 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*20){
-		rangedunit = "Phoenix";
 		handunit = "Guardian XP";
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
@@ -1272,6 +1249,7 @@ highFrequency
 			}
 			if(xGetBool(dPlayerData, xPlayerRunner) == true){
 				trModifyProtounit("Tower", p, 13, 1);
+				trModifyProtounit("Palace", p, 13, 1);
 				grantGodPowerNoRechargeNextPosition(p, "create gold", 1);
 				if(trCurrentPlayer() == p){
 					trMessageSetText("Extra tower projectile and wall power granted.", 8000);
@@ -1320,12 +1298,11 @@ highFrequency
 			UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 			modifyProtounitAbsolute("Stymphalian Bird", cNumberNonGaiaPlayers, 2, MapSize);
 			if(trGetWorldDifficulty() >= 2){
-				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 				YeebSpecialAttackChance = 20;
 			}
 			if(trGetWorldDifficulty() == 3){
 				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
-				YeebSpecialAttackChance = 10;
+				YeebSpecialAttackChance = 12;
 			}
 		}
 		xsDisableSelf();
@@ -1345,7 +1322,7 @@ highFrequency
 			else{
 				trSetPlayerDefeated(p);
 			}
-			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + xGetInt(dPlayerData, xPlayerLevel));
+			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + 1*trQuestVarGet("P"+p+"ActualLevel"));
 		}
 		xsEnableRule("GameEnd");
 		trShowWinLose("The runners have won!");
@@ -1365,7 +1342,7 @@ highFrequency
 			else{
 				trSetPlayerWon(p);
 			}
-			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + xGetInt(dPlayerData, xPlayerLevel));
+			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + 1*trQuestVarGet("P"+p+"ActualLevel"));
 		}
 		xsEnableRule("GameEnd");
 		trShowWinLose("The hunters have won!");
