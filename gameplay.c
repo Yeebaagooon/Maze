@@ -326,6 +326,9 @@ highFrequency
 					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2,xsVectorGetZ(kbGetBlockPosition(""+xGetInt(dPlayerData, xPlayerUnitID)))/2) == getTerrainSubType("Hades4Passable"))){
 						xUnitSelect(dPlayerData, xPlayerUnitID);
 						trDamageUnit(0.1*timediff);
+						if(trGetWorldDifficulty() == 3){
+							trDamageUnit(0.1*timediff);
+						}
 					}
 					//runner stat checker
 					if(trGetStatValue(p, 2)+trQuestVarGet("P"+p+"AddKills") > trQuestVarGet("P"+p+"UnitKills")){

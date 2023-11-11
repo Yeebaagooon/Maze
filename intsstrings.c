@@ -1,8 +1,8 @@
 /*
-BUG
-multi level
-
-Stop mine on cliff - xTest that this fix works
+Reduce hunter power
+Limit sky passages to 2
+remove phoenix
+?palace
 
 TEMPLE SHIT
 <train row="0" page="1" column="0">Hero Norse</train>
