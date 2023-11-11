@@ -513,31 +513,95 @@ highFrequency
 						trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
 						trUnitSelectClear();
 						trUnitSelect(""+temp);
-						trUnitChangeProtoUnit("Implode Sphere Effect");
-						trUnitSelectClear();
-						trUnitSelect(""+temp);
-						trDamageUnitPercent(100);
-						temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
-						trUnitSelect(""+temp);
-						trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
-						trUnitSelectClear();
-						trUnitSelect(""+temp);
-						trUnitChangeProtoUnit("Osiris Box Glow");
-						trUnitSelectClear();
-						temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
-						trUnitSelect(""+temp);
-						trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
-						trUnitSelectClear();
-						trUnitSelect(""+temp);
-						trUnitChangeProtoUnit("Arkantos God Out");
-						trUnitSelectClear();
-						DamageBuildingCountRazes(p,xGetInt(dBirds,xSpecialTargetID),10.0,20000.0);
-						xSetInt(dBirds, xSpecialNext, trTimeMS() + 1000);
-						xSetInt(dBirds, xSpecialStep, 2);
-						xUnitSelect(dBirds, xSpecialTargetID);
-						trDamageUnitPercent(100);
-						if(trUnitVisToPlayer()){
-							playSound("\cinematics\24_in\magic.mp3");
+						trQuestVarSetFromRand("YSPecialAttack", 1, YeebSpecialAttackChance);
+						if(1*trQuestVarGet("YSPecialAttack") < YeebSpecialAttackChance){
+							trUnitChangeProtoUnit("Implode Sphere Effect");
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trDamageUnitPercent(100);
+							temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+							trUnitSelect(""+temp);
+							trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trUnitChangeProtoUnit("Osiris Box Glow");
+							trUnitSelectClear();
+							temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+							trUnitSelect(""+temp);
+							trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trUnitChangeProtoUnit("Arkantos God Out");
+							trUnitSelectClear();
+							DamageBuildingCountRazes(p,xGetInt(dBirds,xSpecialTargetID),10.0,47000.0);
+							xSetInt(dBirds, xSpecialNext, trTimeMS() + 1000);
+							xSetInt(dBirds, xSpecialStep, 2);
+							xUnitSelect(dBirds, xSpecialTargetID);
+							trDamageUnitPercent(100);
+							if(trUnitVisToPlayer()){
+								playSound("\cinematics\24_in\magic.mp3");
+								playSound("\cinematics\24_in\magic.mp3");
+								playSound("implode explode.wav");
+								playSound("lightningbirth.wav");
+								playSound("lightthunder.wav");
+							}
+						}
+						else{
+							trUnitChangeProtoUnit("Implode Sphere Effect");
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trDamageUnitPercent(100);
+							temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+							trUnitSelect(""+temp);
+							trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trUnitChangeProtoUnit("Pyramid Osiris Xpack");
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trSetSelectedScale(0,0,0);
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trDamageUnitPercent(100);
+							trUnitSelectClear();
+							temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+							trUnitSelect(""+temp);
+							trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trUnitChangeProtoUnit("Arkantos God Out");
+							trUnitSelectClear();
+							temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+							trUnitSelect(""+temp);
+							trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trUnitChangeProtoUnit("Tremor");
+							trUnitSelectClear();
+							temp = UnitCreate(0, "Dwarf", xsVectorGetX(end),xsVectorGetZ(end));
+							trUnitSelect(""+temp);
+							trImmediateUnitGarrison(""+xGetInt(dBirds, xSpecialTargetID));
+							trUnitSelectClear();
+							trUnitSelect(""+temp);
+							trUnitChangeProtoUnit("Underworld Explosion");
+							trUnitSelectClear();
+							xAddDatabaseBlock(dDestroyMe, true);
+							xSetInt(dDestroyMe, xDestroyName, temp);
+							xSetInt(dDestroyMe, xDestroyTime, trTimeMS()+5000);
+							DamageBuildingCountRazes(p,xGetInt(dBirds,xSpecialTargetID),16.0,47000.0);
+							xSetInt(dBirds, xSpecialNext, trTimeMS() + 1000);
+							xSetInt(dBirds, xSpecialStep, 2);
+							xUnitSelect(dBirds, xSpecialTargetID);
+							trDamageUnitPercent(100);
+							replaceCircle(xsVectorGetX(end)/2,xsVectorGetZ(end)/2,8,RoadTerrain,"Hades4Passable");
+							if(trUnitVisToPlayer()){
+								playSound("\cinematics\32_out\explosion.mp3");
+								playSound("\cinematics\32_out\hammerconnect.mp3");
+								playSound("\cinematics\32_out\hammerglow.mp3");
+								playSound("\cinematics\24_in\magic.mp3");
+								playSound("implode explode.wav");
+								playSound("lightthunder.wav");
+							}
 						}
 					}
 					case 2:

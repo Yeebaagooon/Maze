@@ -541,12 +541,12 @@ int PlayerChoice(int p = 0, string prompt = "Question", string answerone = "Answ
 	//Check choice units alive
 	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"Yes")) == -1){
 		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreate(p, "Cinematic Block", p*3, 1, 0);
+		UnitCreateChange(p, "Cinematic Block", p*3, 1, 0);
 		trQuestVarSet("P"+p+"Yes", temp);
 	}
 	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"No")) == -1){
 		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreate(p, "Cinematic Block", p*3, 1, 0);
+		UnitCreateChange(p, "Cinematic Block", p*3, 1, 0);
 		trQuestVarSet("P"+p+"No", temp);
 	}
 	trUnitSelectByQV("P"+p+"No");
@@ -812,7 +812,7 @@ inactive
 			{
 				xSetPointer(dPlayerData, p);
 				id = yFindLatest("qv", "Villager Atlantean Hero", p);
-				UnitCreate(p, "Pegasus", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+				UnitCreateChange(p, "Pegasus", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 			}
 			case 19:
 			{
@@ -888,7 +888,7 @@ inactive
 			{
 				xSetPointer(dPlayerData, p);
 				yFindLatest("qv", "Villager Atlantean Hero", p);
-				id = UnitCreate(p, "Revealer To Player", MapSize/2,MapSize/2);
+				id = UnitCreateChange(p, "Revealer To Player", MapSize/2,MapSize/2);
 				xAddDatabaseBlock(dDestroyMe, true);
 				xSetInt(dDestroyMe, xDestroyName, id);
 				xSetInt(dDestroyMe, xDestroyTime, trTimeMS()+2000);
@@ -936,7 +936,7 @@ inactive
 				xSetPointer(dPlayerData, p);
 				yFindLatest("qv", "Villager Atlantean Hero", p);
 				id = 1*trQuestVarGet("qv");
-				UnitCreate(p, "Villager Atlantean", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+				UnitCreateChange(p, "Villager Atlantean", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 			}
 			case 44:
 			{
@@ -996,7 +996,7 @@ inactive
 				else{
 					xSetPointer(dPlayerData, p);
 					yFindLatest("qv", "Villager Atlantean Hero", p);
-					id = UnitCreate(p, "Tower Mirror", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					id = UnitCreateChange(p, "Tower Mirror", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 					trUnitSelectClear();
 					trUnitSelectByQV("qv");
 					trImmediateUnitGarrison(""+id);
@@ -1179,7 +1179,7 @@ inactive
 			}
 			case 32:
 			{
-				id = UnitCreate(p, "Revealer To Player", MapSize/2,MapSize/2);
+				id = UnitCreateChange(p, "Revealer To Player", MapSize/2,MapSize/2);
 				xAddDatabaseBlock(dDestroyMe, true);
 				xSetInt(dDestroyMe, xDestroyName, id);
 				xSetInt(dDestroyMe, xDestroyTime, trTimeMS()+2000);
@@ -1228,7 +1228,7 @@ inactive
 			case 39:
 			{
 				if(AutoEscape){
-					temp = UnitCreate(cNumberNonGaiaPlayers, "Heka Gigantes",(MapSize/2)+5,(MapSize/2)+5);
+					temp = UnitCreateChange(cNumberNonGaiaPlayers, "Heka Gigantes",(MapSize/2)+5,(MapSize/2)+5);
 					xAddDatabaseBlock(dEnemies, true);
 					xSetInt(dEnemies, xUnitID, temp);
 					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
@@ -1240,7 +1240,7 @@ inactive
 				}
 				else{
 					temp = yFindLatest("qv", "Temple", p);
-					UnitCreate(p, "Heka Gigantes", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Heka Gigantes", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 					if(trCurrentPlayer() == p){
 						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
 					}
@@ -1292,7 +1292,7 @@ inactive
 			case 49:
 			{
 				if(AutoEscape){
-					temp = UnitCreate(cNumberNonGaiaPlayers, "Heka Gigantes",(MapSize/2)+5,(MapSize/2)+5);
+					temp = UnitCreateChange(cNumberNonGaiaPlayers, "Heka Gigantes",(MapSize/2)+5,(MapSize/2)+5);
 					xAddDatabaseBlock(dEnemies, true);
 					xSetInt(dEnemies, xUnitID, temp);
 					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
@@ -1304,7 +1304,7 @@ inactive
 				}
 				else{
 					temp = yFindLatest("qv", "Temple", p);
-					UnitCreate(p, "Raven", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Raven", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 					if(trCurrentPlayer() == p){
 						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
 					}
@@ -1320,7 +1320,7 @@ inactive
 			case 51:
 			{
 				if(AutoEscape){
-					temp = UnitCreate(cNumberNonGaiaPlayers, "Lampades",(MapSize/2)+5,(MapSize/2)+5);
+					temp = UnitCreateChange(cNumberNonGaiaPlayers, "Lampades",(MapSize/2)+5,(MapSize/2)+5);
 					xAddDatabaseBlock(dEnemies, true);
 					xSetInt(dEnemies, xUnitID, temp);
 					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
@@ -1332,9 +1332,9 @@ inactive
 				}
 				else{
 					temp = yFindLatest("qv", "Temple", p);
-					UnitCreate(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
-					UnitCreate(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
-					UnitCreate(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Lampades", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 					if(trCurrentPlayer() == p){
 						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
 					}
@@ -1343,7 +1343,7 @@ inactive
 			case 52:
 			{
 				if(AutoEscape){
-					temp = UnitCreate(cNumberNonGaiaPlayers, "Manticore",(MapSize/2)+5,(MapSize/2)+5);
+					temp = UnitCreateChange(cNumberNonGaiaPlayers, "Manticore",(MapSize/2)+5,(MapSize/2)+5);
 					xAddDatabaseBlock(dEnemies, true);
 					xSetInt(dEnemies, xUnitID, temp);
 					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
@@ -1355,9 +1355,9 @@ inactive
 				}
 				else{
 					temp = yFindLatest("qv", "Temple", p);
-					UnitCreate(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
-					UnitCreate(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
-					UnitCreate(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Manticore", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 					if(trCurrentPlayer() == p){
 						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
 					}
@@ -1366,7 +1366,7 @@ inactive
 			case 53:
 			{
 				if(AutoEscape){
-					temp = UnitCreate(cNumberNonGaiaPlayers, "Phoenix",(MapSize/2)+5,(MapSize/2)+5);
+					temp = UnitCreateChange(cNumberNonGaiaPlayers, "Phoenix",(MapSize/2)+5,(MapSize/2)+5);
 					xAddDatabaseBlock(dEnemies, true);
 					xSetInt(dEnemies, xUnitID, temp);
 					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
@@ -1378,9 +1378,9 @@ inactive
 				}
 				else{
 					temp = yFindLatest("qv", "Temple", p);
-					UnitCreate(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
-					UnitCreate(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
-					UnitCreate(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Phoenix", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 					if(trCurrentPlayer() == p){
 						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
 					}
@@ -1389,7 +1389,7 @@ inactive
 			case 54:
 			{
 				if(AutoEscape){
-					temp = UnitCreate(cNumberNonGaiaPlayers, "Guardian XP",(MapSize/2)+5,(MapSize/2)+5);
+					temp = UnitCreateChange(cNumberNonGaiaPlayers, "Guardian XP",(MapSize/2)+5,(MapSize/2)+5);
 					xAddDatabaseBlock(dEnemies, true);
 					xSetInt(dEnemies, xUnitID, temp);
 					xSetInt(dEnemies, xIdleTimeout, trTime()+30);
@@ -1401,7 +1401,7 @@ inactive
 				}
 				else{
 					temp = yFindLatest("qv", "Temple", p);
-					UnitCreate(p, "Guardian XP", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+					UnitCreateChange(p, "Guardian XP", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
 					if(trCurrentPlayer() == p){
 						trMinimapFlare(p, 5.0, kbGetBlockPosition(""+1*trQuestVarGet("qv")), false);
 					}
@@ -1427,13 +1427,13 @@ inactive
 	int temp = 0;
 	for(p=1 ; <= cNumberNonGaiaPlayers){
 		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreate(p, "Cinematic Block", p*3, 1, 0);
+		UnitCreateChange(p, "Cinematic Block", p*3, 1, 0);
 		trQuestVarSet("P"+p+"Yes", temp);
 		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreate(p, "Cinematic Block", p*3, 3, 0);
+		UnitCreateChange(p, "Cinematic Block", p*3, 3, 0);
 		trQuestVarSet("P"+p+"No", temp);
 		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreate(p, "Cinematic Block", p*3, MapSize-1, 0);
+		UnitCreateChange(p, "Cinematic Block", p*3, MapSize-1, 0);
 		trQuestVarSet("P"+p+"Space", temp);
 	}
 }

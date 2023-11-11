@@ -3,13 +3,7 @@ BUG
 multi level
 
 Stop mine on cliff - xTest that this fix works
-Enemy attack maceman, end maceman timer
 
-titan too easy?
-
-
-Reward L15 for runners
-More vision easy/mod for runners
 TEMPLE SHIT
 <train row="0" page="1" column="0">Hero Norse</train>
 <train row="0" page="1" column="0">Oracle Scout</train>
@@ -125,6 +119,7 @@ string handunit = "error";
 float timediff = 0.0;
 float timelast = 0.0;
 int RunnersDead = 0;
+int YeebSpecialAttackChance = 100;
 
 
 int CountBuildings(int p = 0){

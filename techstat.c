@@ -250,6 +250,15 @@ highFrequency
 		modifyProtounitAbsolute("Monument", p, 2, GPShieldRadius+2);
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 0, 250);
 		//trModifyProtounit("Gold Mine Dwarven", p, 55, 4);
+		modifyProtounitAbsolute("Roc", p, 2, 0);
+		modifyProtounitAbsolute("Prisoner", p, 2, 0);
+		modifyProtounitAbsolute("Roc", p, 1, 0);
+		modifyProtounitAbsolute("Prisoner", p, 1, 0);
+		modifyProtounitAbsolute("Maceman", p, 2, 0);
+		modifyProtounitAbsolute("Roc", p, 0, 1000000);
+		modifyProtounitAbsolute("Prisoner", p, 0, 1000000);
+		trModifyProtounit("Roc", p, 2, -100);
+		trModifyProtounit("Prisoner", p, 2, -100);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);

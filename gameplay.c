@@ -13,8 +13,9 @@ void LevelUpChoice(int p = 0){
 }
 
 void LevelUp(int p = 0){
+	int temp = 0;
 	if(kbUnitGetProtoUnitID(1*trQuestVarGet("P"+p+"Space")) == -1){
-		int temp = trGetNextUnitScenarioNameNumber();
+		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(p, "Cinematic Block", p*20, MapSize, 0);
 		trQuestVarSet("P"+p+"Space", temp);
 		//	debugLog("Space selector dead");
@@ -25,6 +26,14 @@ void LevelUp(int p = 0){
 		trUnitSelectByQV("P"+p+"Space");
 		trSetSelectedScale(0,0,0);
 	}
+	temp = UnitCreateChange(p, "Roc", p*3, MapSize-1);
+	trUnitSelectClear();
+	trUnitSelectByQV("P"+p+"Space");
+	trImmediateUnitGarrison(""+temp);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trSetSelectedScale(0,0,0);
+	xsEnableRule("RocChange");
 	xSetPointer(dPlayerData, p);
 	//RUNNER REWARDS
 	if(xGetBool(dPlayerData, xPlayerRunner)){
@@ -403,6 +412,9 @@ highFrequency
 		if(trPlayerUnitCountSpecific(p, "Maceman Hero") > 0){
 			trUnitSelectByQV("P"+p+"Space");
 			trUnitChangeInArea(p,p, "Maceman Hero", "Cinematic Block", MapSize);
+			trUnitChangeInArea(p,p, "Roc", "Cinematic Block", MapSize);
+			trUnitChangeInArea(p,p, "Prisoner", "Cinematic Block", MapSize);
+			
 			/*			if(trCurrentPlayer() == p){
 				uiZoomToProto("Villager Atlantean Hero");
 			}*/
@@ -638,7 +650,7 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	//UnitCreate(1, "Manticore", 6, 12);
+	//UnitCreate(1, "Stymphalian Bird", 6, 12);
 	/*UnitCreate(2, "Tower", 310, 312);
 	UnitCreate(2, "Tower", 310, 314);
 	UnitCreate(2, "Tower", 310, 316);
@@ -1306,9 +1318,11 @@ highFrequency
 			modifyProtounitAbsolute("Stymphalian Bird", cNumberNonGaiaPlayers, 2, MapSize);
 			if(trGetWorldDifficulty() >= 2){
 				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
+				YeebSpecialAttackChance = 20;
 			}
 			if(trGetWorldDifficulty() == 3){
 				UnitCreate(cNumberNonGaiaPlayers, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
+				YeebSpecialAttackChance = 10;
 			}
 		}
 		xsDisableSelf();
@@ -1424,5 +1438,13 @@ inactive
 highFrequency
 {
 	trChatSetStatus(false);
+	xsDisableSelf();
+}
+
+rule RocChange
+inactive
+highFrequency
+{
+	unitTransform("Roc", "Prisoner");
 	xsDisableSelf();
 }

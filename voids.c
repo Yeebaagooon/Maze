@@ -814,6 +814,15 @@ int UnitCreate(int xplayerx = 0, string protounitname = "", int xx = 0, int zz =
 	return(1*trQuestVarGet("CreatingU"));
 }
 
+int UnitCreateChange(int xplayerx = 0, string protounitname = "", int xx = 0, int zz = 0, int xheadingx = 0){
+	trQuestVarSet("CreatingU", trGetNextUnitScenarioNameNumber());
+	trArmyDispatch(""+xplayerx+",0", "Prisoner", 1, xx, 0, zz, xheadingx, true);
+	trUnitSelectClear();
+	trUnitSelect(""+1*trQuestVarGet("CreatingU"));
+	trUnitChangeProtoUnit(""+protounitname+"");
+	return(1*trQuestVarGet("CreatingU"));
+}
+
 void FloatingUnit(string protounitname="", int xx = 0, int yy = 0, int zz = 0, int xheadingx = 0, float scalex = 1, float scaley = 1, float scalez = 1){
 	//trArmyDispatch("0,0", "Revealer", 1, xx, yy, zz, xheadingx, true);
 	trQuestVarSet("BuildID", trQuestVarGet("BuildID") + 1);
