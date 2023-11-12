@@ -82,7 +82,7 @@ string RewardText(int r = 0){
 		}
 		case 5:
 		{
-			reward = "+1 tower range";
+			reward = "+1 tower range and LOS";
 		}
 		case 6:
 		{
@@ -115,7 +115,7 @@ string RewardText(int r = 0){
 		}
 		case 13:
 		{
-			reward = "+2 tower range";
+			reward = "+2 tower range and LOS";
 		}
 		case 14:
 		{
@@ -190,7 +190,7 @@ string RewardText(int r = 0){
 		}
 		case 30:
 		{
-			reward = "+2 tower range";
+			reward = "+2 tower range and LOS";
 		}
 		case 31:
 		{
@@ -225,7 +225,7 @@ string RewardText(int r = 0){
 		//NEXT LEVEL
 		case 38:
 		{
-			reward = "+4 tower range";
+			reward = "+4 tower range and LOS";
 		}
 		case 39:
 		{
@@ -233,7 +233,7 @@ string RewardText(int r = 0){
 		}
 		case 40:
 		{
-			reward = "+4 tower LOS";
+			reward = "+6 tower LOS";
 		}
 		case 41:
 		{
@@ -754,6 +754,7 @@ inactive
 			case 5:
 			{
 				trModifyProtounit("Tower", p, 11, 1);
+				trModifyProtounit("Tower", p, 2, 1);
 			}
 			case 6:
 			{
@@ -791,6 +792,7 @@ inactive
 			case 13:
 			{
 				trModifyProtounit("Tower", p, 11, 2);
+				trModifyProtounit("Tower", p, 2, 2);
 			}
 			case 14:
 			{
@@ -870,6 +872,7 @@ inactive
 			case 30:
 			{
 				trModifyProtounit("Tower", p, 11, 2);
+				trModifyProtounit("Tower", p, 2, 2);
 			}
 			case 31:
 			{
@@ -912,6 +915,7 @@ inactive
 			case 38:
 			{
 				trModifyProtounit("Tower", p, 11, 4);
+				trModifyProtounit("Tower", p, 2, 4);
 			}
 			case 39:
 			{
@@ -919,7 +923,7 @@ inactive
 			}
 			case 40:
 			{
-				trModifyProtounit("Tower", p, 2, 4);
+				trModifyProtounit("Tower", p, 2, 6);
 			}
 			case 41:
 			{

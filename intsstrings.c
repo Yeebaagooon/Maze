@@ -1,7 +1,4 @@
 /*
-Reduce hunter power
-Limit sky passages to 2
-?palace
 
 TEMPLE SHIT
 <train row="0" page="1" column="0">Hero Norse</train>

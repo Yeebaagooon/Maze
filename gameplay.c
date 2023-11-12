@@ -657,13 +657,7 @@ highFrequency
 	if(1*trQuestVarGet("temp") == 4){
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
-	UnitCreate(1, "Manticore", 6, 12);
-	/*UnitCreate(2, "Tower", 310, 312);
-	UnitCreate(2, "Tower", 310, 314);
-	UnitCreate(2, "Tower", 310, 316);
-	UnitCreate(2, "Tower", 310, 312);
-	UnitCreate(2, "Tower", 312, 312);
-	UnitCreate(2, "Tower", 314, 312);*/
+	//UnitCreate(1, "Manticore", 6, 12);
 	//trTechGodPower(1, "Restoration", 4);
 	//trTechGodPower(1, "create gold", 4);
 	if(AutoEscape){
@@ -824,6 +818,13 @@ highFrequency
 				if(trCurrentPlayer() == p){
 					trMessageSetText("You can now train battle boars and wadjets.", 8000);
 					playSound("ageadvance.wav");
+				}
+			}
+			else{
+				if(AutoEscape){
+					if(trCurrentPlayer() == p){
+						trMessageSetText("I'd suggest timeshifting towers to explore the map.", 8000);
+					}
 				}
 			}
 		}
@@ -1197,6 +1198,11 @@ highFrequency
 						playSound("ageadvance.wav");
 					}
 				}
+				else{
+					if(trCurrentPlayer() == p){
+						trMessageSetText("Watch out for lampades - their special attack does heavy area damage", 8000);
+					}
+				}
 			}
 		}
 		else{
@@ -1208,6 +1214,11 @@ highFrequency
 					if(trCurrentPlayer() == p){
 						trMessageSetText("You can now train manticores.", 8000);
 						playSound("ageadvance.wav");
+					}
+				}
+				else{
+					if(trCurrentPlayer() == p){
+						trMessageSetText("Watch out for manticores - they render terrain unbuildable with their attacks", 8000);
 					}
 				}
 			}

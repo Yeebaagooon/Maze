@@ -218,6 +218,48 @@ highFrequency
 				}
 				break;
 			}
+			case kbGetProtoUnitID("Palace"):
+			{
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("Hades4Passable")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("Hades4Passable"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build on lava");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+					break;
+				}
+				if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("black")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("black"))){
+					trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build here");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					if(trCurrentPlayer() == kbUnitGetOwner(id)){
+						playSound("cantdothat.wav");
+					}
+					trUnitDestroy();
+					break;
+				}
+				if(AutoEscape){
+					if((trGetTerrainType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainType("HadesBuildable1")) && (trGetTerrainSubType(xsVectorGetX(kbGetBlockPosition(""+j)/2),xsVectorGetZ(kbGetBlockPosition(""+j)/2)) == getTerrainSubType("HadesBuildable1"))){
+						trChatSendToPlayer(0, kbUnitGetOwner(id), "<color=1,0.2,0>You cannot build here in auto escape mode");
+						trUnitSelectClear();
+						trUnitSelectByID(id);
+						if(trCurrentPlayer() == kbUnitGetOwner(id)){
+							playSound("cantdothat.wav");
+						}
+						trUnitDestroy();
+						break;
+					}
+				}
+				xAddDatabaseBlock(dBuildings, true);
+				xSetInt(dBuildings, xUnitName, j);
+				xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				if(AutoEscape){
+					GodPowerChance(j);
+				}
+				break;
+			}
 			case kbGetProtoUnitID("Shifting Sands Out"):
 			{
 				if(kbUnitGetOwner(id) != 0){

@@ -70,7 +70,7 @@ void HunterUnit(string unit = "", int p = 0, int pop = 1){
 		trModifyProtounit(unit, p, 1, 0.5*trGetWorldDifficulty());
 		trModifyProtounit(unit, p, 1, -0.5);
 	}
-	modifyProtounitAbsolute(unit, p, 24, 0);
+	//modifyProtounitAbsolute(unit, p, 24, 0);
 }
 
 void SetBuildPoints(int a = 10){
@@ -83,7 +83,12 @@ void SetBuildPoints(int a = 10){
 		modifyProtounitAbsolute("Wall Short", p, 4, a/5);
 		modifyProtounitAbsolute("Wall Medium", p, 4, a/5);
 		modifyProtounitAbsolute("Wall Long", p, 4, a/5);
-		modifyProtounitAbsolute("Sky Passage", p, 4, a*2.5);
+		if(AutoEscape){
+			modifyProtounitAbsolute("Sky Passage", p, 4, a*2.5);
+		}
+		else{
+			modifyProtounitAbsolute("Sky Passage", p, 4, a*2);
+		}
 		modifyProtounitAbsolute("Lighthouse", p, 4, a*3);
 		modifyProtounitAbsolute("Tower Mirror", p, 4, a/3);
 		modifyProtounitAbsolute("Palace", p, 4, a*4);
@@ -97,7 +102,12 @@ void SetBuildPointsPlayer(int a = 10, int p =0){
 	modifyProtounitAbsolute("Wall Short", p, 4, a/5);
 	modifyProtounitAbsolute("Wall Medium", p, 4, a/5);
 	modifyProtounitAbsolute("Wall Long", p, 4, a/5);
-	modifyProtounitAbsolute("Sky Passage", p, 4, a*2.5);
+	if(AutoEscape){
+		modifyProtounitAbsolute("Sky Passage", p, 4, a*2.5);
+	}
+	else{
+		modifyProtounitAbsolute("Sky Passage", p, 4, a*2);
+	}
 	modifyProtounitAbsolute("Lighthouse", p, 4, a*3);
 }
 

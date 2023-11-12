@@ -290,10 +290,10 @@ void CreateRelic(int type = 0){
 			}
 			if(inLOS == false){
 				//UNIT CREATED - SET TARGET
-				//if(trCountUnitsInArea(""+temp, 0, "Relic", 20) == 0){
-				trUnitDestroy();
-				Allow = true;
-				//}
+				if(trCountUnitsInArea(""+temp, 0, "Relic", 40) == 0){
+					trUnitDestroy();
+					Allow = true;
+				}
 				trUnitDestroy();
 			}
 		}
