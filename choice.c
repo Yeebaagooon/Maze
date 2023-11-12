@@ -483,7 +483,6 @@ string RewardTextHunter(int r = 0){
 		{
 			reward = "Guardian";
 		}
-		//Have EQ here and lampades
 		
 	}
 	return(reward);

@@ -193,6 +193,9 @@ highFrequency
 		modifyProtounitAbsolute("Fenris Wolf", p, 29, 70);
 		modifyProtounitAbsolute("Fenris Wolf", p, 27, 80);
 		modifyProtounitAbsolute("Sky Passage", p, 10, 2); //Sky passage limit
+		if((AutoEscape == false) || (trGetWorldDifficulty() == 0)){
+			trModifyProtounit("Sky Passage", p, 10, 1);
+		}
 		MakeUnitFree("Tower", p);
 		MakeUnitFree("Troll", p);
 		MakeUnitFree("Behemoth", p);
@@ -224,6 +227,7 @@ highFrequency
 		HunterUnit("Mountain Giant", p, 2);
 		HunterUnit("Heka Gigantes", p, 2);
 		HunterUnit("Lampades", p, 2);
+		HunterUnit("Manticore", p, 2);
 		HunterUnit("Pegasus", p, 3);
 		HunterUnit("Guardian XP", p, 3);
 		ZeroArmour("Guardian XP", p);
@@ -289,9 +293,7 @@ highFrequency
 		modifyProtounitAbsolute("Palace", p, 31, 200);
 		modifyProtounitAbsolute("Palace", p, 11, 26);
 		modifyProtounitAbsolute("Palace", p, 12, 0);
-		modifyProtounitAbsolute("Guardian XP", p, 0, (1*trGetWorldDifficulty()+1)*7500);
-		modifyProtounitAbsolute("Statue of Lightning", p, 1, 5);
-		modifyProtounitAbsolute("Statue of Lightning", p, 0, 10000);
+		modifyProtounitAbsolute("Guardian XP", p, 0, (1*trGetWorldDifficulty()+1)*5000);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);

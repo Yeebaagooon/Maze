@@ -117,7 +117,7 @@ highFrequency
 						trPlayerKillAllUnits(p);
 						xSetBool(dPlayerData, xPlayerAlive, false);
 						if(trCurrentPlayer() == p){
-							uiMessageBox("Resigning ruins the fun for everyone, fuck you.");
+							uiMessageBox("Resigning ruins the fun for everyone, shame on you.");
 							/*%
 							code("configSetInt(\"unbuildWoodCost\", 5);");
 							code("configSetInt(\"unbuildWoodCost1\", 5);");
@@ -1124,6 +1124,13 @@ highFrequency
 					playSound("\cinematics\17_in\weirdthing.mp3");
 				}
 			}
+			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				grantGodPowerNoRechargeNextPosition(p, "Earthquake", MapFactor());
+				if(trCurrentPlayer() == p){
+					trMessageSetText("Earthquake granted.", 8000);
+					playSound("\cinematics\17_in\weirdthing.mp3");
+				}
+			}
 		}
 		if(AutoEscape){
 			trUnitSelectClear();
@@ -1211,6 +1218,15 @@ highFrequency
 			for(p = 1; <= cNumberNonGaiaPlayers){
 				xSetPointer(dPlayerData, p);
 				if(xGetBool(dPlayerData, xPlayerRunner) == false){
+					trForbidProtounit(p, "Battle Boar");
+					trForbidProtounit(p, "Behemoth");
+					trForbidProtounit(p, "Hydra");
+					trForbidProtounit(p, "Nemean Lion");
+					trForbidProtounit(p, "Petsuchos");
+					trForbidProtounit(p, "Satyr");
+					trForbidProtounit(p, "Scarab");
+					trForbidProtounit(p, "Scorpion Man");
+					trForbidProtounit(p, "Stymphalian Bird");
 					trUnforbidProtounit(p, "Manticore");
 					if(trCurrentPlayer() == p){
 						trMessageSetText("You can now train manticores.", 8000);
@@ -1253,6 +1269,7 @@ highFrequency
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(xGetBool(dPlayerData, xPlayerRunner) == false){
+				modifyProtounitAbsolute("Revealer to Player", 0, 2, 10);
 				trUnforbidProtounit(p, "Pegasus");
 				if(trCurrentPlayer() == p){
 					trMessageSetText("You can now train pegasi, these turn into Guardians.", 8000);
@@ -1288,16 +1305,22 @@ highFrequency
 {
 	if((trTime()-cActivationTime) >= 60*22){
 		vector spawn = vector(0,0,0);
+		modifyProtounitAbsolute("Stymphalian Bird", 0, 2, 47);
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			xSetPointer(dPlayerData, p);
 			if(trPlayerUnitCountSpecific(p, "Temple") > 0){
-				spawn = kbGetBlockPosition(""+1*trQuestVarGet("Temple"+p));
+				yFindLatestReverse("spawnpoint"+p, "Temple", p);
+				modifyProtounitAbsolute("Stymphalian Bird", p, 2, 47);
+				spawn = kbGetBlockPosition(""+1*trQuestVarGet("spawnpoint"+p));
+				UnitCreateChange(0, "Revealer to Player", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 				UnitCreate(p, "Stymphalian Bird", xsVectorGetX(spawn),xsVectorGetZ(spawn));
 				if(trCurrentPlayer() == p){
 					trMessageSetText("Yeebaagooon has joined you for the final hunt!", 8000);
 					playSound("ageadvance.wav");
 				}
-				trMinimapFlare(p, 10.0, spawn, false);
+				for(x = 1; <= cNumberNonGaiaPlayers){
+					trMinimapFlare(x, 10.0, spawn, false);
+				}
 			}
 			if(xGetBool(dPlayerData, xPlayerRunner)){
 				if(trCurrentPlayer() == p){
@@ -1334,7 +1357,6 @@ highFrequency
 			else{
 				trSetPlayerDefeated(p);
 			}
-			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + 1*trQuestVarGet("P"+p+"ActualLevel"));
 		}
 		xsEnableRule("GameEnd");
 		trShowWinLose("The runners have won!");
@@ -1354,7 +1376,6 @@ highFrequency
 			else{
 				trSetPlayerWon(p);
 			}
-			trChatSend(0, trStringQuestVarGet("p"+p+"name") + " level " + 1*trQuestVarGet("P"+p+"ActualLevel"));
 		}
 		xsEnableRule("GameEnd");
 		trShowWinLose("The hunters have won!");

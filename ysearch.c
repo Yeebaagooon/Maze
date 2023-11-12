@@ -256,11 +256,6 @@ highFrequency
 				xSetInt(dBuildings, xUnitName, j);
 				xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
 				xSetPointer(dPlayerData, kbUnitGetOwner(id));
-				if(xGetFloat(dPlayerData, xPalaceBuildPoints) < 30.0){
-					trUnitSelectClear();
-					trUnitSelect(""+j);
-					trUnitSetAnimationPath("1,0,0,0,0,0");
-				}
 				if(AutoEscape){
 					GodPowerChance(j);
 				}
@@ -537,34 +532,37 @@ highFrequency
 			}
 			case kbGetProtoUnitID("Tartarian Gate"):
 			{
-				trQuestVarModify("Volcanoes", "+", 1);
-				xAddDatabaseBlock(dVolcanoDB, true);
-				xSetVector(dVolcanoDB, xVolcanoPos, kbGetBlockPosition(""+j));
-				xSetVector(dVolcanoDB, xVolcanoPos, xGetVector(dVolcanoDB, xVolcanoPos)/2); //tile pos
-				xSetInt(dVolcanoDB, xVolcanoName, j);
-				xSetInt(dVolcanoDB, xVolcanoTiles, 0);
-				xSetInt(dVolcanoDB, xVolcanoTime, trTimeMS());
-				xSetInt(dVolcanoDB, xVolcanoLink, 1*trQuestVarGet("Volcanoes"));
-				xSetInt(dVolcanoDB, xVolcanoNextTime, trTimeMS());
-				//Link frontier
-				xAddDatabaseBlock(dVolcanoFrontierDB, true);
-				xSetInt(dVolcanoFrontierDB, xVFPosX, xsVectorGetX(xGetVector(dVolcanoDB, xVolcanoPos)));
-				xSetInt(dVolcanoFrontierDB, xVFPosZ, xsVectorGetZ(xGetVector(dVolcanoDB, xVolcanoPos)));
-				xSetInt(dVolcanoFrontierDB, xVFTime, trTimeMS());
-				xSetBool(dVolcanoFrontierDB, xVFPainted, false);
-				xSetInt(dVolcanoFrontierDB, xVFLink, 1*trQuestVarGet("Volcanoes"));
-				trUnitSelectClear();
-				trUnitSelectByID(id);
-				trUnitChangeProtoUnit("Spy Eye");
-				trUnitSelectClear();
-				trUnitSelectByID(id);
-				trMutateSelected(kbGetProtoUnitID("Tartarian Gate"));
-				trUnitSelectClear();
-				trUnitSelectByID(id);
-				trSetSelectedScale(0.5,-0.5,0.5);
-				trUnitSelectClear();
-				trUnitSelectByID(id);
-				trUnitOverrideAnimation(2,0,true,true,-1,-1);
+				if(Pregame == false){
+					trQuestVarModify("Volcanoes", "+", 1);
+					xAddDatabaseBlock(dVolcanoDB, true);
+					xSetVector(dVolcanoDB, xVolcanoPos, kbGetBlockPosition(""+j));
+					xSetVector(dVolcanoDB, xVolcanoPos, xGetVector(dVolcanoDB, xVolcanoPos)/2); //tile pos
+					xSetInt(dVolcanoDB, xVolcanoName, j);
+					xSetInt(dVolcanoDB, xVolcanoTiles, 0);
+					xSetInt(dVolcanoDB, xVolcanoTime, trTimeMS());
+					xSetInt(dVolcanoDB, xVolcanoLink, 1*trQuestVarGet("Volcanoes"));
+					xSetInt(dVolcanoDB, xVolcanoNextTime, trTimeMS());
+					//Link frontier
+					xAddDatabaseBlock(dVolcanoFrontierDB, true);
+					xSetInt(dVolcanoFrontierDB, xVFPosX, xsVectorGetX(xGetVector(dVolcanoDB, xVolcanoPos)));
+					xSetInt(dVolcanoFrontierDB, xVFPosZ, xsVectorGetZ(xGetVector(dVolcanoDB, xVolcanoPos)));
+					xSetInt(dVolcanoFrontierDB, xVFTime, trTimeMS());
+					xSetBool(dVolcanoFrontierDB, xVFPainted, false);
+					xSetInt(dVolcanoFrontierDB, xVFLink, 1*trQuestVarGet("Volcanoes"));
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitChangeProtoUnit("Spy Eye");
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trMutateSelected(kbGetProtoUnitID("Tartarian Gate"));
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trSetSelectedScale(0.5,-0.5,0.5);
+					trUnitSelectClear();
+					trUnitSelectByID(id);
+					trUnitOverrideAnimation(2,0,true,true,-1,-1);
+				}
+				break;
 			}
 			case kbGetProtoUnitID("Tartarian Gate Spawn"):
 			{
@@ -573,12 +571,14 @@ highFrequency
 					trUnitSelectByID(id);
 					trUnitDestroy();
 				}
+				break;
 			}
 			case kbGetProtoUnitID("Bolt Strike"):
 			{
 				trUnitSelectClear();
 				trUnitSelectByID(id);
 				trUnitDestroy();
+				break;
 			}
 			case kbGetProtoUnitID("Wall Connector"):
 			{

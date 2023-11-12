@@ -92,11 +92,12 @@ highFrequency
 		trPlayerSetDiplomacy(0, p, "Enemy");
 		trPlayerSetDiplomacy(p, 0, "Enemy");
 	}
-	if(ForceAutoOff == false){
-		if(kbIsPlayerHuman(cNumberNonGaiaPlayers) == false){
-			AutoEscape = true;
-			aiSet("NoAI", cNumberNonGaiaPlayers);
-		}
+	if(kbIsPlayerHuman(cNumberNonGaiaPlayers) == false){
+		AutoEscape = true;
+		aiSet("NoAI", cNumberNonGaiaPlayers);
+	}
+	else{
+		AutoEscape = false;
 	}
 	trTechSetStatus(0, 304, 4);
 	if(MapSkin == 0){

@@ -54,6 +54,7 @@ rule BeginChooseHunters
 inactive
 highFrequency
 {
+	int temp =0;
 	xsDisableSelf();
 	createCameraTrack(100000);
 	trCameraCut(vector(50.793114,55.865345,-29.563869), vector(0.016167,-0.552531,0.833335), vector(0.010718,0.833492,0.552428), vector(0.999812,0.000000,-0.019397));
@@ -62,6 +63,7 @@ highFrequency
 	addCameraTrackWaypoint();
 	playCameraTrack();
 	DestroyAbove = trGetNextUnitScenarioNameNumber();
+	trPaintTerrain(0,0,MapSize,MapSize,getTerrainType("black"),getTerrainSubType("black"));
 	//trPaintTerrain(CurrentCell(maxnumberx/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberz/2-1, cellsize, cellpadding)-1,CurrentCell(maxnumberx/2, cellsize, cellpadding)+cellpadding+1,CurrentCell(maxnumberz/2, cellsize, cellpadding)+cellpadding+1,getTerrainType("HadesBuildable1"), getTerrainSubType("HadesBuildable1"));
 	PaintAtlantisArea(15,15,35,35,getTerrainType("IceA"),getTerrainSubType("IceA"));
 	PaintAtlantisArea(15,23,19,27,getTerrainType("IceB"),getTerrainSubType("IceB"));
@@ -74,8 +76,37 @@ highFrequency
 			UnitCreate(p, "Old Man", 50,48-cNumberNonGaiaPlayers+p*2,0);
 		}
 	}
+	temp = UnitCreate(0, "Cinematic Block", 34,50,270);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Spy Eye");
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trMutateSelected(kbGetProtoUnitID("Summoning Tree 2"));
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trSetSelectedScale(0.5,0.01,0.5);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitOverrideAnimation(18,0,true,true,-1,-1);
 	UnitCreate(0, "Villager Atlantean Hero", 34,50,90);
-	UnitCreate(0, "Statue of Major God", 66,50,270);
+	temp = UnitCreate(0, "Cinematic Block", 66,50,270);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Spy Eye");
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trMutateSelected(kbGetProtoUnitID("Tartarian Gate"));
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trSetSelectedScale(0,0,0);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitOverrideAnimation(6,0,true,true,-1,-1);
+	temp = UnitCreate(0, "Statue of Major God", 66,50,270);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitSetAnimationPath("9,0,0,0,0,0");
 	trMessageSetText("Move your old man to your desired team", 6000);
 	ChoiceTimeout = trTime()+25;
 	trCounterAddTime("cdchoicehunt", 25,0, "Players randomised", -1);
@@ -287,12 +318,19 @@ highFrequency
 			if(trCurrentPlayer() == p){
 				OverlayTextPlayerColor(p);
 				trOverlayText("You are a Hunter", 8.0, 534, 300, 1000);
+				playSound("xpack\xcinematics\2_out\music.mp3");
+				playSound("meteorbighit.wav");
 			}
 		}
 		else{
 			if(trCurrentPlayer() == p){
 				OverlayTextPlayerColor(p);
 				trOverlayText("You are a Runner", 8.0, 534, 300, 1000);
+				playSound("meteorsmallhit.wav");
+				playSound("vortexstart.wav");
+				playSound("cinematics\24_in\magic.mp3");
+				playSound("cinematics\13_out\prayshort.mp3");
+				playSound("cinematics\13_in\jerrygarcia.mp3");
 			}
 		}
 	}
@@ -580,7 +618,15 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelectByID(0);
 			trUnitChangeInArea(p,p, "Temple", "Temple", MapSize);
-			modifyProtounitAbsolute("Temple", p, 7, 60+15*MapFactor()); //temple pop limit
+			if(trPlayerUnitCountSpecific(p, "Temple") > 1){
+				modifyProtounitAbsolute("Temple", p, 7, 35+15*MapFactor()); //temple pop limit
+				if(Between(cNumberNonGaiaPlayers, 4, 5)){
+					modifyProtounitAbsolute("Temple", p, 7, 45+15*MapFactor()); //temple pop limit
+				}
+			}
+			else{
+				modifyProtounitAbsolute("Temple", p, 7, 60+15*MapFactor()); //temple pop limit
+			}
 		}
 		if(AutoEscape){
 			xsEnableRule("AI_Activate");
