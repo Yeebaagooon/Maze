@@ -658,8 +658,8 @@ highFrequency
 		AIVector = xsVectorSet(MapSize-4,4,MapSize-4);
 	}
 	//UnitCreate(1, "Manticore", 6, 12);
-	//trTechGodPower(1, "Restoration", 4);
-	//trTechGodPower(1, "create gold", 4);
+	//trTechGodPower(1, "Vision", 40);
+	//trTechGodPower(1, "Sandstorm", 40);
 	if(AutoEscape){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			//grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
@@ -693,13 +693,14 @@ highFrequency
 				MaxRelics = MaxRelics+4;
 			}
 			for(a = 0; <= MaxRelics){
-				trQuestVarSetFromRand("temp",0,7); //0,7
+				trQuestVarSetFromRand("temp",0,RELICS_GROUP_1); //0,7
 				CreateRelic(1*trQuestVarGet("temp"));
 			}
 			if(trGetWorldDifficulty() < 3){
 				CreateRelic(RELIC_SHIELD);
 			}
 			xsEnableRule("Monument_Search");
+			//CreateRelic(RELIC_PALACE_RANGE_10);
 		}
 		xsDisableSelf();
 	}
@@ -857,7 +858,7 @@ highFrequency
 		if(AutoEscape){
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
-					trQuestVarSetFromRand("temp",8,14);
+					trQuestVarSetFromRand("temp",(RELICS_GROUP_1+1),RELICS_GROUP_2);
 					CreateRelic(1*trQuestVarGet("temp"));
 				}
 			}
@@ -1040,7 +1041,7 @@ highFrequency
 		if(AutoEscape){
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
-					trQuestVarSetFromRand("temp",15,21);
+					trQuestVarSetFromRand("temp",(RELICS_GROUP_2+1),RELICS_GROUP_3);
 					CreateRelic(1*trQuestVarGet("temp"));
 				}
 			}
@@ -1129,7 +1130,7 @@ highFrequency
 			trUnitSelect("0");
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
-					trQuestVarSetFromRand("temp",15,21+3-trGetWorldDifficulty());
+					trQuestVarSetFromRand("temp",(RELICS_GROUP_3+1),MAX_RELIC_CLASS);
 					CreateRelic(1*trQuestVarGet("temp"));
 				}
 			}
@@ -1272,7 +1273,7 @@ highFrequency
 			MaxRelics = MaxRelics+2;
 			if(trPlayerUnitCountSpecific(0, "Relic") < MaxRelics){
 				for(a = trPlayerUnitCountSpecific(0, "Relic"); < MaxRelics){
-					trQuestVarSetFromRand("temp",21,MAX_RELIC_CLASS);
+					trQuestVarSetFromRand("temp",(RELICS_GROUP_3+1),MAX_RELIC_CLASS);
 					CreateRelic(1*trQuestVarGet("temp"));
 				}
 			}

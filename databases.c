@@ -22,6 +22,8 @@ int xPlayerWallLevel = 0;
 int xJourneyOn = 0;
 int xRocID = 0;
 int xMacemanID = 0;
+int xPalaceBuildPoints = 0;
+int xSkyPassageBuildPoints = 0;
 
 int dEnemies = 0;
 int xUnitID = 0;
@@ -212,6 +214,8 @@ highFrequency
 	xJourneyOn = xInitAddBool(dPlayerData, "journey", false);
 	xRocID = xInitAddInt(dPlayerData, "rocid", 0);
 	xMacemanID = xInitAddInt(dPlayerData, "maceman", 0);
+	xPalaceBuildPoints = xInitAddFloat(dPlayerData, "pbp", 0.0);
+	xSkyPassageBuildPoints = xInitAddFloat(dPlayerData, "sbp", 0.0);
 	
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {

@@ -77,6 +77,8 @@ void SetBuildPoints(int a = 10){
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		xSetFloat(dPlayerData, xTowerBuild, a/3);
+		xSetFloat(dPlayerData, xPalaceBuildPoints, a*4);
+		xSetFloat(dPlayerData, xSkyPassageBuildPoints, a*2.5);
 		modifyProtounitAbsolute("Tower", p, 4, a/3);
 		modifyProtounitAbsolute("Gate", p, 4, a/5);
 		modifyProtounitAbsolute("Wall Connector", p, 4, a/5);
@@ -287,8 +289,9 @@ highFrequency
 		modifyProtounitAbsolute("Palace", p, 31, 200);
 		modifyProtounitAbsolute("Palace", p, 11, 26);
 		modifyProtounitAbsolute("Palace", p, 12, 0);
-		modifyProtounitAbsolute("Guardian XP", p, 0, (1*trGetWorldDifficulty()+1)*5000);
-		modifyProtounitAbsolute("Guardian XP", p, 29, (1*trGetWorldDifficulty()+1)*500);
+		modifyProtounitAbsolute("Guardian XP", p, 0, (1*trGetWorldDifficulty()+1)*7500);
+		modifyProtounitAbsolute("Statue of Lightning", p, 1, 5);
+		modifyProtounitAbsolute("Statue of Lightning", p, 0, 10000);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0.0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0.0);

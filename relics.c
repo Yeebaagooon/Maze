@@ -64,33 +64,45 @@ const int RELIC_CITIZEN_SPEED_1 = 4;
 const int RELIC_CITIZEN_HP_300 = 5;
 const int RELIC_WALLS = 6;
 const int RELIC_SANDSTORM = 7;
+const int RELIC_PALACE_ATTACK_100 = 8;
 //---
-const int RELIC_LIGHTNING = 8;
-const int RELIC_CITIZEN_REGEN_5 = 9;
-const int RELIC_PEGASUS = 10;
-const int RELIC_HP_500 = 11;
-const int RELIC_ATTACK_10 = 12;
-const int RELIC_WALL_POWER = 13;
-const int RELIC_JOURNEY = 14;
+const int RELICS_GROUP_1 = RELIC_PALACE_ATTACK_100;
+const int RELIC_LIGHTNING = 9;
+const int RELIC_CITIZEN_REGEN_5 = 10;
+const int RELIC_PEGASUS = 11;
+const int RELIC_HP_500 = 12;
+const int RELIC_ATTACK_10 = 13;
+const int RELIC_WALL_POWER = 14;
+const int RELIC_JOURNEY = 15;
+const int RELIC_PALACE_PROJECTILE = 16;
+const int RELIC_PALACE_TIMESHIFT = 17;
+const int RELIC_SKY_PASSAGE_TIMESHIFT = 18;
 //---
-const int RELIC_SECOND_CITIZEN = 15;
-const int RELIC_RANGE_5 = 16;
-const int RELIC_POWER_RESTORATION = 17;
-const int RELIC_BUILD_TIME_50 = 18;
-const int RELIC_POWER_CHICKEN = 19;
-const int RELIC_ARMOUR_10 = 20;
-const int RELIC_POWER_FROST = 21;
+const int RELICS_GROUP_2 = RELIC_SKY_PASSAGE_TIMESHIFT;
+const int RELIC_SECOND_CITIZEN = 19;
+const int RELIC_RANGE_5 = 20;
+const int RELIC_POWER_RESTORATION = 21;
+const int RELIC_BUILD_TIME_50 = 22;
+const int RELIC_POWER_CHICKEN = 23;
+const int RELIC_ARMOUR_10 = 24;
+const int RELIC_POWER_FROST = 25;
+const int RELIC_EXTRA_PALACE = 26;
+const int RELIC_TOWER_LOS_6 = 27;
 //---
-const int RELIC_MIRROR_TOWER = 22;
-const int RELIC_TOWER_PROJECTILE = 23;
-const int RELIC_POWER_BIRDS = 24;
-const int RELIC_EXTRA_SKY_PASSAGE = 25;
-const int RELIC_CITIZEN_HP_1000 = 26;
-const int RELIC_ATTACK_20 = 27;
-const int RELIC_POWER_IMPLODE = 28;
+const int RELICS_GROUP_3 = RELIC_POWER_FROST;
+const int RELIC_MIRROR_TOWER = 28;
+const int RELIC_TOWER_PROJECTILE = 29;
+const int RELIC_POWER_BIRDS = 30;
+const int RELIC_EXTRA_SKY_PASSAGE = 31;
+const int RELIC_CITIZEN_HP_1000 = 32;
+const int RELIC_ATTACK_20 = 33;
+const int RELIC_POWER_IMPLODE = 34;
+const int RELIC_PALACE_RANGE_10 = 35;
+const int RELIC_TOWER_RANGE_8 = 36;
+const int RELIC_TOWER_LOS_10 = 37;
 
 
-const int MAX_RELIC_CLASS = 28;
+const int MAX_RELIC_CLASS = 37;
 const int RELIC_SHIELD = 47;
 
 void RelicEffect(int p = 0, int effect = 0){
@@ -247,6 +259,45 @@ void RelicEffect(int p = 0, int effect = 0){
 			trUnitSelect(""+temp);
 			trUnitChangeProtoUnit("Monument");
 		}
+		case RELIC_PALACE_ATTACK_100:
+		{
+			trModifyProtounit("Palace", p, 31, 100);
+		}
+		case RELIC_PALACE_PROJECTILE:
+		{
+			trModifyProtounit("Palace", p, 13, 1);
+		}
+		case RELIC_PALACE_TIMESHIFT:
+		{
+			xSetFloat(dPlayerData,xPalaceBuildPoints,xGetFloat(dPlayerData, xPalaceBuildPoints)*0.5);
+			modifyProtounitAbsolute("Palace", p, 4, xGetFloat(dPlayerData, xPalaceBuildPoints));
+		}
+		case RELIC_SKY_PASSAGE_TIMESHIFT:
+		{
+			xSetFloat(dPlayerData,xSkyPassageBuildPoints,xGetFloat(dPlayerData, xSkyPassageBuildPoints)*0.8);
+			modifyProtounitAbsolute("Sky Passage", p, 4, xGetFloat(dPlayerData, xSkyPassageBuildPoints));
+		}
+		case RELIC_EXTRA_PALACE:
+		{
+			trModifyProtounit("Palace", p, 10, 1);
+		}
+		case RELIC_TOWER_LOS_6:
+		{
+			trModifyProtounit("Tower", p, 2, 6);
+		}
+		case RELIC_TOWER_LOS_10:
+		{
+			trModifyProtounit("Tower", p, 2, 10);
+		}
+		case RELIC_TOWER_RANGE_8:
+		{
+			trModifyProtounit("Tower", p, 11, 8);
+		}
+		case RELIC_PALACE_RANGE_10:
+		{
+			trModifyProtounit("Palace", p, 11, 10);
+			trModifyProtounit("Palace", p, 2, 10);
+		}
 	}
 }
 
@@ -255,7 +306,6 @@ void RelicDecor(string proto = "" ,string path = "0,0,0,0,0,0", vector size = ve
 	xSetString(dRelicTypes, xRelicDecorAnimPath, path);
 	xSetVector(dRelicTypes, xRelicDecorScale, size);
 	xSetInt(dRelicTypes, xRelicDecorAnim, anim);
-	//xSetInt(dRelicTypes, xRelicRefreshBool, THISISANINT);
 }
 
 void RelicSetName(string desc = "error"){
@@ -535,6 +585,60 @@ highFrequency
 	RelicSetClass(RELIC_SHIELD);
 	RelicSetName("God power shield");
 	RelicDecor("Monument", "no path", vector(0,0,0),4,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_PALACE_ATTACK_100);
+	RelicSetName("+100 palace attack");
+	RelicDecor("Palace", "no path", vector(0.15,0.15,0.15),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_PALACE_PROJECTILE);
+	RelicSetName("+1 palace projectile");
+	RelicDecor("Palace", "no path", vector(0.15,0.15,0.15),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_PALACE_TIMESHIFT);
+	RelicSetName("+50 percent faster palace timeshift");
+	RelicDecor("Timeshift in", "0,1,1,0,0,0", vector(1,1,1),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_SKY_PASSAGE_TIMESHIFT);
+	RelicSetName("+20 percent faster sky passage build time");
+	RelicDecor("Timeshift in", "0,0,0,1,0,0", vector(1,1,1),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_EXTRA_PALACE);
+	RelicSetName("+1 extra palace build limit");
+	RelicDecor("Palace", "0,4,0,0,0,0", vector(0.2,0.2,0.2),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_TOWER_LOS_6);
+	RelicSetName("+6 tower LOS");
+	RelicDecor("Tower", "4,1,0,0,0,0", vector(0.4,0.4,0.4),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_TOWER_LOS_10);
+	RelicSetName("+10 tower LOS");
+	RelicDecor("Tower", "4,2,0,0,0,0", vector(0.4,0.4,0.4),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_TOWER_RANGE_8);
+	RelicSetName("+8 tower range");
+	RelicDecor("Tower", "2,3,0,0,0,0", vector(0.4,0.4,0.4),2,0);
+	//--BUILD RELIC
+	index = xAddDatabaseBlock(dRelicTypes, true);
+	xSetInt(dRelicTypes, xRelicPointer, index);
+	RelicSetClass(RELIC_PALACE_RANGE_10);
+	RelicSetName("+10 palace range and LOS");
+	RelicDecor("Palace", "1,0,0,0,0,0", vector(0.2,0.2,0.2),2,1);
 	
 	xsDisableSelf();
 }

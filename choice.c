@@ -4,58 +4,11 @@ int ChoiceEffect = 0;
 string YesChoiceUnitName = "Swordsman";
 string NoChoiceUnitName = "Lancer";
 
-/*
-Power ideas
-No need to code beyond level 15 really
-
---MADE--
-create gold = create wall
-tartarian gate = volcano
-
-RUNNER
-Great jounrey
-Pestilence
-Turn into bird
-xBolt (radial)
-Temporary towers
-Kill shockwave
-Unlock lighthouse
-Runner lightning forcefield
-
-HUNTER
-Spawn scouting raven
-
-
-UNIT
-Lampades that have special spc meteor
-Catapult of doom
-
-
-BOTH
-Tunnel
-Temporarily reveal whole map
-Temporary cliff
-
-LURE
-CARNIVORA
-DWARVEN GOLD
-SERPENTS
-ANCESTORS
-HESPERIDES
-PLENTY
-TARTARIAN
-earth dragon
-
-RAIN
-RAG
-FIMBUL
-
-gaia forest
-change myth
-Regen
-
-
-*/
+void SoundSet(string sound = "cantdothat.wav"){
+	if(trCurrentPlayer() == xGetPointer(dPlayerData)){
+		playSound(sound);
+	}
+}
 
 const int RunnerRewardL1 = 4;
 const int RunnerRewardL2 = 11;
@@ -745,98 +698,119 @@ inactive
 				trUnitSelectByID(0);
 				trUnitChangeInArea(p,p, "Titan Atlantean", "Tower", MapSize);
 				unitTransform("Titan Gate Dead", "Tower");*/
+				SoundSet("wall.wav");
 			}
 			case 4:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 1, 0.5);
 				trModifyProtounit("Villager Atlantean", p, 1, 0.5);
+				SoundSet("researchcomplete.wav");
 			}
 			case 5:
 			{
 				trModifyProtounit("Tower", p, 11, 1);
 				trModifyProtounit("Tower", p, 2, 1);
+				SoundSet("researchcomplete.wav");
 			}
 			case 6:
 			{
 				trModifyProtounit("Tower", p, 31, 2);
+				SoundSet("researchcomplete.wav");
 			}
 			case 7:
 			{
 				trModifyProtounit("Tower", p, 2, 2);
+				SoundSet("researchcomplete.wav");
 			}
 			case 8:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 9:
 			{
 				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.9);
 				modifyProtounitAbsolute("Tower", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+				SoundSet("researchcomplete.wav");
 			}
 			case 10:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 100);
 				trModifyProtounit("Villager Atlantean", p, 0, 100);
+				SoundSet("researchcomplete.wav");
 			}
 			//NEXT LEVEL
 			case 11:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 200);
 				trModifyProtounit("Villager Atlantean", p, 0, 200);
+				SoundSet("researchcomplete.wav");
 			}
 			case 12:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 1, 0.75);
 				trModifyProtounit("Villager Atlantean" , p, 1, 0.75);
+				SoundSet("researchcomplete.wav");
 			}
 			case 13:
 			{
 				trModifyProtounit("Tower", p, 11, 2);
 				trModifyProtounit("Tower", p, 2, 2);
+				SoundSet("researchcomplete.wav");
 			}
 			case 14:
 			{
 				trModifyProtounit("Tower", p, 31, 4);
+				SoundSet("researchcomplete.wav");
 			}
 			case 15:
 			{
 				trModifyProtounit("Tower", p, 2, 4);
+				SoundSet("researchcomplete.wav");
 			}
 			case 16:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 17:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Barrage", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 18:
 			{
 				xSetPointer(dPlayerData, p);
 				id = yFindLatest("qv", "Villager Atlantean Hero", p);
 				UnitCreateChange(p, "Pegasus", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+				SoundSet("pegasusselect1.wav");
 			}
 			case 19:
 			{
 				trModifyProtounit("Tower", p, 0, 100);
+				SoundSet("researchcomplete.wav");
 			}
 			case 20:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Restoration", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 21:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 300);
 				trModifyProtounit("Villager Atlantean", p, 0, 300);
+				SoundSet("researchcomplete.wav");
 			}
 			case 22:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Journey", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 23:
 			{
 				if(AutoEscape){
 					grantGodPowerNoRechargeNextPosition(p, "Change Chimera", 1);
+					SoundSet("\cinematics\17_in\weirdthing.mp3");
 				}
 				else{
 					for(a = 1; <= HunterNumber){
@@ -847,45 +821,55 @@ inactive
 			case 24:
 			{
 				trModifyProtounit("Tower", p, 0, 150);
+				SoundSet("researchcomplete.wav");
 			}
 			case 25:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 0, 300);
 				trModifyProtounit("Villager Atlantean", p, 0, 300);
+				SoundSet("researchcomplete.wav");
 			}
 			case 26:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Change Chimera", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 27:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "create gold", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 28:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Vision", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 29:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Lightning Storm", 1);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 30:
 			{
 				trModifyProtounit("Tower", p, 11, 2);
 				trModifyProtounit("Tower", p, 2, 2);
+				SoundSet("researchcomplete.wav");
 			}
 			case 31:
 			{
 				trModifyProtounit("Tower", p, 31, 4);
+				SoundSet("researchcomplete.wav");
 			}
 			case 32:
 			{
 				trModifyProtounit("Tower", p, 2, 4);
+				SoundSet("researchcomplete.wav");
 			}
 			case 33:
 			{
 				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.85);
 				modifyProtounitAbsolute("Tower", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+				SoundSet("researchcomplete.wav");
 			}
 			case 34:
 			{
@@ -896,43 +880,52 @@ inactive
 				xSetInt(dDestroyMe, xDestroyName, id);
 				xSetInt(dDestroyMe, xDestroyTime, trTimeMS()+2000);
 				trModifyProtounit("Revealer To Player",p,2,MapSize);
+				SoundSet("visionswoosh.wav");
 			}
 			case 35:
 			{
 				xSetFloat(dPlayerData,xCitizenRegen,xGetFloat(dPlayerData, xCitizenRegen)+2.0);
+				SoundSet("researchcomplete.wav");
 			}
 			case 36:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 2, 12);
 				trModifyProtounit("Villager Atlantean", p, 2, 12);
+				SoundSet("researchcomplete.wav");
 			}
 			case 37:
 			{
 				trModifyProtounit("Villager Atlantean Hero", p, 1, 1);
 				trModifyProtounit("Villager Atlantean", p, 1, 1);
+				SoundSet("researchcomplete.wav");
 			}
 			//NEXT LEVEL
 			case 38:
 			{
 				trModifyProtounit("Tower", p, 11, 4);
 				trModifyProtounit("Tower", p, 2, 4);
+				SoundSet("researchcomplete.wav");
 			}
 			case 39:
 			{
 				trModifyProtounit("Tower", p, 31, 5);
+				SoundSet("researchcomplete.wav");
 			}
 			case 40:
 			{
 				trModifyProtounit("Tower", p, 2, 6);
+				SoundSet("researchcomplete.wav");
 			}
 			case 41:
 			{
 				trModifyProtounit("Tower", p, 0, 250);
+				SoundSet("researchcomplete.wav");
 			}
 			case 42:
 			{
 				xSetFloat(dPlayerData,xTowerBuild,xGetFloat(dPlayerData, xTowerBuild)*0.8);
 				modifyProtounitAbsolute("Tower", p, 4, xGetFloat(dPlayerData, xTowerBuild));
+				SoundSet("researchcomplete.wav");
 			}
 			//NEXT LEVEL
 			case 43:
@@ -941,43 +934,53 @@ inactive
 				yFindLatest("qv", "Villager Atlantean Hero", p);
 				id = 1*trQuestVarGet("qv");
 				UnitCreateChange(p, "Villager Atlantean", xsVectorGetX(kbGetBlockPosition(""+1*trQuestVarGet("qv"))),xsVectorGetZ(kbGetBlockPosition(""+1*trQuestVarGet("qv"))));
+				SoundSet("villagercreate.wav");
 			}
 			case 44:
 			{
 				trModifyProtounit("Tower", p, 0, 500);
+				SoundSet("researchcomplete.wav");
 			}
 			//NEXT LEVEL
 			case 45:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Lightning Storm", 2);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 46:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "create gold", 2);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 47:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Vision", 3);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 48:
 			{
 				grantGodPowerNoRechargeNextPosition(p, "Restoration", 2);
+				SoundSet("\cinematics\17_in\weirdthing.mp3");
 			}
 			case 49:
 			{
 				trModifyProtounit("Sky Passage", p, 0, 2500);
+				SoundSet("researchcomplete.wav");
 			}
 			case 50:
 			{
 				trModifyProtounit("Tower", p, 28, 8);
+				SoundSet("researchcomplete.wav");
 			}
 			case 51:
 			{
 				xSetFloat(dPlayerData,xCitizenRegen,xGetFloat(dPlayerData, xCitizenRegen)+5.0);
+				SoundSet("researchcomplete.wav");
 			}
 			case 52:
 			{
 				trModifyProtounit("Tower", p, 13, 1);
+				SoundSet("researchcomplete.wav");
 			}
 			case 53:
 			{
@@ -986,20 +989,21 @@ inactive
 						trChatSendToPlayer(0, p, "<color=1,0.5,0>No more relics remain!");
 					}
 					else{
+						xSetPointer(dPlayerData, p);
 						float dist = 0.0;
 						float closest = 100000.0;
 						int closestint = 0;
-						for(a = xGetDatabaseCount(dRelicTypes); > 0){
-							xDatabaseNext(dRelicTypes);
+						for(a = xGetDatabaseCount(dRelics); > 0){
+							xDatabaseNext(dRelics);
+							trUnitSelectClear();
 							xUnitSelect(dRelics, xRelicID);
-							//look for closest
 							dist = trUnitDistanceToUnit(""+xGetInt(dPlayerData, xPlayerUnitID));
 							if(dist < closest){
 								closest = dist;
 								closestint = xGetInt(dRelics, xRelicID);
 							}
 						}
-						trMinimapFlare(p, 10, kbGetBlockPosition(""+closestint) , false);
+						trMinimapFlare(p, 20, kbGetBlockPosition(""+closestint) , false);
 					}
 				}
 				else{
@@ -1012,6 +1016,7 @@ inactive
 					trUnitSelectClear();
 					trUnitSelect(""+id);
 					trUnitChangeProtoUnit("Tower Mirror");
+					SoundSet("mirrortower.wav");
 				}
 			}
 		}
@@ -1416,6 +1421,9 @@ inactive
 					}
 				}
 			}
+		}
+		if(AutoEscape == false){
+			SoundSet("researchcomplete.wav");
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);
 		trQuestVarSet("P"+ActionChoice+"NoAction", 0);

@@ -255,6 +255,12 @@ highFrequency
 				xAddDatabaseBlock(dBuildings, true);
 				xSetInt(dBuildings, xUnitName, j);
 				xSetInt(dBuildings, xPlayerOwner, kbUnitGetOwner(id));
+				xSetPointer(dPlayerData, kbUnitGetOwner(id));
+				if(xGetFloat(dPlayerData, xPalaceBuildPoints) < 30.0){
+					trUnitSelectClear();
+					trUnitSelect(""+j);
+					trUnitSetAnimationPath("1,0,0,0,0,0");
+				}
 				if(AutoEscape){
 					GodPowerChance(j);
 				}
